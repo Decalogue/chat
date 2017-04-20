@@ -1,0 +1,392 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>API - 语义工具箱 &mdash; chat 1.0.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="chat 1.0.0 documentation" href="../index.html"/>
+        <link rel="next" title="API - 语义数据库管理" href="database.html"/>
+        <link rel="prev" title="API - 语义理解问答" href="qa.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> chat
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../user/installation.html">安装 Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/tutorial.html">快速开始</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/custom.html">个性化定制您的聊天机器人</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/development.html">开发 Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/architecture.html">深入了解</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/tss.html">技术支持</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/thanks.html">致谢</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="server.html">API - 语义服务器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="client.html">API - 语义客户端</a></li>
+<li class="toctree-l1"><a class="reference internal" href="qa.html">API - 语义理解问答</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">API - 语义工具箱</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id1">自定义分词</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">获取语义标签</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#cosinejaccard">根据语义分词Cosine相似性矩阵计算语义jaccard模型的各个参数</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#jaccard">向量相似度计算-基础jaccard模型</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">向量相似度计算-语义jaccard模型</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id4">向量相似度计算-语义编辑距离模型</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id5">向量相似度计算（模型参数可选）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id6">从句子中获取地名信息</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id7">从句子中获取音乐信息</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="database.html">API - 语义数据库管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mytools.html">API - 常用工具箱</a></li>
+<li class="toctree-l1"><a class="reference internal" href="upload.html">API - 上传本地知识库</a></li>
+<li class="toctree-l1"><a class="reference internal" href="download.html">API - 下载语义知识库</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">chat</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+    <li>API - 语义工具箱</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/modules/semantic.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="api">
+<h1>API - 语义工具箱<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h1>
+<img alt="../_images/semantic.ico" src="../_images/semantic.ico" />
+<span class="target" id="module-semantic"></span><p>semantic</p>
+<p>A collection of semantic tools. Use &#8216;jieba&#8217; as Chinese word segmentation tool.
+语义工具集合。采用&#8217;jieba&#8217;作为中文分词工具。</p>
+<p>Available functions:
+- All classes and functions: 所有类和函数</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#semantic.synonym_cut" title="semantic.synonym_cut"><code class="xref py py-obj docutils literal"><span class="pre">synonym_cut</span></code></a>(sentence[,&nbsp;pattern])</td>
+<td>Cut the sentence into a synonym vector tag.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#semantic.get_tag" title="semantic.get_tag"><code class="xref py py-obj docutils literal"><span class="pre">get_tag</span></code></a>(question)</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#semantic.sum_cosine" title="semantic.sum_cosine"><code class="xref py py-obj docutils literal"><span class="pre">sum_cosine</span></code></a>(matrix,&nbsp;threshold)</td>
+<td>Calculate the parameters of the semantic Jaccard model based on the Cosine similarity matrix of semantic word segmentation.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#semantic.jaccard_basic" title="semantic.jaccard_basic"><code class="xref py py-obj docutils literal"><span class="pre">jaccard_basic</span></code></a>(synonym_vector1,&nbsp;synonym_vector2)</td>
+<td>Similarity score between two vectors with basic jaccard.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#semantic.jaccard" title="semantic.jaccard"><code class="xref py py-obj docutils literal"><span class="pre">jaccard</span></code></a>(synonym_vector1,&nbsp;synonym_vector2)</td>
+<td>Similarity score between two vectors with jaccard.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#semantic.edit_distance" title="semantic.edit_distance"><code class="xref py py-obj docutils literal"><span class="pre">edit_distance</span></code></a>(synonym_vector1,&nbsp;synonym_vector2)</td>
+<td>Similarity score between two vectors with edit distance.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#semantic.similarity" title="semantic.similarity"><code class="xref py py-obj docutils literal"><span class="pre">similarity</span></code></a>(synonym_vector1,&nbsp;synonym_vector2)</td>
+<td>Similarity score between two sentences.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#semantic.get_location" title="semantic.get_location"><code class="xref py py-obj docutils literal"><span class="pre">get_location</span></code></a>(sentence)</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#semantic.get_musicinfo" title="semantic.get_musicinfo"><code class="xref py py-obj docutils literal"><span class="pre">get_musicinfo</span></code></a>(sentence)</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="id1">
+<h2>自定义分词<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="semantic.synonym_cut">
+<code class="descclassname">semantic.</code><code class="descname">synonym_cut</code><span class="sig-paren">(</span><em>sentence</em>, <em>pattern='wf'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/semantic.html#synonym_cut"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#semantic.synonym_cut" title="Permalink to this definition">¶</a></dt>
+<dd><p>Cut the sentence into a synonym vector tag.
+将句子切分为同义词向量标签。</p>
+<p>If a word in this sentence was not found in the synonym dictionary, it will be marked with default value of the word segmentation tool.
+如果同义词词典中没有则标注为切词工具默认的词性。</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>pattern: &#8216;w&#8217;-分词, &#8216;t&#8217;-关键词, &#8216;wf&#8217;-分词标签, &#8216;tf-关键词标签&#8217;。</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="id2">
+<h2>获取语义标签<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="semantic.get_tag">
+<code class="descclassname">semantic.</code><code class="descname">get_tag</code><span class="sig-paren">(</span><em>question</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/semantic.html#get_tag"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#semantic.get_tag" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="cosinejaccard">
+<h2>根据语义分词Cosine相似性矩阵计算语义jaccard模型的各个参数<a class="headerlink" href="#cosinejaccard" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="semantic.sum_cosine">
+<code class="descclassname">semantic.</code><code class="descname">sum_cosine</code><span class="sig-paren">(</span><em>matrix</em>, <em>threshold</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/semantic.html#sum_cosine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#semantic.sum_cosine" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the parameters of the semantic Jaccard model based on the
+Cosine similarity matrix of semantic word segmentation.
+根据语义分词Cosine相似性矩阵计算语义jaccard模型的各个参数。</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>matrix: Semantic Cosine similarity matrix. 语义分词Cosine相似性矩阵。
+threshold: Threshold for semantic matching. 达到语义匹配标准的阈值。</dd>
+<dt>Returns:</dt>
+<dd><dl class="first last docutils">
+<dt>total: The semantic intersection of two sentence language fragments.</dt>
+<dd>两个句子语言片段组成集合的语义交集。</dd>
+<dt>num_not_match: The total number of fragments or the maximum value of two sets</dt>
+<dd>that do not meet the semantic matching criteria controlled by the threshold.
+两个集合中没有达到语义匹配标准（由阈值threshold控制）的总片段个数或者两者中取最大值。</dd>
+<dt>total_dif: The degree of semantic difference between two sets.</dt>
+<dd>两个集合的语义差异程度。</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="jaccard">
+<h2>向量相似度计算-基础jaccard模型<a class="headerlink" href="#jaccard" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="semantic.jaccard_basic">
+<code class="descclassname">semantic.</code><code class="descname">jaccard_basic</code><span class="sig-paren">(</span><em>synonym_vector1</em>, <em>synonym_vector2</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/semantic.html#jaccard_basic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#semantic.jaccard_basic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Similarity score between two vectors with basic jaccard.
+两个向量的基础jaccard相似度得分。</p>
+<p>According to the bassic jaccard model to calculate the similarity.
+The similarity score interval for each two sentences was [0, 1].
+根据基础jaccard模型来计算相似度。每两个向量的相似度得分区间为为[0, 1]。</p>
+</dd></dl>
+
+</div>
+<div class="section" id="id3">
+<h2>向量相似度计算-语义jaccard模型<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="semantic.jaccard">
+<code class="descclassname">semantic.</code><code class="descname">jaccard</code><span class="sig-paren">(</span><em>synonym_vector1</em>, <em>synonym_vector2</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/semantic.html#jaccard"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#semantic.jaccard" title="Permalink to this definition">¶</a></dt>
+<dd><p>Similarity score between two vectors with jaccard.
+两个向量的语义jaccard相似度得分。</p>
+<p>According to the semantic jaccard model to calculate the similarity.
+The similarity score interval for each two sentences was [0, 1].
+根据语义jaccard模型来计算相似度。每两个向量的相似度得分区间为为[0, 1]。</p>
+</dd></dl>
+
+</div>
+<div class="section" id="id4">
+<h2>向量相似度计算-语义编辑距离模型<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="semantic.edit_distance">
+<code class="descclassname">semantic.</code><code class="descname">edit_distance</code><span class="sig-paren">(</span><em>synonym_vector1</em>, <em>synonym_vector2</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/semantic.html#edit_distance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#semantic.edit_distance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Similarity score between two vectors with edit distance.
+根据语义编辑距离计算相似度。</p>
+</dd></dl>
+
+</div>
+<div class="section" id="id5">
+<h2>向量相似度计算（模型参数可选）<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="semantic.similarity">
+<code class="descclassname">semantic.</code><code class="descname">similarity</code><span class="sig-paren">(</span><em>synonym_vector1</em>, <em>synonym_vector2</em>, <em>pattern='j'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/semantic.html#similarity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#semantic.similarity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Similarity score between two sentences.
+两个向量的相似度得分。</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><dl class="first last docutils">
+<dt>pattern: Similarity computing model. 相似度计算模式。</dt>
+<dd>Defaults to &#8216;j&#8217; represents &#8216;jaccard&#8217;.</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="id6">
+<h2>从句子中获取地名信息<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="semantic.get_location">
+<code class="descclassname">semantic.</code><code class="descname">get_location</code><span class="sig-paren">(</span><em>sentence</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/semantic.html#get_location"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#semantic.get_location" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="id7">
+<h2>从句子中获取音乐信息<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="semantic.get_musicinfo">
+<code class="descclassname">semantic.</code><code class="descname">get_musicinfo</code><span class="sig-paren">(</span><em>sentence</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/semantic.html#get_musicinfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#semantic.get_musicinfo" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="database.html" class="btn btn-neutral float-right" title="API - 语义数据库管理" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="qa.html" class="btn btn-neutral" title="API - 语义理解问答" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Rain.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'1.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

@@ -1,0 +1,374 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>database &mdash; chat 1.0.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="chat 1.0.0 documentation" href="../index.html"/>
+        <link rel="up" title="Module code" href="index.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> chat
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../user/installation.html">安装 Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/tutorial.html">快速开始</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/custom.html">个性化定制您的聊天机器人</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/development.html">开发 Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/architecture.html">深入了解</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/tss.html">技术支持</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/thanks.html">致谢</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules/server.html">API - 语义服务器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/client.html">API - 语义客户端</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/qa.html">API - 语义理解问答</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/semantic.html">API - 语义工具箱</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/database.html">API - 语义数据库管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/mytools.html">API - 常用工具箱</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/upload.html">API - 上传本地知识库</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/download.html">API - 下载语义知识库</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">chat</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Module code</a> &raquo;</li>
+      
+    <li>database</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for database</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1"># PEP 8 check with Pylint</span>
+<span class="sd">&quot;&quot;&quot;database</span>
+
+<span class="sd">Manage NLU database based on neo4j graph database.</span>
+<span class="sd">The &#39;py2neo&#39; is a python package of neo4j graph database.</span>
+<span class="sd">1.Support increase, delete, modify, query and other operations for nodes, relationships, subgraph and graph;</span>
+<span class="sd">2.Support batch processing;</span>
+<span class="sd">3.Support command line;</span>
+<span class="sd">4.Support read the data file, batch import and export for the required file format.</span>
+<span class="sd">管理基于neo4j图形数据库的自然语言理解数据库。</span>
+<span class="sd">&quot;py2neo&quot;是neo4j图形数据库的python接口包。</span>
+<span class="sd">1.支持节点，关系，子图，全图的增、删、改、查；</span>
+<span class="sd">2.支持批处理；</span>
+<span class="sd">3.支持命令行；</span>
+<span class="sd">4.支持读取数据文件批量导入及导出为需要的文件格式。</span>
+
+<span class="sd">Available functions:</span>
+<span class="sd">- All classes and functions: 所有类和函数</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">string</span>
+<span class="kn">import</span> <span class="nn">codecs</span>
+<span class="kn">import</span> <span class="nn">pynlpir</span>
+<span class="n">pynlpir</span><span class="o">.</span><span class="n">open</span><span class="p">()</span>
+<span class="kn">from</span> <span class="nn">mytools</span> <span class="k">import</span> <span class="n">Walk</span><span class="p">,</span> <span class="n">time_me</span><span class="p">,</span> <span class="n">read_excel</span>
+<span class="kn">from</span> <span class="nn">py2neo</span> <span class="k">import</span> <span class="n">Graph</span><span class="p">,</span> <span class="n">Node</span><span class="p">,</span> <span class="n">Relationship</span><span class="p">,</span> <span class="n">NodeSelector</span>
+<span class="kn">from</span> <span class="nn">semantic</span> <span class="k">import</span> <span class="n">synonym_cut</span><span class="p">,</span> <span class="n">get_tag</span>
+<span class="kn">from</span> <span class="nn">optparse</span> <span class="k">import</span> <span class="n">OptionParser</span> 
+
+<div class="viewcode-block" id="Database"><a class="viewcode-back" href="../modules/database.html#database.Database">[docs]</a><span class="k">class</span> <span class="nc">Database</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Manage Database.</span>
+<span class="sd">    管理数据库。</span>
+
+<span class="sd">    It support python command line parameter processing of relational database and graph database.</span>
+<span class="sd">    You can view all the features by &#39;python xxx.py -h&#39;.</span>
+<span class="sd">    支持关系数据库和图形数据库的python命令行参数处理。可以通过&#39;python xxx.py -h&#39;查看所有功能。</span>
+
+<span class="sd">    Public attributes:</span>
+<span class="sd">    - rdb: Relational database. 关系数据库。</span>
+<span class="sd">    - graph: Graph database. 图数据库。</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rdb</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">graph</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">(</span><span class="s2">&quot;http://localhost:7474/db/data&quot;</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="n">password</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">selector</span> <span class="o">=</span> <span class="n">NodeSelector</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="p">)</span>		
+        <span class="bp">self</span><span class="o">.</span><span class="n">usage</span> <span class="o">=</span> <span class="s2">&quot;usage: python %prog [options] arg&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">version</span><span class="o">=</span><span class="s2">&quot;%prog 1.0&quot;</span>	
+        <span class="bp">self</span><span class="o">.</span><span class="n">parser</span> <span class="o">=</span> <span class="n">OptionParser</span><span class="p">(</span><span class="n">usage</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">usage</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">version</span><span class="p">)</span>    
+        <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s2">&quot;-v&quot;</span><span class="p">,</span> <span class="s2">&quot;--verbose&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;verbose&quot;</span><span class="p">)</span>  
+        <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s2">&quot;-q&quot;</span><span class="p">,</span> <span class="s2">&quot;--quiet&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_false&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;verbose&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s2">&quot;-b&quot;</span><span class="p">,</span> <span class="s2">&quot;--batch&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;batch&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span> 
+                              <span class="n">help</span><span class="o">=</span><span class="s2">&quot;batch processing of graph database&quot;</span><span class="p">)</span>	
+        <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s2">&quot;-f&quot;</span><span class="p">,</span> <span class="s2">&quot;--file&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;filename&quot;</span><span class="p">,</span>  
+                              <span class="n">help</span><span class="o">=</span><span class="s2">&quot;read data from filename&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s2">&quot;-p&quot;</span><span class="p">,</span> <span class="s2">&quot;--path&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;filepath&quot;</span><span class="p">,</span>  
+                              <span class="n">help</span><span class="o">=</span><span class="s2">&quot;read data from filepath&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s2">&quot;-a&quot;</span><span class="p">,</span> <span class="s2">&quot;--add&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;add&quot;</span><span class="p">,</span>  
+                              <span class="n">help</span><span class="o">=</span><span class="s2">&quot;add subgraph to graph database&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s2">&quot;-d&quot;</span><span class="p">,</span> <span class="s2">&quot;--delete&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;delete&quot;</span><span class="p">,</span>  
+                              <span class="n">help</span><span class="o">=</span><span class="s2">&quot;delete subgraph of graph database&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s2">&quot;-e&quot;</span><span class="p">,</span> <span class="s2">&quot;--edit&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;edit&quot;</span><span class="p">,</span>  
+                              <span class="n">help</span><span class="o">=</span><span class="s2">&quot;edit subgraph of graph database&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">add_option</span><span class="p">(</span><span class="s2">&quot;-s&quot;</span><span class="p">,</span> <span class="s2">&quot;--search&quot;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s2">&quot;search&quot;</span><span class="p">,</span>  
+                              <span class="n">help</span><span class="o">=</span><span class="s2">&quot;search subgraph of graph database&quot;</span><span class="p">)</span>
+        <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">)</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+        <span class="c1"># if len(self.args) == 0:  </span>
+            <span class="c1"># self.parser.error(&quot;incorrect number of arguments&quot;)  </span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>  
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;reading </span><span class="si">%s</span><span class="s2">...&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">add</span> <span class="o">==</span> <span class="s2">&quot;Scene&quot;</span><span class="p">:</span>
+            <span class="n">scenes</span> <span class="o">=</span> <span class="n">AddScenes</span><span class="p">()</span>
+            <span class="n">filelist</span> <span class="o">=</span> <span class="n">scenes</span><span class="o">.</span><span class="n">dir_process</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">filepath</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;filelist&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">delete</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span> <span class="n">pattern</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">delete</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+				
+    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pattern</span><span class="o">=</span><span class="s2">&quot;n&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>     
+        <span class="sd">&quot;&quot;&quot;Batch delete data or subgraph in database.</span>
+<span class="sd">        在数据库中批量删除数据或者子图。</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            pattern: Type of subgraph. 子图类型。</span>
+<span class="sd">            name: Name of subgraph. 子图名称。</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">pattern</span> <span class="o">==</span> <span class="s2">&quot;all&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">delete_all</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">pattern</span> <span class="o">==</span> <span class="s2">&quot;n&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">&quot;MATCH(n:&quot;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;) DETACH DELETE n&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">pattern</span> <span class="o">==</span> <span class="s2">&quot;r&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">&quot;MATCH (n)-[r:&quot;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;]-(m) DETACH DELETE r&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">pattern</span> <span class="o">==</span> <span class="s2">&quot;nr&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">&quot;MATCH (n)&lt;-[r:&quot;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;]-(m) DETACH DELETE r DELETE n&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">pattern</span> <span class="o">==</span> <span class="s2">&quot;rm&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">&quot;MATCH (n)-[r:&quot;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;]-&gt;(m) DETACH DELETE r DELETE m&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">pattern</span> <span class="o">==</span> <span class="s2">&quot;nrm&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">&quot;MATCH (n)-[r:&quot;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;]-(m) DETACH DELETE r DELETE n DELETE m&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">add_qa</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nodeclass</span><span class="o">=</span><span class="s2">&quot;NluCell&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">topic</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">behavior</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">parameter</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">keywords</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">api</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">txt</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">img</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">chart</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="n">name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;name must be string.&quot;</span>
+        <span class="k">assert</span> <span class="n">content</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;content must be string.&quot;</span>
+        <span class="n">questions</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">delimiter</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">question</span> <span class="ow">in</span> <span class="n">questions</span><span class="p">:</span>
+            <span class="n">tag</span> <span class="o">=</span> <span class="n">get_tag</span><span class="p">(</span><span class="n">question</span><span class="p">)</span>
+            <span class="n">node</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="n">nodeclass</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">question</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="n">content</span><span class="p">,</span> <span class="n">topic</span><span class="o">=</span><span class="n">topic</span><span class="p">,</span> <span class="n">behavior</span><span class="o">=</span><span class="n">behavior</span><span class="p">,</span> <span class="n">parameter</span><span class="o">=</span><span class="n">parameter</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="n">tag</span><span class="p">,</span> <span class="n">keywords</span><span class="o">=</span><span class="n">keywords</span><span class="p">,</span> <span class="n">api</span><span class="o">=</span><span class="n">api</span><span class="p">,</span> <span class="n">txt</span><span class="o">=</span><span class="n">txt</span><span class="p">,</span> <span class="n">img</span><span class="o">=</span><span class="n">img</span><span class="p">,</span> <span class="n">chart</span><span class="o">=</span><span class="n">chart</span><span class="p">,</span> <span class="n">hot</span><span class="o">=</span><span class="s2">&quot;0&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+            
+    <span class="k">def</span> <span class="nf">handle_excel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">custom_sheets</span><span class="o">=</span><span class="p">[]):</span>
+        <span class="sd">&quot;&quot;&quot;Processing data of excel.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="n">filename</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;filename can not be None&quot;</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">read_excel</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="n">data_sheets</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">sheet_names</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">custom_sheets</span><span class="p">:</span>
+            <span class="n">sheet_names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">data_sheets</span><span class="p">)</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">custom_sheets</span><span class="p">)))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">sheet_names</span> <span class="o">=</span> <span class="n">data_sheets</span>
+        <span class="k">for</span> <span class="n">sheet_name</span> <span class="ow">in</span> <span class="n">sheet_names</span><span class="p">:</span> <span class="c1"># 可自定义要导入的子表格</span>
+            <span class="n">table</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">sheet_by_name</span><span class="p">(</span><span class="n">sheet_name</span><span class="p">)</span>
+            <span class="c1"># 1.Select specified table</span>
+            <span class="c1"># table = data.sheet_by_index(0)</span>
+            <span class="k">if</span> <span class="n">data</span><span class="p">:</span> 
+                <span class="c1"># 2.Select specified column</span>
+                <span class="n">col_format</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span><span class="s1">&#39;B&#39;</span><span class="p">,</span><span class="s1">&#39;C&#39;</span><span class="p">,</span><span class="s1">&#39;D&#39;</span><span class="p">,</span><span class="s1">&#39;E&#39;</span><span class="p">,</span><span class="s1">&#39;F&#39;</span><span class="p">,</span><span class="s1">&#39;G&#39;</span><span class="p">,</span><span class="s1">&#39;H&#39;</span><span class="p">,</span><span class="s1">&#39;I&#39;</span><span class="p">,</span><span class="s1">&#39;J&#39;</span><span class="p">,</span><span class="s1">&#39;K&#39;</span><span class="p">,</span><span class="s1">&#39;L&#39;</span><span class="p">,</span><span class="s1">&#39;M&#39;</span><span class="p">]</span>
+                <span class="k">try</span><span class="p">:</span>                                              
+                    <span class="n">nrows</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">nrows</span>                                     
+                    <span class="n">ncols</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">ncols</span>                                         
+                    <span class="n">str_upcase</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">string</span><span class="o">.</span><span class="n">ascii_uppercase</span><span class="p">]</span>                    
+                    <span class="n">i_upcase</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">str_upcase</span><span class="p">))</span>                             
+                    <span class="n">ncols_dir</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">str_upcase</span><span class="p">,</span><span class="n">i_upcase</span><span class="p">))</span>                   
+                    <span class="n">col_index</span> <span class="o">=</span> <span class="p">[</span><span class="n">ncols_dir</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">col_format</span><span class="p">]</span>
+                    <span class="c1"># 前两行为表头</span>
+                    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">nrows</span><span class="p">):</span>
+                        <span class="n">name</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">cell</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">col_index</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">value</span>
+                        <span class="n">content</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">cell</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">col_index</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">value</span>
+                        <span class="n">topic</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">cell</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">col_index</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span><span class="o">.</span><span class="n">value</span>
+                        <span class="n">behavior</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">cell</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">col_index</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span><span class="o">.</span><span class="n">value</span>
+                        <span class="n">parameter</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">cell</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">col_index</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span><span class="o">.</span><span class="n">value</span>
+                        <span class="n">url</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">cell</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">col_index</span><span class="p">[</span><span class="mi">5</span><span class="p">])</span><span class="o">.</span><span class="n">value</span>
+                        <span class="n">tag</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">cell</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">col_index</span><span class="p">[</span><span class="mi">6</span><span class="p">])</span><span class="o">.</span><span class="n">value</span>
+                        <span class="n">keywords</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">cell</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">col_index</span><span class="p">[</span><span class="mi">7</span><span class="p">])</span><span class="o">.</span><span class="n">value</span>
+                        <span class="n">api</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">cell</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">col_index</span><span class="p">[</span><span class="mi">8</span><span class="p">])</span><span class="o">.</span><span class="n">value</span>
+                        <span class="n">txt</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">cell</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">col_index</span><span class="p">[</span><span class="mi">9</span><span class="p">])</span><span class="o">.</span><span class="n">value</span>
+                        <span class="n">img</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">cell</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">col_index</span><span class="p">[</span><span class="mi">10</span><span class="p">])</span><span class="o">.</span><span class="n">value</span>
+                        <span class="n">chart</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">cell</span><span class="p">(</span><span class="n">i</span><span class="p">,</span><span class="n">col_index</span><span class="p">[</span><span class="mi">11</span><span class="p">])</span><span class="o">.</span><span class="n">value</span>
+                        <span class="c1"># hot = 0 table.cell(i,col_index[12]).value</span>
+					    <span class="c1"># 3.Your processing function of excel data here</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">add_qa</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="n">content</span><span class="p">,</span> <span class="n">topic</span><span class="o">=</span><span class="n">topic</span><span class="p">,</span> <span class="n">behavior</span><span class="o">=</span><span class="n">behavior</span><span class="p">,</span> <span class="n">parameter</span><span class="o">=</span><span class="n">parameter</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="n">tag</span><span class="p">,</span> <span class="n">keywords</span><span class="o">=</span><span class="n">keywords</span><span class="p">,</span> <span class="n">api</span><span class="o">=</span><span class="n">api</span><span class="p">,</span> <span class="n">txt</span><span class="o">=</span><span class="n">txt</span><span class="p">,</span> <span class="n">img</span><span class="o">=</span><span class="n">img</span><span class="p">,</span> <span class="n">chart</span><span class="o">=</span><span class="n">chart</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s2">&quot;|&quot;</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span><span class="n">e</span><span class="p">)</span>
+                    <span class="k">return</span> <span class="kc">None</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error! Data of </span><span class="si">%s</span><span class="s1"> is empty!&#39;</span> <span class="o">%</span><span class="n">sheet_name</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">handle_txt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="n">filename</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;filename can not be None&quot;</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;UTF-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+            <span class="n">question</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span>
+            <span class="k">while</span> <span class="n">question</span><span class="p">:</span>
+                <span class="n">answer</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;question: &quot;</span> <span class="o">+</span> <span class="n">question</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;answer: &quot;</span> <span class="o">+</span> <span class="n">answer</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">add_qa</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">question</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="n">answer</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s2">&quot;|&quot;</span><span class="p">)</span>
+                <span class="n">question</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Rain.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'1.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

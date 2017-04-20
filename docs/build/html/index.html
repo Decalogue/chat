@@ -1,0 +1,378 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Chat: 基于自然语言理解与机器学习的聊天机器人。 &mdash; chat 1.0.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="chat 1.0.0 documentation" href="#"/>
+        <link rel="next" title="安装 Installation" href="user/installation.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="#" class="icon icon-home"> chat
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="user/installation.html">安装 Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user/tutorial.html">快速开始</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user/custom.html">个性化定制您的聊天机器人</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user/development.html">开发 Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user/architecture.html">深入了解</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user/tss.html">技术支持</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user/thanks.html">致谢</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="modules/server.html">API - 语义服务器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/client.html">API - 语义客户端</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/qa.html">API - 语义理解问答</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/semantic.html">API - 语义工具箱</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/database.html">API - 语义数据库管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/mytools.html">API - 常用工具箱</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/upload.html">API - 上传本地知识库</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/download.html">API - 下载语义知识库</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="#">chat</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="#">Docs</a> &raquo;</li>
+      
+    <li>Chat: 基于自然语言理解与机器学习的聊天机器人。</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/index.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="chat">
+<h1>Chat: 基于自然语言理解与机器学习的聊天机器人。<a class="headerlink" href="#chat" title="Permalink to this headline">¶</a></h1>
+<a class="reference external image-reference" href="https://github.com/decalogue/chat"><img alt="_images/chat.png" class="align-center" src="_images/chat.png" style="width: 494.0px; height: 291.0px;" /></a>
+<div class="section" id="id1">
+<h2>这就是Chat<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>Chat是一个基于自然语言理解与机器学习的语义理解库。
+Chat提供丰富的语义分析工具与语义知识图的构建工具，非常适合从0开始迅速搭建自己的聊天机器人，也能够减少工程师在实际开发当中的重复工作。Chat非常易于修改和扩展，所以个性化定制也是非常方便的。如果你有如下需求，欢迎选择Chat：</p>
+<ul class="simple">
+<li>想从0开始迅速搭建自己的聊天机器人</li>
+<li>想了解自然语言处理以及如何构建自己的知识图谱</li>
+<li>想智能化生活工作，提升效率</li>
+</ul>
+<p>Chat适用的Python版本是：Python 3.3-3.5</p>
+<p>Chat的设计原则</p>
+<ul class="simple">
+<li>用户友好：用户的使用体验始终是我们考虑的首要和中心内容。Chat遵循减少认知困难的最佳实践：Chat提供一致而简洁的API， 能够极大减少一般应用下用户的工作量，同时，Chat提供清晰和具有实践意义的bug反馈。</li>
+<li>模块性：完全独立可配置的模块可以用最少的代价自由组合在一起，你可以使用它们来构建自己的模块。</li>
+<li>易扩展性：添加新模块超级容易，只需要仿照现有的模块编写新的类或函数即可。创建新模块的便利性使得Chat更适合于快速开发。</li>
+<li>知识图谱：基于图数据库的知识图表达提供了更快的搜索速度与智能。</li>
+</ul>
+</div>
+<div class="section" id="chat-cn">
+<h2>关于Chat-cn<a class="headerlink" href="#chat-cn" title="Permalink to this headline">¶</a></h2>
+<p>由于作者水平和研究方向所限，因此文档中不可避免会出现各种错误、疏漏和不足之处。如果您在使用过程中有任何意见、建议和疑问，欢迎发送邮件到zhangxiaoyu&#64;gqy.com.cn或1044908508&#64;qq.com与我取得联系。</p>
+<p>您对文档的任何贡献，包括文档的翻译、查缺补漏、概念解释、发现和修改问题、贡献示例程序等，均会被记录在致谢，十分感谢您对Chat中文文档的贡献！</p>
+</div>
+<div class="section" id="id2">
+<h2>当前版本与更新<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<p>如果你发现本文档提供的信息有误，有两种可能：</p>
+<ul class="simple">
+<li>你的Chat版本过低：Chat是一个发展迅速的语义理解库，请保持您的Chat与官方最新的release版本相符</li>
+<li>我们的中文文档没有及时更新：如果是这种情况，请发邮件给我，我会尽快更新</li>
+</ul>
+<p>目前文档的版本号是1.0.2，对应于官方的1.0.2 release 版本, 本次更新的主要内容是：</p>
+<ul class="simple">
+<li>文档全面升级，绝大多数API均得到更新</li>
+<li>补充了原文档中缺失，但源代码中确实可用的类和函数</li>
+<li>重新整理了文档风格和栏目，使得文档更容易阅读</li>
+</ul>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>我们建议你在 <a class="reference external" href="https://github.com/decalogue/chat">Github</a> 上star和watch <a class="reference external" href="https://github.com/decalogue/chat">官方项目</a> ，这样当官方有更新时，你会立即知道。</p>
+<p class="last">如果你阅读在线中文文档时有什么问题，你可以在github上下载这个项目，
+然后去 <code class="docutils literal"><span class="pre">/docs/build/html/index.html</span></code> 阅读离线中文文档。</p>
+</div>
+</div>
+<div class="section" id="id4">
+<h2>用户指南<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="user/installation.html">安装 Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="user/installation.html#java">Java开发环境</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user/installation.html#id2">图形数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user/installation.html#python3">Python3</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="user/tutorial.html">快速开始</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="user/tutorial.html#id2">对话</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user/tutorial.html#id3">配置</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="user/custom.html">个性化定制您的聊天机器人</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="user/custom.html#id2">可定制内容</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="user/development.html">开发 Development</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="user/development.html#id2">理念</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user/development.html#id8">如何参与我们</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="user/architecture.html">深入了解</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="user/architecture.html#id2">语义服务架构</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user/architecture.html#id3">子模块详细实现</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user/architecture.html#id4">知识库</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="user/tss.html">技术支持</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="user/tss.html#github">Github</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user/tss.html#faq">FAQ</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user/tss.html#id3">你的贡献</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="user/thanks.html">致谢</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="user/thanks.html#id2">代码贡献</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user/thanks.html#id3">文档贡献</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="api">
+<h2>API目录<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h2>
+<p>如果你正在寻找某个特殊的函数，类或者方法，这一列文档就是为你准备的。</p>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="modules/server.html">API - 语义服务器</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="modules/server.html#id1">创建语义服务器</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/server.html#id2">启动语义服务器</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modules/client.html">API - 语义客户端</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="modules/client.html#id1">封装问题</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/client.html#id2">封装配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/client.html#id3">搜索答案</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/client.html#id4">配置语义知识库</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modules/qa.html">API - 语义理解问答</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="modules/qa.html#id1">语义理解机器人</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modules/semantic.html">API - 语义工具箱</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="modules/semantic.html#id1">自定义分词</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/semantic.html#id2">获取语义标签</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/semantic.html#cosinejaccard">根据语义分词Cosine相似性矩阵计算语义jaccard模型的各个参数</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/semantic.html#jaccard">向量相似度计算-基础jaccard模型</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/semantic.html#id3">向量相似度计算-语义jaccard模型</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/semantic.html#id4">向量相似度计算-语义编辑距离模型</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/semantic.html#id5">向量相似度计算（模型参数可选）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/semantic.html#id6">从句子中获取地名信息</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/semantic.html#id7">从句子中获取音乐信息</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modules/database.html">API - 语义数据库管理</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="modules/database.html#id1">语义数据库管理</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modules/mytools.html">API - 常用工具箱</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="modules/mytools.html#mac">获取Mac地址</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/mytools.html#id1">获取主机名</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/mytools.html#ip">获取IP地址</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/mytools.html#id2">获取当前运行函数名</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/mytools.html#id3">遍历目录进行批处理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/mytools.html#id4">程序时间性能分析</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/mytools.html#id5">获取当前时间</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/mytools.html#id6">列表随机元素</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/mytools.html#id7">文件替换</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/mytools.html#excel">读取excel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/mytools.html#id8">设置excel样式</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/mytools.html#id9">写入excel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/mytools.html#id10">生成词典</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/mytools.html#id11">显示等待中</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modules/upload.html">API - 上传本地知识库</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="modules/upload.html#excel">上传excel文件</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/upload.html#id1">上传子图</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modules/download.html">API - 下载语义知识库</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="modules/download.html#id1">匹配子图</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="section" id="id5">
+<h1>索引与附录<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></li>
+<li><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></li>
+<li><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></li>
+</ul>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="user/installation.html" class="btn btn-neutral float-right" title="安装 Installation" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Rain.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'1.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

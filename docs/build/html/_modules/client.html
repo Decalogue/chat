@@ -1,0 +1,328 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>client &mdash; chat 1.0.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="chat 1.0.0 documentation" href="../index.html"/>
+        <link rel="up" title="Module code" href="index.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> chat
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../user/installation.html">安装 Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/tutorial.html">快速开始</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/custom.html">个性化定制您的聊天机器人</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/development.html">开发 Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/architecture.html">深入了解</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/tss.html">技术支持</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/thanks.html">致谢</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules/server.html">API - 语义服务器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/client.html">API - 语义客户端</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/qa.html">API - 语义理解问答</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/semantic.html">API - 语义工具箱</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/database.html">API - 语义数据库管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/mytools.html">API - 常用工具箱</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/upload.html">API - 上传本地知识库</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/download.html">API - 下载语义知识库</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">chat</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+          <li><a href="index.html">Module code</a> &raquo;</li>
+      
+    <li>client</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for client</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+<span class="c1"># PEP 8 check with Pylint</span>
+<span class="sd">&quot;&quot;&quot;client</span>
+
+<span class="sd">Start chatting with NLU server via socket.</span>
+<span class="sd">通过socket开始与NLU服务器聊天</span>
+
+<span class="sd">Available functions:</span>
+<span class="sd">- question_pack: Package the question as the JSON format specified by the server.</span>
+<span class="sd">将问题打包为服务器指定的json格式。</span>
+<span class="sd">- config_pack: Package the config info as the JSON format specified by the server.</span>
+<span class="sd">将配置信息打包为服务器指定的json格式。</span>
+<span class="sd">- match：Match the answers from the semantic knowledge database.</span>
+<span class="sd">从语义知识数据库搜索答案。</span>
+<span class="sd">- config：Configure the semantic knowledge database.</span>
+<span class="sd">配置语义知识数据库。</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">__author__</span> <span class="o">=</span> <span class="s2">&quot;Rain&quot;</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s2">&quot;1.0.3&quot;</span>
+<span class="n">__license__</span> <span class="o">=</span> <span class="s2">&quot;MIT&quot;</span>
+
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">socket</span>
+
+<span class="n">host</span><span class="p">,</span> <span class="n">port</span> <span class="o">=</span> <span class="s2">&quot;localhost&quot;</span><span class="p">,</span> <span class="mi">7000</span>
+<span class="n">sock</span> <span class="o">=</span> <span class="n">socket</span><span class="o">.</span><span class="n">socket</span><span class="p">(</span><span class="n">socket</span><span class="o">.</span><span class="n">AF_INET</span><span class="p">,</span> <span class="n">socket</span><span class="o">.</span><span class="n">SOCK_STREAM</span><span class="p">)</span>
+<span class="n">sock</span><span class="o">.</span><span class="n">connect</span><span class="p">((</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">))</span>
+
+<div class="viewcode-block" id="question_pack"><a class="viewcode-back" href="../modules/client.html#client.question_pack">[docs]</a><span class="k">def</span> <span class="nf">question_pack</span><span class="p">(</span><span class="n">info</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">userid</span><span class="o">=</span><span class="s2">&quot;userid&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Package the question as the JSON format specified by the server.</span>
+<span class="sd">    将问题打包为服务器指定的json格式。</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        info: User question. 用户的聊天或提问。</span>
+<span class="sd">            Defaults to &quot;&quot;.</span>
+<span class="sd">        userid: User id. 用户唯一标识。</span>
+<span class="sd">            Defaults to &quot;userid&quot;.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Packaged JSON format data. 打包好的json格式数据。</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;userid&quot;</span><span class="p">:</span> <span class="n">userid</span><span class="p">,</span> <span class="c1"># 用户唯一标识</span>
+            <span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;yourkey&quot;</span><span class="p">,</span> <span class="c1"># API密钥</span>
+            <span class="s2">&quot;ask_type&quot;</span><span class="p">:</span> <span class="s2">&quot;txt&quot;</span><span class="p">,</span> <span class="c1"># 问题的类型(txt, img, audio, video)</span>
+            <span class="s2">&quot;ask_content&quot;</span><span class="p">:</span> <span class="n">info</span><span class="p">,</span> <span class="c1"># 问题内容</span>
+            <span class="s2">&quot;state&quot;</span><span class="p">:</span> <span class="s2">&quot;robotstate&quot;</span> <span class="c1"># 机器人状态</span>
+            <span class="p">}</span>
+    <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="config_pack"><a class="viewcode-back" href="../modules/client.html#client.config_pack">[docs]</a><span class="k">def</span> <span class="nf">config_pack</span><span class="p">(</span><span class="n">info</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">userid</span><span class="o">=</span><span class="s2">&quot;userid&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Package the config info as the JSON format specified by the server.</span>
+<span class="sd">    将配置信息打包为服务器指定的json格式。</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        info: User config info. 用户配置信息。</span>
+<span class="sd">            Defaults to &quot;&quot;.</span>
+<span class="sd">        userid: User id. 用户唯一标识。</span>
+<span class="sd">            Defaults to &quot;userid&quot;.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Packaged JSON format data. 打包好的json格式数据。</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;userid&quot;</span><span class="p">:</span> <span class="n">userid</span><span class="p">,</span> <span class="c1"># 用户唯一标识</span>
+            <span class="s2">&quot;key&quot;</span><span class="p">:</span> <span class="s2">&quot;yourkey&quot;</span><span class="p">,</span> <span class="c1"># API密钥</span>
+            <span class="s2">&quot;config_type&quot;</span><span class="p">:</span> <span class="s2">&quot;subgraph&quot;</span><span class="p">,</span> <span class="c1"># 配置的类型</span>
+            <span class="s2">&quot;config_content&quot;</span><span class="p">:</span> <span class="n">info</span><span class="p">,</span> <span class="c1"># 配置内容</span>
+            <span class="s2">&quot;state&quot;</span><span class="p">:</span> <span class="s2">&quot;robotstate&quot;</span> <span class="c1"># 机器人状态</span>
+            <span class="p">}</span>
+    <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></div>
+		
+<div class="viewcode-block" id="match"><a class="viewcode-back" href="../modules/client.html#client.match">[docs]</a><span class="k">def</span> <span class="nf">match</span><span class="p">(</span><span class="n">question</span><span class="o">=</span><span class="s2">&quot;question&quot;</span><span class="p">,</span> <span class="n">userid</span><span class="o">=</span><span class="s2">&quot;userid&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Match the answers from the semantic knowledge database.</span>
+<span class="sd">    从语义知识数据库搜索答案。</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        question: User question. 用户问题。</span>
+<span class="sd">            Defaults to &quot;question&quot;.</span>
+<span class="sd">        userid: User id. 用户唯一标识。</span>
+<span class="sd">            Defaults to &quot;userid&quot;.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Packaged JSON format data of answer. 打包好的答案json格式数据。</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">send</span> <span class="o">=</span> <span class="n">question_pack</span><span class="p">(</span><span class="n">question</span><span class="p">,</span> <span class="n">userid</span><span class="p">)</span>
+    <span class="n">sock</span><span class="o">.</span><span class="n">sendall</span><span class="p">(</span><span class="n">send</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;UTF-8&quot;</span><span class="p">))</span>
+    <span class="n">received</span> <span class="o">=</span> <span class="n">sock</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">2048</span><span class="p">)</span>
+    <span class="n">received</span> <span class="o">=</span> <span class="n">received</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;UTF-8&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">received</span></div>
+    
+<div class="viewcode-block" id="config"><a class="viewcode-back" href="../modules/client.html#client.config">[docs]</a><span class="k">def</span> <span class="nf">config</span><span class="p">(</span><span class="n">info</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">userid</span><span class="o">=</span><span class="s2">&quot;userid&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Configure the semantic knowledge database.</span>
+<span class="sd">    配置语义知识数据库。   </span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        info: User config info. 用户配置信息，以空格分隔的知识库名称字符串。</span>
+<span class="sd">            Defaults to &quot;&quot;. 返回可配置选项信息。</span>
+<span class="sd">        userid: User id. 用户唯一标识。</span>
+<span class="sd">            Defaults to &quot;userid&quot;.</span>
+<span class="sd">    Returns:</span>
+<span class="sd">        Packaged JSON format data of config result. 打包好的配置结果json格式数据。</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">send</span> <span class="o">=</span> <span class="n">config_pack</span><span class="p">(</span><span class="n">info</span><span class="p">,</span> <span class="n">userid</span><span class="p">)</span>
+    <span class="n">sock</span><span class="o">.</span><span class="n">sendall</span><span class="p">(</span><span class="n">send</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;UTF-8&quot;</span><span class="p">))</span>
+    <span class="n">received</span> <span class="o">=</span> <span class="n">sock</span><span class="o">.</span><span class="n">recv</span><span class="p">(</span><span class="mi">2048</span><span class="p">)</span>
+    <span class="n">received</span> <span class="o">=</span> <span class="n">received</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;UTF-8&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">received</span></div>
+	
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">question</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&gt;&gt;question=&quot;</span><span class="p">)</span>
+        <span class="n">userid</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;&gt;&gt;userid=&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">question</span> <span class="o">==</span> <span class="s2">&quot;config&quot;</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">config</span><span class="p">(</span><span class="n">info</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">userid</span><span class="o">=</span><span class="n">userid</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">match</span><span class="p">(</span><span class="n">question</span><span class="o">=</span><span class="n">question</span><span class="p">,</span> <span class="n">userid</span><span class="o">=</span><span class="n">userid</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">result</span><span class="p">))</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Rain.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'1.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

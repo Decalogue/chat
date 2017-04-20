@@ -1,0 +1,31 @@
+CREATE (user:User {userid: "userid", robotname: "小民", robotage: "1岁", robotgender: "男孩", mother: "宁波GQY公司", father: "宁波GQY公司", username: "主人", companyname: "宁波GQY公司", companytype: "科技", servicename: "GQY业务", director: "郭总", address: "宁波GQY公司上海分公司", province: "浙江", city: "上海市"})
+CREATE (user1:User {userid: "A0001", robotname: "小民", robotage: "1岁", robotgender: "男孩", mother: "宁波GQY公司", father: "宁波GQY公司", username: "主人", companyname: "宁波GQY公司", companytype: "科技", servicename: "GQY业务", director: "郭总", address: "宁波GQY公司上海分公司", province: "浙江", city: "上海市"})
+CREATE (user2:User {userid: "A0002", robotname: "小民", robotage: "1岁", robotgender: "男孩", mother: "宁波GQY公司", father: "宁波GQY公司", username: "主人", companyname: "宁波GQY公司", companytype: "科技", servicename: "GQY业务", director: "郭总", address: "宁波GQY公司上海分公司", province: "浙江", city: "上海市"})
+CREATE (cmd:Config {name: "基础命令", topic: "basic_cmd"})
+CREATE (chat:Config {name: "基础问答", topic: "basic_chat"})
+CREATE (scene:Config {name: "基础场景", topic: "basic_scene"})
+CREATE (bank:Config {name: "基础银行", topic: "basic_bank"})
+CREATE (court:Config {name: "基础法院", topic: "basic_court"})
+CREATE (cmbc:Config {name: "民生银行", topic: "bank_cmbc"})
+CREATE
+    (user)-[:has {bselected: 1, available: 1}]->(cmd),
+    (user)-[:has {bselected: 1, available: 1}]->(chat),
+    (user)-[:has {bselected: 1, available: 1}]->(scene),
+    (user)-[:has {bselected: 0, available: 1}]->(bank),
+    (user)-[:has {bselected: 0, available: 1}]->(court),
+    (user)-[:has {bselected: 0, available: 0}]->(cmbc)
+CREATE
+    (user1)-[:has {bselected: 1, available: 1}]->(cmd),
+    (user1)-[:has {bselected: 1, available: 1}]->(chat),
+    (user1)-[:has {bselected: 1, available: 1}]->(scene),
+    (user1)-[:has {bselected: 1, available: 1}]->(bank),
+    (user1)-[:has {bselected: 1, available: 1}]->(court),
+    (user1)-[:has {bselected: 0, available: 0}]->(cmbc)
+CREATE
+    (user2)-[:has {bselected: 1, available: 1}]->(cmd),
+    (user2)-[:has {bselected: 1, available: 1}]->(chat),
+    (user2)-[:has {bselected: 1, available: 1}]->(scene),
+    (user2)-[:has {bselected: 1, available: 1}]->(bank),
+    (user2)-[:has {bselected: 1, available: 1}]->(court),
+    (user2)-[:has {bselected: 1, available: 1}]->(cmbc)
+    

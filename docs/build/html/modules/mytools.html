@@ -1,0 +1,478 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>API - 常用工具箱 &mdash; chat 1.0.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="chat 1.0.0 documentation" href="../index.html"/>
+        <link rel="next" title="API - 上传本地知识库" href="upload.html"/>
+        <link rel="prev" title="API - 语义数据库管理" href="database.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> chat
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../user/installation.html">安装 Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/tutorial.html">快速开始</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/custom.html">个性化定制您的聊天机器人</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/development.html">开发 Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/architecture.html">深入了解</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/tss.html">技术支持</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/thanks.html">致谢</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="server.html">API - 语义服务器</a></li>
+<li class="toctree-l1"><a class="reference internal" href="client.html">API - 语义客户端</a></li>
+<li class="toctree-l1"><a class="reference internal" href="qa.html">API - 语义理解问答</a></li>
+<li class="toctree-l1"><a class="reference internal" href="semantic.html">API - 语义工具箱</a></li>
+<li class="toctree-l1"><a class="reference internal" href="database.html">API - 语义数据库管理</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">API - 常用工具箱</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#mac">获取Mac地址</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id1">获取主机名</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ip">获取IP地址</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">获取当前运行函数名</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">遍历目录进行批处理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id4">程序时间性能分析</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id5">获取当前时间</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id6">列表随机元素</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id7">文件替换</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#excel">读取excel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id8">设置excel样式</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id9">写入excel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id10">生成词典</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id11">显示等待中</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="upload.html">API - 上传本地知识库</a></li>
+<li class="toctree-l1"><a class="reference internal" href="download.html">API - 下载语义知识库</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">chat</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+    <li>API - 常用工具箱</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/modules/mytools.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="api">
+<h1>API - 常用工具箱<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h1>
+<img alt="../_images/mytools.ico" src="../_images/mytools.ico" />
+<span class="target" id="module-mytools"></span><p>mytools</p>
+<p>A collection of useful tools, including batch processing, performance analysis, data analysis, etc..
+实用的工具集合，包含批处理，性能分析，数据分析等。</p>
+<p>Available functions:
+- All classes and functions: 所有类和函数</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#mytools.get_mac_address" title="mytools.get_mac_address"><code class="xref py py-obj docutils literal"><span class="pre">get_mac_address</span></code></a>()</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#mytools.get_hostname" title="mytools.get_hostname"><code class="xref py py-obj docutils literal"><span class="pre">get_hostname</span></code></a>()</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#mytools.get_ip_address" title="mytools.get_ip_address"><code class="xref py py-obj docutils literal"><span class="pre">get_ip_address</span></code></a>(hostname)</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#mytools.get_current_function_name" title="mytools.get_current_function_name"><code class="xref py py-obj docutils literal"><span class="pre">get_current_function_name</span></code></a>()</td>
+<td>class MyClass:</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#mytools.Walk" title="mytools.Walk"><code class="xref py py-obj docutils literal"><span class="pre">Walk</span></code></a>()</td>
+<td>Walk directory to batch processing.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#mytools.time_me" title="mytools.time_me"><code class="xref py py-obj docutils literal"><span class="pre">time_me</span></code></a>([info,&nbsp;format_string])</td>
+<td>Performance analysis - time</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#mytools.get_current_time" title="mytools.get_current_time"><code class="xref py py-obj docutils literal"><span class="pre">get_current_time</span></code></a>([format_string,&nbsp;info])</td>
+<td>Get current time with specific format_string.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#mytools.random_item" title="mytools.random_item"><code class="xref py py-obj docutils literal"><span class="pre">random_item</span></code></a>(mylist)</td>
+<td>Get random item of data.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#mytools.file_replace" title="mytools.file_replace"><code class="xref py py-obj docutils literal"><span class="pre">file_replace</span></code></a>(source_file,&nbsp;destination_file)</td>
+<td>File replace.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#mytools.read_excel" title="mytools.read_excel"><code class="xref py py-obj docutils literal"><span class="pre">read_excel</span></code></a>(filepath)</td>
+<td>Get excel source</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#mytools.set_excel_style" title="mytools.set_excel_style"><code class="xref py py-obj docutils literal"><span class="pre">set_excel_style</span></code></a>(name,&nbsp;height[,&nbsp;bold])</td>
+<td></td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#mytools.write_excel" title="mytools.write_excel"><code class="xref py py-obj docutils literal"><span class="pre">write_excel</span></code></a>([filename,&nbsp;sheets])</td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#mytools.generate_dict" title="mytools.generate_dict"><code class="xref py py-obj docutils literal"><span class="pre">generate_dict</span></code></a>(dictpath,&nbsp;sourcepath)</td>
+<td>Generate dictionary file from sourcefile.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#mytools.waitting" title="mytools.waitting"><code class="xref py py-obj docutils literal"><span class="pre">waitting</span></code></a>()</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="mac">
+<h2>获取Mac地址<a class="headerlink" href="#mac" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="mytools.get_mac_address">
+<code class="descclassname">mytools.</code><code class="descname">get_mac_address</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mytools.html#get_mac_address"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mytools.get_mac_address" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="id1">
+<h2>获取主机名<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="mytools.get_hostname">
+<code class="descclassname">mytools.</code><code class="descname">get_hostname</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mytools.html#get_hostname"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mytools.get_hostname" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="ip">
+<h2>获取IP地址<a class="headerlink" href="#ip" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="mytools.get_ip_address">
+<code class="descclassname">mytools.</code><code class="descname">get_ip_address</code><span class="sig-paren">(</span><em>hostname</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mytools.html#get_ip_address"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mytools.get_ip_address" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="id2">
+<h2>获取当前运行函数名<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="mytools.get_current_function_name">
+<code class="descclassname">mytools.</code><code class="descname">get_current_function_name</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mytools.html#get_current_function_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mytools.get_current_function_name" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="docutils">
+<dt>class MyClass:</dt>
+<dd><dl class="first last docutils">
+<dt>def myfunction(self):</dt>
+<dd>print(&#8220;%s.%s invoked&#8221;%(self.__class__.__name__, get_current_function_name()))</dd>
+</dl>
+</dd>
+<dt>if __name__ == &#8220;__main__&#8221;:</dt>
+<dd>myclass = MyClass()
+myclass.myfunction()</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="id3">
+<h2>遍历目录进行批处理<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="mytools.Walk">
+<code class="descclassname">mytools.</code><code class="descname">Walk</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mytools.html#Walk"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mytools.Walk" title="Permalink to this definition">¶</a></dt>
+<dd><p>Walk directory to batch processing.
+遍历目录进行批处理。</p>
+<p>Subclasses may override the &#8216;handle_file&#8217; method to provide custom file processing mode.
+子类可以重写&#8217;handle_file&#8217;方法来实现自定义的文件处理方式。</p>
+<p>Public attributes:
+- filelist: All filenames with full path in directory.
+- fnamelist: All filenames in directory.
+- dirlist: All dirnames with full path in directory.
+- dnamelist: All filenames in directory.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="id4">
+<h2>程序时间性能分析<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="mytools.time_me">
+<code class="descclassname">mytools.</code><code class="descname">time_me</code><span class="sig-paren">(</span><em>info='used'</em>, <em>format_string='ms'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mytools.html#time_me"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mytools.time_me" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performance analysis - time</p>
+<p>Decorator of time performance analysis.
+性能分析——计时统计
+系统时间(wall clock time, elapsed time)是指一段程序从运行到终止，系统时钟走过的时间。
+一般系统时间都是要大于CPU时间的。通常可以由系统提供，在C++/Windows中，可以由&lt;time.h&gt;提供。
+注意得到的时间精度是和系统有关系的。
+1.time.clock()以浮点数计算的秒数返回当前的CPU时间。用来衡量不同程序的耗时，比time.time()更有用。
+time.clock()在不同的系统上含义不同。在UNIX系统上，它返回的是&#8221;进程时间&#8221;，它是用秒表示的浮点数（时间戳）。
+而在WINDOWS中，第一次调用，返回的是进程运行的实际时间。而第二次之后的调用是自第一次
+调用以后到现在的运行时间。（实际上是以WIN32上QueryPerformanceCounter()为基础，它比毫秒表示更为精确）
+2.time.perf_counter()能够提供给定平台上精度最高的计时器。计算的仍然是系统时间，
+这会受到许多不同因素的影响，例如机器当前负载。
+3.time.process_time()提供进程时间。</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>info: Customize print info. 自定义提示信息。
+format_string: Specifies the timing unit. 指定计时单位，例如&#8217;s&#8217;: 秒，&#8217;ms&#8217;: 毫秒。
+Defaults to &#8216;s&#8217;.</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="id5">
+<h2>获取当前时间<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="mytools.get_current_time">
+<code class="descclassname">mytools.</code><code class="descname">get_current_time</code><span class="sig-paren">(</span><em>format_string='%Y-%m-%d-%H-%M-%S'</em>, <em>info=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mytools.html#get_current_time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mytools.get_current_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get current time with specific format_string.
+获取指定日期表示方式的当前时间。</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><dl class="first last docutils">
+<dt>format_string: Specifies the format of time. 指定日期表示方式。</dt>
+<dd>Defaults to &#8216;%Y-%m-%d-%H-%M-%S&#8217;.</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="id6">
+<h2>列表随机元素<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="mytools.random_item">
+<code class="descclassname">mytools.</code><code class="descname">random_item</code><span class="sig-paren">(</span><em>mylist</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mytools.html#random_item"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mytools.random_item" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get random item of data.
+从数据中获取随机元素。</p>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd>item: Random item of data. 数据随机项。</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="id7">
+<h2>文件替换<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="mytools.file_replace">
+<code class="descclassname">mytools.</code><code class="descname">file_replace</code><span class="sig-paren">(</span><em>source_file</em>, <em>destination_file</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mytools.html#file_replace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mytools.file_replace" title="Permalink to this definition">¶</a></dt>
+<dd><p>File replace.
+文件替换。</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>source_file: The full path of source file. 原始文件完整路径。
+destination_file：The full path of destination file. 目标文件完整路径。</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="excel">
+<h2>读取excel<a class="headerlink" href="#excel" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="mytools.read_excel">
+<code class="descclassname">mytools.</code><code class="descname">read_excel</code><span class="sig-paren">(</span><em>filepath</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mytools.html#read_excel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mytools.read_excel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get excel source</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>filepath: The full path of excel file. excel文件完整路径。</dd>
+<dt>Returns:</dt>
+<dd>data: Data of excel. excel数据。</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="id8">
+<h2>设置excel样式<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="mytools.set_excel_style">
+<code class="descclassname">mytools.</code><code class="descname">set_excel_style</code><span class="sig-paren">(</span><em>name</em>, <em>height</em>, <em>bold=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mytools.html#set_excel_style"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mytools.set_excel_style" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="id9">
+<h2>写入excel<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="mytools.write_excel">
+<code class="descclassname">mytools.</code><code class="descname">write_excel</code><span class="sig-paren">(</span><em>filename='demo.xlsx'</em>, <em>sheets=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mytools.html#write_excel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mytools.write_excel" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="id10">
+<h2>生成词典<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="mytools.generate_dict">
+<code class="descclassname">mytools.</code><code class="descname">generate_dict</code><span class="sig-paren">(</span><em>dictpath</em>, <em>sourcepath</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mytools.html#generate_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mytools.generate_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate dictionary file from sourcefile.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>dictpath: The full path of dict file. 源文件完整路径。
+sourcepath: The full path of source file. 源文件完整路径。</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="id11">
+<h2>显示等待中<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="mytools.waitting">
+<code class="descclassname">mytools.</code><code class="descname">waitting</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mytools.html#waitting"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mytools.waitting" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="upload.html" class="btn btn-neutral float-right" title="API - 上传本地知识库" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="database.html" class="btn btn-neutral" title="API - 语义数据库管理" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Rain.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'1.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

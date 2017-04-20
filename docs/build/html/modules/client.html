@@ -1,0 +1,346 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>API - 语义客户端 &mdash; chat 1.0.0 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="chat 1.0.0 documentation" href="../index.html"/>
+        <link rel="next" title="API - 语义理解问答" href="qa.html"/>
+        <link rel="prev" title="API - 语义服务器" href="server.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> chat
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                1.0.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+                <ul>
+<li class="toctree-l1"><a class="reference internal" href="../user/installation.html">安装 Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/tutorial.html">快速开始</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/custom.html">个性化定制您的聊天机器人</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/development.html">开发 Development</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/architecture.html">深入了解</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/tss.html">技术支持</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user/thanks.html">致谢</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="server.html">API - 语义服务器</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">API - 语义客户端</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id1">封装问题</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">封装配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id3">搜索答案</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id4">配置语义知识库</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="qa.html">API - 语义理解问答</a></li>
+<li class="toctree-l1"><a class="reference internal" href="semantic.html">API - 语义工具箱</a></li>
+<li class="toctree-l1"><a class="reference internal" href="database.html">API - 语义数据库管理</a></li>
+<li class="toctree-l1"><a class="reference internal" href="mytools.html">API - 常用工具箱</a></li>
+<li class="toctree-l1"><a class="reference internal" href="upload.html">API - 上传本地知识库</a></li>
+<li class="toctree-l1"><a class="reference internal" href="download.html">API - 下载语义知识库</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../index.html">chat</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+ 
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../index.html">Docs</a> &raquo;</li>
+      
+    <li>API - 语义客户端</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="../_sources/modules/client.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="api">
+<h1>API - 语义客户端<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h1>
+<img alt="../_images/client.ico" src="../_images/client.ico" />
+<span class="target" id="module-client"></span><p>client</p>
+<p>Start chatting with NLU server via socket.
+通过socket开始与NLU服务器聊天</p>
+<p>Available functions:
+- question_pack: Package the question as the JSON format specified by the server.
+将问题打包为服务器指定的json格式。
+- config_pack: Package the config info as the JSON format specified by the server.
+将配置信息打包为服务器指定的json格式。
+- match：Match the answers from the semantic knowledge database.
+从语义知识数据库搜索答案。
+- config：Configure the semantic knowledge database.
+配置语义知识数据库。</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#client.question_pack" title="client.question_pack"><code class="xref py py-obj docutils literal"><span class="pre">question_pack</span></code></a>([info,&nbsp;userid])</td>
+<td>Package the question as the JSON format specified by the server.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#client.config_pack" title="client.config_pack"><code class="xref py py-obj docutils literal"><span class="pre">config_pack</span></code></a>([info,&nbsp;userid])</td>
+<td>Package the config info as the JSON format specified by the server.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#client.match" title="client.match"><code class="xref py py-obj docutils literal"><span class="pre">match</span></code></a>([question,&nbsp;userid])</td>
+<td>Match the answers from the semantic knowledge database.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#client.config" title="client.config"><code class="xref py py-obj docutils literal"><span class="pre">config</span></code></a>([info,&nbsp;userid])</td>
+<td>Configure the semantic knowledge database.</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="id1">
+<h2>封装问题<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="client.question_pack">
+<code class="descclassname">client.</code><code class="descname">question_pack</code><span class="sig-paren">(</span><em>info=''</em>, <em>userid='userid'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/client.html#question_pack"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#client.question_pack" title="Permalink to this definition">¶</a></dt>
+<dd><p>Package the question as the JSON format specified by the server.
+将问题打包为服务器指定的json格式。</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><dl class="first last docutils">
+<dt>info: User question. 用户的聊天或提问。</dt>
+<dd>Defaults to &#8220;&#8221;.</dd>
+<dt>userid: User id. 用户唯一标识。</dt>
+<dd>Defaults to &#8220;userid&#8221;.</dd>
+</dl>
+</dd>
+<dt>Returns:</dt>
+<dd>Packaged JSON format data. 打包好的json格式数据。</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="id2">
+<h2>封装配置<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="client.config_pack">
+<code class="descclassname">client.</code><code class="descname">config_pack</code><span class="sig-paren">(</span><em>info=''</em>, <em>userid='userid'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/client.html#config_pack"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#client.config_pack" title="Permalink to this definition">¶</a></dt>
+<dd><p>Package the config info as the JSON format specified by the server.
+将配置信息打包为服务器指定的json格式。</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><dl class="first last docutils">
+<dt>info: User config info. 用户配置信息。</dt>
+<dd>Defaults to &#8220;&#8221;.</dd>
+<dt>userid: User id. 用户唯一标识。</dt>
+<dd>Defaults to &#8220;userid&#8221;.</dd>
+</dl>
+</dd>
+<dt>Returns:</dt>
+<dd>Packaged JSON format data. 打包好的json格式数据。</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="id3">
+<h2>搜索答案<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="client.match">
+<code class="descclassname">client.</code><code class="descname">match</code><span class="sig-paren">(</span><em>question='question'</em>, <em>userid='userid'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/client.html#match"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#client.match" title="Permalink to this definition">¶</a></dt>
+<dd><p>Match the answers from the semantic knowledge database.
+从语义知识数据库搜索答案。</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><dl class="first last docutils">
+<dt>question: User question. 用户问题。</dt>
+<dd>Defaults to &#8220;question&#8221;.</dd>
+<dt>userid: User id. 用户唯一标识。</dt>
+<dd>Defaults to &#8220;userid&#8221;.</dd>
+</dl>
+</dd>
+<dt>Returns:</dt>
+<dd>Packaged JSON format data of answer. 打包好的答案json格式数据。</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="id4">
+<h2>配置语义知识库<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="client.config">
+<code class="descclassname">client.</code><code class="descname">config</code><span class="sig-paren">(</span><em>info=''</em>, <em>userid='userid'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/client.html#config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#client.config" title="Permalink to this definition">¶</a></dt>
+<dd><p>Configure the semantic knowledge database.
+配置语义知识数据库。</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><dl class="first last docutils">
+<dt>info: User config info. 用户配置信息，以空格分隔的知识库名称字符串。</dt>
+<dd>Defaults to &#8220;&#8221;. 返回可配置选项信息。</dd>
+<dt>userid: User id. 用户唯一标识。</dt>
+<dd>Defaults to &#8220;userid&#8221;.</dd>
+</dl>
+</dd>
+<dt>Returns:</dt>
+<dd>Packaged JSON format data of config result. 打包好的配置结果json格式数据。</dd>
+</dl>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="qa.html" class="btn btn-neutral float-right" title="API - 语义理解问答" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="server.html" class="btn btn-neutral" title="API - 语义服务器" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, Rain.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'1.0.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
