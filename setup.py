@@ -20,7 +20,7 @@ setup(
     author = chat.__author__,
     author_email = "1044908508@qq.com",
     description = chat.__doc__,
-    long_description = open("README.rst").read(),
+    long_description = open("README.md").read(),
     license = chat.__license__,
     keywords = "chat NLP MachineLearning",
     url = "https://github.com/decalogue/chat",
