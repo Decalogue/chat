@@ -3,8 +3,8 @@
 # PEP 8 check with Pylint
 """client
 
-Start chatting with NLU server via socket.
-通过socket开始与NLU服务器聊天
+Chat client.
+聊天客户端。
 
 Available functions:
 - question_pack: Package the question as the JSON format specified by the server.

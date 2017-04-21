@@ -32,6 +32,7 @@ class Robot():
     def __init__(self, configpath=None):
         self.graph = Graph("http://localhost:7474/db/data/", password="train")
         self.pattern = 'semantic'
+        self.is_scene = False # 在线场景标志，默认为False
         self.address = get_location_by_ip()["content"]["address"] # 调用百度地图IP定位api
         self.topic = ""
         self.qa_id = get_current_time()
@@ -185,6 +186,24 @@ class Robot():
             Dict contains answer, current topic, url, behavior and parameter. 
             返回包含答案，当前话题，资源包，行为指令及对应参数的字典。
         """
+        # 云端在线场景
+        result = dict(question=question, content="ok", context="basic_cmd", url="", behavior=int("0x0000", 16), parameter=0)
+        if "理财产品" in question or "理财" in question:
+            result["behavior"] = int("0x1002", 16) # 进入在线场景
+            result["question"] = "理财产品" # 重定义为标准问题
+            self.is_scene = True # 在线场景标志
+        if "退出业务场景" in question or "退出" in question or "返回" in question:
+            result["behavior"] = int("0x0020", 16) # 场景退出
+            self.is_scene = False
+            return result
+        if self.is_scene:
+            if "上一步" in question or "上一部" in question:
+                result["behavior"] = int("0x001D", 16) # 场景上一步
+            elif "下一步" in question or "下一部" in question:
+                result["behavior"] = int("0x001E", 16) # 场景下一步
+            result["content"] = question
+            return result
+
         # self.add_to_memory(question, userid)
         # 本地语义：全图模式
         #tag = get_tag(question)
@@ -229,15 +248,11 @@ class Robot():
                 result["behavior"] = int("0x0000", 16)
                 result["content"] = weather.split(";")[0].split(",")[1]               
                 result["context"] = "nlu_tuling"
-            # 4.云端(场景)
-            elif "理财产品" in question or "理财" in question:
-                result["behavior"] = int("0x1002", 16)
-                result["question"] = "理财产品" # 重定义为标准问题
-            # 5.导航
+            # 4.导航
             elif "带我去" in question or "去" in question:
                 result["behavior"] = int("0x001B", 16)
                 result["content"] = get_navigation_target(info=question)
-            # 6.nlu_tuling
+            # 5.nlu_tuling
             # else:
                 # result["content"] = nlu_tuling(question, loc=self.address)
                 # result["context"] = "nlu_tuling"

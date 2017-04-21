@@ -41,7 +41,7 @@ class Database():
     - rdb: Relational database. 关系数据库。
     - graph: Graph database. 图数据库。
     """
-    def __init__(self, password=None):
+    def __init__(self, password=None, userid="userid"):
         self.rdb = None
         self.graph = Graph("http://localhost:7474/db/data", password=password)
         self.gconfig = self.graph.find_one("User", "userid", userid)
