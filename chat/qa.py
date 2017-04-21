@@ -14,10 +14,10 @@ import os
 import sys
 import codecs
 import json
-from api import *
 from py2neo import Graph, Node, Relationship
-from semantic import synonym_cut, get_tag, similarity, get_musicinfo, get_navigation_target
-from mytools import time_me, get_current_time, random_item
+from api import *
+from .semantic import synonym_cut, get_tag, similarity, get_musicinfo, get_navigation_target
+from .mytools import time_me, get_current_time, random_item
 
 
 class Robot():
@@ -218,17 +218,17 @@ class Robot():
                 # result["context"] = "music"
                 result["behavior"] = int("0x0001", 16)
                 result["content"] = "好的，正在准备哦"
-                # result["url"] = music(song=song, singer=singer) # 音乐资源包
+                # result["url"] = music_baidu(song=song, singer=singer) # 音乐资源包
             # 2.附近有什么好吃的
             elif "附近" in question or "好吃的" in question:
                 result["behavior"] = int("0x001C", 16)
                 result["content"] = self.address
-            # 3.tuling(天气)
+            # 3.nlu_tuling(天气)
             elif "天气" in question:
-                weather = tuling(question, loc=self.address)
+                weather = nlu_tuling(question, loc=self.address)
                 result["behavior"] = int("0x0000", 16)
                 result["content"] = weather.split(";")[0].split(",")[1]               
-                result["context"] = "tuling"
+                result["context"] = "nlu_tuling"
             # 4.云端(场景)
             elif "理财产品" in question or "理财" in question:
                 result["behavior"] = int("0x1002", 16)
@@ -237,8 +237,8 @@ class Robot():
             elif "带我去" in question or "去" in question:
                 result["behavior"] = int("0x001B", 16)
                 result["content"] = get_navigation_target(info=question)
-            # 6.tuling
+            # 6.nlu_tuling
             # else:
-                # result["content"] = tuling(question, loc=self.address)
-                # result["context"] = "tuling"
+                # result["content"] = nlu_tuling(question, loc=self.address)
+                # result["context"] = "nlu_tuling"
         return result

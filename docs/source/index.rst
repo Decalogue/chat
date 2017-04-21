@@ -51,6 +51,7 @@ Chat的设计原则
   
   如果你阅读在线中文文档时有什么问题，你可以在github上下载这个项目，
   然后去 ``/docs/build/html/index.html`` 阅读离线中文文档。
+  或者在 `Read the docs <http://chat-cn.readthedocs.io/zh_CN/latest/>`_ 中阅读官方原文档。
 
 用户指南
 ---------------

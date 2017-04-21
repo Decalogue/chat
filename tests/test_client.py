@@ -5,8 +5,8 @@ import sys
 sys.path.append("../")
 import json
 from unittest import TestCase, main
-from client import match
-from mytools import get_current_time
+from chat.client import match
+from chat.mytools import get_current_time
 
 class TestMe(TestCase):
     def setUp(self):

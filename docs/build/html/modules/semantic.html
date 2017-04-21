@@ -157,166 +157,67 @@
   <div class="section" id="api">
 <h1>API - 语义工具箱<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h1>
 <img alt="../_images/semantic.ico" src="../_images/semantic.ico" />
-<span class="target" id="module-semantic"></span><p>semantic</p>
-<p>A collection of semantic tools. Use &#8216;jieba&#8217; as Chinese word segmentation tool.
-语义工具集合。采用&#8217;jieba&#8217;作为中文分词工具。</p>
-<p>Available functions:
-- All classes and functions: 所有类和函数</p>
 <table border="1" class="longtable docutils">
 <colgroup>
 <col width="10%" />
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#semantic.synonym_cut" title="semantic.synonym_cut"><code class="xref py py-obj docutils literal"><span class="pre">synonym_cut</span></code></a>(sentence[,&nbsp;pattern])</td>
-<td>Cut the sentence into a synonym vector tag.</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="#semantic.get_tag" title="semantic.get_tag"><code class="xref py py-obj docutils literal"><span class="pre">get_tag</span></code></a>(question)</td>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">synonym_cut</span></code></td>
 <td></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#semantic.sum_cosine" title="semantic.sum_cosine"><code class="xref py py-obj docutils literal"><span class="pre">sum_cosine</span></code></a>(matrix,&nbsp;threshold)</td>
-<td>Calculate the parameters of the semantic Jaccard model based on the Cosine similarity matrix of semantic word segmentation.</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="#semantic.jaccard_basic" title="semantic.jaccard_basic"><code class="xref py py-obj docutils literal"><span class="pre">jaccard_basic</span></code></a>(synonym_vector1,&nbsp;synonym_vector2)</td>
-<td>Similarity score between two vectors with basic jaccard.</td>
-</tr>
-<tr class="row-odd"><td><a class="reference internal" href="#semantic.jaccard" title="semantic.jaccard"><code class="xref py py-obj docutils literal"><span class="pre">jaccard</span></code></a>(synonym_vector1,&nbsp;synonym_vector2)</td>
-<td>Similarity score between two vectors with jaccard.</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="#semantic.edit_distance" title="semantic.edit_distance"><code class="xref py py-obj docutils literal"><span class="pre">edit_distance</span></code></a>(synonym_vector1,&nbsp;synonym_vector2)</td>
-<td>Similarity score between two vectors with edit distance.</td>
-</tr>
-<tr class="row-odd"><td><a class="reference internal" href="#semantic.similarity" title="semantic.similarity"><code class="xref py py-obj docutils literal"><span class="pre">similarity</span></code></a>(synonym_vector1,&nbsp;synonym_vector2)</td>
-<td>Similarity score between two sentences.</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="#semantic.get_location" title="semantic.get_location"><code class="xref py py-obj docutils literal"><span class="pre">get_location</span></code></a>(sentence)</td>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">get_tag</span></code></td>
 <td></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#semantic.get_musicinfo" title="semantic.get_musicinfo"><code class="xref py py-obj docutils literal"><span class="pre">get_musicinfo</span></code></a>(sentence)</td>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">sum_cosine</span></code></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">jaccard_basic</span></code></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">jaccard</span></code></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">edit_distance</span></code></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">similarity</span></code></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">get_location</span></code></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">get_musicinfo</span></code></td>
 <td></td>
 </tr>
 </tbody>
 </table>
 <div class="section" id="id1">
 <h2>自定义分词<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
-<dl class="function">
-<dt id="semantic.synonym_cut">
-<code class="descclassname">semantic.</code><code class="descname">synonym_cut</code><span class="sig-paren">(</span><em>sentence</em>, <em>pattern='wf'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/semantic.html#synonym_cut"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#semantic.synonym_cut" title="Permalink to this definition">¶</a></dt>
-<dd><p>Cut the sentence into a synonym vector tag.
-将句子切分为同义词向量标签。</p>
-<p>If a word in this sentence was not found in the synonym dictionary, it will be marked with default value of the word segmentation tool.
-如果同义词词典中没有则标注为切词工具默认的词性。</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd>pattern: &#8216;w&#8217;-分词, &#8216;t&#8217;-关键词, &#8216;wf&#8217;-分词标签, &#8216;tf-关键词标签&#8217;。</dd>
-</dl>
-</dd></dl>
-
 </div>
 <div class="section" id="id2">
 <h2>获取语义标签<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
-<dl class="function">
-<dt id="semantic.get_tag">
-<code class="descclassname">semantic.</code><code class="descname">get_tag</code><span class="sig-paren">(</span><em>question</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/semantic.html#get_tag"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#semantic.get_tag" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
 </div>
 <div class="section" id="cosinejaccard">
 <h2>根据语义分词Cosine相似性矩阵计算语义jaccard模型的各个参数<a class="headerlink" href="#cosinejaccard" title="Permalink to this headline">¶</a></h2>
-<dl class="function">
-<dt id="semantic.sum_cosine">
-<code class="descclassname">semantic.</code><code class="descname">sum_cosine</code><span class="sig-paren">(</span><em>matrix</em>, <em>threshold</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/semantic.html#sum_cosine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#semantic.sum_cosine" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calculate the parameters of the semantic Jaccard model based on the
-Cosine similarity matrix of semantic word segmentation.
-根据语义分词Cosine相似性矩阵计算语义jaccard模型的各个参数。</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd>matrix: Semantic Cosine similarity matrix. 语义分词Cosine相似性矩阵。
-threshold: Threshold for semantic matching. 达到语义匹配标准的阈值。</dd>
-<dt>Returns:</dt>
-<dd><dl class="first last docutils">
-<dt>total: The semantic intersection of two sentence language fragments.</dt>
-<dd>两个句子语言片段组成集合的语义交集。</dd>
-<dt>num_not_match: The total number of fragments or the maximum value of two sets</dt>
-<dd>that do not meet the semantic matching criteria controlled by the threshold.
-两个集合中没有达到语义匹配标准（由阈值threshold控制）的总片段个数或者两者中取最大值。</dd>
-<dt>total_dif: The degree of semantic difference between two sets.</dt>
-<dd>两个集合的语义差异程度。</dd>
-</dl>
-</dd>
-</dl>
-</dd></dl>
-
 </div>
 <div class="section" id="jaccard">
 <h2>向量相似度计算-基础jaccard模型<a class="headerlink" href="#jaccard" title="Permalink to this headline">¶</a></h2>
-<dl class="function">
-<dt id="semantic.jaccard_basic">
-<code class="descclassname">semantic.</code><code class="descname">jaccard_basic</code><span class="sig-paren">(</span><em>synonym_vector1</em>, <em>synonym_vector2</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/semantic.html#jaccard_basic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#semantic.jaccard_basic" title="Permalink to this definition">¶</a></dt>
-<dd><p>Similarity score between two vectors with basic jaccard.
-两个向量的基础jaccard相似度得分。</p>
-<p>According to the bassic jaccard model to calculate the similarity.
-The similarity score interval for each two sentences was [0, 1].
-根据基础jaccard模型来计算相似度。每两个向量的相似度得分区间为为[0, 1]。</p>
-</dd></dl>
-
 </div>
 <div class="section" id="id3">
 <h2>向量相似度计算-语义jaccard模型<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
-<dl class="function">
-<dt id="semantic.jaccard">
-<code class="descclassname">semantic.</code><code class="descname">jaccard</code><span class="sig-paren">(</span><em>synonym_vector1</em>, <em>synonym_vector2</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/semantic.html#jaccard"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#semantic.jaccard" title="Permalink to this definition">¶</a></dt>
-<dd><p>Similarity score between two vectors with jaccard.
-两个向量的语义jaccard相似度得分。</p>
-<p>According to the semantic jaccard model to calculate the similarity.
-The similarity score interval for each two sentences was [0, 1].
-根据语义jaccard模型来计算相似度。每两个向量的相似度得分区间为为[0, 1]。</p>
-</dd></dl>
-
 </div>
 <div class="section" id="id4">
 <h2>向量相似度计算-语义编辑距离模型<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
-<dl class="function">
-<dt id="semantic.edit_distance">
-<code class="descclassname">semantic.</code><code class="descname">edit_distance</code><span class="sig-paren">(</span><em>synonym_vector1</em>, <em>synonym_vector2</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/semantic.html#edit_distance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#semantic.edit_distance" title="Permalink to this definition">¶</a></dt>
-<dd><p>Similarity score between two vectors with edit distance.
-根据语义编辑距离计算相似度。</p>
-</dd></dl>
-
 </div>
 <div class="section" id="id5">
 <h2>向量相似度计算（模型参数可选）<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
-<dl class="function">
-<dt id="semantic.similarity">
-<code class="descclassname">semantic.</code><code class="descname">similarity</code><span class="sig-paren">(</span><em>synonym_vector1</em>, <em>synonym_vector2</em>, <em>pattern='j'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/semantic.html#similarity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#semantic.similarity" title="Permalink to this definition">¶</a></dt>
-<dd><p>Similarity score between two sentences.
-两个向量的相似度得分。</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd><dl class="first last docutils">
-<dt>pattern: Similarity computing model. 相似度计算模式。</dt>
-<dd>Defaults to &#8216;j&#8217; represents &#8216;jaccard&#8217;.</dd>
-</dl>
-</dd>
-</dl>
-</dd></dl>
-
 </div>
 <div class="section" id="id6">
 <h2>从句子中获取地名信息<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h2>
-<dl class="function">
-<dt id="semantic.get_location">
-<code class="descclassname">semantic.</code><code class="descname">get_location</code><span class="sig-paren">(</span><em>sentence</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/semantic.html#get_location"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#semantic.get_location" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
 </div>
 <div class="section" id="id7">
 <h2>从句子中获取音乐信息<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h2>
-<dl class="function">
-<dt id="semantic.get_musicinfo">
-<code class="descclassname">semantic.</code><code class="descname">get_musicinfo</code><span class="sig-paren">(</span><em>sentence</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/semantic.html#get_musicinfo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#semantic.get_musicinfo" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
 </div>
 </div>
 

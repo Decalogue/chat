@@ -12,8 +12,7 @@ import os
 import json
 import socketserver
 # import chardet
-from qa import Robot
-from mytools import get_current_time
+from .qa import Robot
 
 robot = Robot()
 

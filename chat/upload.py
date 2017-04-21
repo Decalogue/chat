@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from database import Database
 from tkinter.filedialog import *
+from .database import Database
 
 def add_excel():
     database = Database(password="train")

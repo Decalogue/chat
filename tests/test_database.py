@@ -3,8 +3,8 @@
 import sys
 sys.path.append("../")
 from unittest import TestCase, main
-from database import Database
-from mytools import time_me
+from chat.database import Database
+from chat.mytools import time_me
 
 class TestMe(TestCase):
     def setUp(self):

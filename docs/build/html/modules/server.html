@@ -150,56 +150,25 @@
   <div class="section" id="api">
 <h1>API - 语义服务器<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h1>
 <img alt="../_images/server.ico" src="../_images/server.ico" />
-<span class="target" id="module-server"></span><p>server</p>
-<p>Create and start NLU TCPServer with socketserver.
-The socketserver module simplifies the task of writing network servers.
-通过socketserver创建并启动语义理解服务器。</p>
 <table border="1" class="longtable docutils">
 <colgroup>
 <col width="10%" />
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#server.MyTCPHandler" title="server.MyTCPHandler"><code class="xref py py-obj docutils literal"><span class="pre">MyTCPHandler</span></code></a>(request,&nbsp;client_address,&nbsp;server)</td>
-<td>The request handler class for nlu server.</td>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">MyTCPHandler</span></code></td>
+<td></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#server.start" title="server.start"><code class="xref py py-obj docutils literal"><span class="pre">start</span></code></a>([host,&nbsp;port])</td>
-<td>Start NLU server.</td>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">start</span></code></td>
+<td></td>
 </tr>
 </tbody>
 </table>
 <div class="section" id="id1">
 <h2>创建语义服务器<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
-<dl class="function">
-<dt id="server.MyTCPHandler">
-<code class="descclassname">server.</code><code class="descname">MyTCPHandler</code><span class="sig-paren">(</span><em>request</em>, <em>client_address</em>, <em>server</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/server.html#MyTCPHandler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#server.MyTCPHandler" title="Permalink to this definition">¶</a></dt>
-<dd><p>The request handler class for nlu server.
-语义理解服务器。</p>
-<p>It is instantiated once per connection to the server, and must override
-the &#8216;handle&#8217; method to implement communication to the client.</p>
-</dd></dl>
-
 </div>
 <div class="section" id="id2">
 <h2>启动语义服务器<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
-<dl class="function">
-<dt id="server.start">
-<code class="descclassname">server.</code><code class="descname">start</code><span class="sig-paren">(</span><em>host='localhost'</em>, <em>port=7000</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/server.html#start"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#server.start" title="Permalink to this definition">¶</a></dt>
-<dd><p>Start NLU server.</p>
-<p>Create the server, binding to host and port. Then activate the server.
-This will keep running until you interrupt the program with Ctrl-C.</p>
-<dl class="docutils">
-<dt>Args:</dt>
-<dd><dl class="first last docutils">
-<dt>host: Server IP address. 服务器IP地址设置。</dt>
-<dd>Defaults to &#8220;localhost&#8221;.</dd>
-<dt>port: server port. 服务器端口设置。</dt>
-<dd>Defaults to 7000.</dd>
-</dl>
-</dd>
-</dl>
-</dd></dl>
-
 </div>
 </div>
 

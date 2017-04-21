@@ -21,7 +21,7 @@ jieba.load_userdict(dictpath + "\\dict\\jieba\\userdict.txt")
 import jieba.posseg as posseg
 import jieba.analyse as analyse
 from numpy import mat, zeros, where
-from mytools import time_me, random_item
+from .mytools import time_me, random_item
 
 # The 'punctuation_all' is the combination of Chinese and English punctuation.
 punctuation_zh = " 、，。°？！：；“”’‘～…【】（）《》｛｝×―－·→℃"

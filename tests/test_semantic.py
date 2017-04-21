@@ -3,8 +3,8 @@
 import sys
 sys.path.append("../")
 from unittest import TestCase, main
-from mytools import get_current_time
-from semantic import synonym_cut, similarity
+from chat.mytools import get_current_time
+from chat.semantic import synonym_cut, similarity
 
 class TestMe(TestCase):
     def setUp(self):

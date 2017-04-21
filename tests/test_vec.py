@@ -3,8 +3,8 @@
 import sys
 sys.path.append("../")
 from unittest import TestCase, main
-from mytools import get_current_time
-from vec import Vec
+from chat.mytools import get_current_time
+from chat.vec import Vec
 
 class TestMe(TestCase):
     def setUp(self):

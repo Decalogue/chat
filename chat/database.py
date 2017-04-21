@@ -23,10 +23,10 @@ import sys
 import json
 import string
 import codecs
-from mytools import Walk, time_me, read_excel
 from py2neo import Graph, Node, Relationship, NodeSelector
-from semantic import synonym_cut, get_tag
 from optparse import OptionParser
+from .mytools import Walk, time_me, read_excel
+from .semantic import synonym_cut, get_tag
 
 
 class Database():

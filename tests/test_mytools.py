@@ -3,7 +3,7 @@
 import sys
 sys.path.append("../")
 from unittest import TestCase, main
-from mytools import *
+from chat.mytools import *
 
 class TestMe(TestCase):
     def setUp(self):

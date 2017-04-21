@@ -105,13 +105,16 @@ def config(info="", userid="userid"):
     received = received.decode("UTF-8")
     return received
 	
-if __name__ == '__main__':
+def start():
     while True:
         question = input("\n>>question=")
         userid = input(">>userid=")
+        if not userid: userid = "userid"
         if question == "config":
             result = config(info="", userid=userid)
         else:
             result = match(question=question, userid=userid)
-        print(result)
         print(json.loads(result))
+
+if __name__ == '__main__':
+    start()

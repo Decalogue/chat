@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from database import Database
-from mytools import write_excel
 from tkinter.filedialog import *
+from .database import Database
+from .mytools import write_excel
 
 def match(*, label="NluCell", topic=""):
     database = Database(password="train")
