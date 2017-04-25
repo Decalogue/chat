@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding:utf8 -*-
 # PEP 8 check with Pylint
-"""mytools
+"""A collection of useful tools. 实用工具集合。
 
-A collection of useful tools, including batch processing, performance analysis, data analysis, etc..
-实用的工具集合，包含批处理，性能分析，数据分析等。
+Including batch processing, performance analysis, data analysis, etc..
+包含批处理，性能分析，数据分析等。
 
 Available functions:
 - All classes and functions: 所有类和函数
@@ -20,24 +20,24 @@ import uuid
 import xlrd
 import xlwt
 
-def get_mac_address(): 
-    mac=uuid.UUID(int = uuid.getnode()).hex[-12:] 
-    return ":".join([mac[e:e+2] for e in range(0,11,2)])
+def get_mac_address():
+    """Get mac address.
+    """
+    mac = uuid.UUID(int=uuid.getnode()).hex[-12:]
+    return ":".join([mac[e:e+2] for e in range(0, 11, 2)])
 
 def get_hostname():
+    """Get hostname.
+    """
     return socket.getfqdn(socket.gethostname())
 
 def get_ip_address(hostname):
+    """Get ip address.
+    """
     return socket.gethostbyname(hostname)
 
 def get_current_function_name():
-    """
-    class MyClass:
-        def myfunction(self):
-            print("%s.%s invoked"%(self.__class__.__name__, get_current_function_name()))
-    if __name__ == "__main__":
-        myclass = MyClass()
-        myclass.myfunction()
+    """Get current function name.
     """
     return inspect.stack()[1][3]
 
@@ -118,7 +118,8 @@ class Walk():
             level: Level of current directory. 目录的深度。
             path: Full path of current directory. 目录的完整路径。
             style: Specifies the content to return. 指定要返回的内容。
-            Defaults to "fnamelist". The style can be 'filelist', 'fnamelist', 'dirlist' or 'dnamelist'.
+                The style can be 'filelist', 'fnamelist', 'dirlist' or 'dnamelist'.
+                Defaults to "fnamelist".
 
         Returns:
             filenum. 遍历目录下的所有文件总数。
@@ -157,7 +158,7 @@ class Walk():
         Args:
             filepath: Full path of file. 文件的完整路径。
             pattern: Specifies the pattern to handle file. 指定处理该文件的模式。
-            Defaults to None.
+                Defaults to None.
 
         Returns:
             You can customize when you override this method. 当你重写该方法时可以自定义。
@@ -187,7 +188,7 @@ def time_me(info="used", format_string="ms"):
     Args:
         info: Customize print info. 自定义提示信息。
         format_string: Specifies the timing unit. 指定计时单位，例如's': 秒，'ms': 毫秒。
-        Defaults to 's'.
+            Defaults to 's'.
     """
     def _time_me(func):
         @wraps(func)
@@ -274,26 +275,30 @@ def read_excel(filepath):
     return data
 
 def set_excel_style(name, height, bold=False):
-    style = xlwt.XFStyle() # 初始化样式 
+    """Set excel style.
+    """
+    style = xlwt.XFStyle() # 初始化样式
     font = xlwt.Font() # 为样式创建字体
     font.name = name # 例如'Times New Roman'
     font.bold = bold
     font.color_index = 4
     font.height = height
-    if bold: 
-        borders= xlwt.Borders()
-        borders.left= 6
-        borders.right= 6
-        borders.top= 6
-        borders.bottom= 6
+    if bold:
+        borders = xlwt.Borders()
+        borders.left = 6
+        borders.right = 6
+        borders.top = 6
+        borders.bottom = 6
         style.borders = borders
     style.font = font
     return style
 
 def write_excel(filename="demo.xlsx", sheets=None):
-    f = xlwt.Workbook() # 创建工作簿
+    """Write excel from data.
+    """
+    file = xlwt.Workbook() # 创建工作簿
     for sheet in sheets:
-        new_sheet = f.add_sheet(sheet["name"], cell_overwrite_ok=True) # 创建sheet
+        new_sheet = file.add_sheet(sheet["name"], cell_overwrite_ok=True) # 创建sheet
         # 生成表头
         new_sheet.write(0, 0, "version=1.0.0", set_excel_style('Arial Black', 220, True))
         for col, key in enumerate(sheet["keys"]):
@@ -301,8 +306,8 @@ def write_excel(filename="demo.xlsx", sheets=None):
         # 生成内容
         for index, item in enumerate(sheet["items"]):
             for col, key in enumerate(sheet["keys"]):
-                new_sheet.write(index+2, col, eval("item['n']['"+ key + "']")) # set_excel_style('Arial Black', 220)
-    f.save(filename) # 保存文件
+                new_sheet.write(index+2, col, item['n'][key])
+    file.save(filename) # 保存文件
 
 def generate_dict(dictpath, sourcepath):
     """Generate dictionary file from sourcefile.
@@ -322,7 +327,9 @@ def generate_dict(dictpath, sourcepath):
                     new.write(word + " 2000 " + tag + "\n")
 
 def waitting():
+    """Print waitting.
+    """
     while True:
-        for i in ["/","*","|","\\","|"]:
+        for i in ["/", "*", "|", "\\", "|"]:
             print("%s\r" % i, end="")
             time.sleep(0.3)

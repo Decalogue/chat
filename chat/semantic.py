@@ -1,18 +1,16 @@
 #/usr/bin/env python
 # -*- coding: utf-8 -*-
 # PEP 8 check with Pylint
-"""semantic
+"""A collection of semantic tools. 语义工具集合。
 
-A collection of semantic tools. Use 'jieba' as Chinese word segmentation tool.
-语义工具集合。采用'jieba'作为中文分词工具。
+Use 'jieba' as Chinese word segmentation tool. The 'set_dictionary' and
+'load_userdict' must before import 'jieba.posseg' and 'jieba.analyse'.
+采用'jieba'作为中文分词工具。
 
 Available functions:
 - All classes and functions: 所有类和函数
 """
 import os
-import json
-import codecs
-from urllib import request
 from string import punctuation
 import jieba
 dictpath = os.path.split(os.path.realpath(__file__))[0]
@@ -21,7 +19,6 @@ jieba.load_userdict(dictpath + "\\dict\\jieba\\userdict.txt")
 import jieba.posseg as posseg
 import jieba.analyse as analyse
 from numpy import mat, zeros, where
-from .mytools import time_me, random_item
 
 # The 'punctuation_all' is the combination of Chinese and English punctuation.
 punctuation_zh = " 、，。°？！：；“”’‘～…【】（）《》｛｝×―－·→℃"
@@ -33,7 +30,8 @@ def synonym_cut(sentence, pattern="wf"):
     """Cut the sentence into a synonym vector tag.
     将句子切分为同义词向量标签。
 
-    If a word in this sentence was not found in the synonym dictionary, it will be marked with default value of the word segmentation tool.
+    If a word in this sentence was not found in the synonym dictionary,
+    it will be marked with default value of the word segmentation tool.
     如果同义词词典中没有则标注为切词工具默认的词性。
 
     Args:
@@ -48,7 +46,8 @@ def synonym_cut(sentence, pattern="wf"):
         synonym_vector = analyse.extract_tags(sentence, topK=10)
     elif pattern == "wf":
         result = posseg.cut(sentence)
-        synonym_vector = [(item.word, item.flag) for item in result if item.word not in punctuation_all]
+        synonym_vector = [(item.word, item.flag) for item in result \
+        if item.word not in punctuation_all]
     elif pattern == "tf":
         result = posseg.cut(sentence)
         tags = analyse.extract_tags(sentence, topK=10)
@@ -57,9 +56,11 @@ def synonym_cut(sentence, pattern="wf"):
                 synonym_vector.append((item.word, item.flag))
     return synonym_vector
 
-def get_tag(question, config):
-    # TO UPGRADE
-    iquestion = question.format(**config)
+def get_tag(sentence, config):
+    """
+    Get semantic tag of sentence.
+    """
+    iquestion = sentence.format(**config)
     try:
         keywords = analyse.extract_tags(iquestion, topK=1)
         keyword = keywords[0]
@@ -173,16 +174,15 @@ def jaccard(synonym_vector1, synonym_vector2):
     sim = total/(total + num*(1-total_dif))
     return sim
 
-# TODO 语义编辑距离
 def edit_distance(synonym_vector1, synonym_vector2):
     """Similarity score between two vectors with edit distance.
     根据语义编辑距离计算相似度。
     """
     sim = 1
+    print(synonym_vector1, synonym_vector2)
     # print(str(sim))
     return sim
 
-#@time_me()
 def similarity(synonym_vector1, synonym_vector2, pattern='j'):
     """Similarity score between two sentences.
     两个向量的相似度得分。
@@ -204,20 +204,27 @@ def similarity(synonym_vector1, synonym_vector2, pattern='j'):
     return sim
 
 def get_location(sentence):
+    """Get location in sentence.
+    """
     location = []
     sv_sentence = synonym_cut(sentence, 'wf')
-    for word, tag in sv_sentence: 
-        if tag.startswith("Di02") or tag.startswith("Di03") or tag=="Cb25A11#":
+    for word, tag in sv_sentence:
+        if tag.startswith("Di02") or tag.startswith("Di03") or tag == "Cb25A11#":
             location.append(word)
     return location
 
 def get_musicinfo(sentence):
+    """Get music info in sentence.
+    """
     words = sentence.lstrip("唱一首").split("的")
     singer = words[0]
-    song = words[1]    
+    song = words[1]
     return (singer, song)
 
 def get_navigation_target(format_string=None, info=None):
+    """Get navigation target in sentence.
+    """
+    print(format_string)
     words = ["带我去", "去"]
     for keyword in words:
         if info.startswith(keyword):

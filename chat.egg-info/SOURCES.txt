@@ -239,4 +239,5 @@ tests/test_http.py
 tests/test_mytools.py
 tests/test_semantic.py
 tests/test_server.py
+tests/test_upload.py
 tests/test_vec.py

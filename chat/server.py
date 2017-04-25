@@ -1,14 +1,12 @@
 #!/usr/bin/env python3
 # -*- coding:utf8 -*-
 # PEP 8 check with Pylint
-"""server
+"""Create and start NLU TCPServer with socketserver.
+创建并启动语义理解服务器。
 
-Create and start NLU TCPServer with socketserver.
 The socketserver module simplifies the task of writing network servers.
-通过socketserver创建并启动语义理解服务器。
 """
 
-import os
 import json
 import socketserver
 # import chardet
@@ -42,9 +40,11 @@ class MyTCPHandler(socketserver.BaseRequestHandler):
             json_data = json.loads(self.data)
             # step 2.Get answer
             if "ask_content" in json_data.keys():
-                result = robot.search(question=json_data["ask_content"], userid=json_data["userid"])
+                result = robot.search(question=json_data["ask_content"], \
+                userid=json_data["userid"])
             elif "config_content" in json_data.keys():
-                result = robot.configure(info=json_data["config_content"], userid=json_data["userid"])
+                result = robot.configure(info=json_data["config_content"], \
+                userid=json_data["userid"])
             # step 3.Send
             # self.request.sendall(json.dumps(result).encode(encoding))
             self.request.sendall(json.dumps(result).encode("UTF-8"))
