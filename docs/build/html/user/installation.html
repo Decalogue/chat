@@ -83,12 +83,18 @@
             
                 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">安装 Installation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#java">Java开发环境</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#id2">图形数据库</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#python3">Python3</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#python">Python依赖包</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#id2">一、图形数据库</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#neo4j">1.Neo4j简介</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id3">2.图形数据结构</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id4">3.Neo4j安装</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#python3">二、Python3</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#anaconda">1.Anaconda</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#python">2.Python依赖包</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#chat">三、Chat</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="tutorial.html">快速开始</a></li>
@@ -153,29 +159,61 @@
             
   <div class="section" id="installation">
 <span id="id1"></span><h1>安装 Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="java">
-<h2>Java开发环境<a class="headerlink" href="#java" title="Permalink to this headline">¶</a></h2>
-<p>jdk</p>
-</div>
 <div class="section" id="id2">
-<h2>图形数据库<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
-<p>neo4j</p>
+<h2>一、图形数据库<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="neo4j">
+<h3>1.Neo4j简介<a class="headerlink" href="#neo4j" title="Permalink to this headline">¶</a></h3>
+<p>Neo4j是一个高性能的,NOSQL图形数据库，它将结构化数据存储在网络上而不是表中。Neo4j也可以被看作是一个高性能的图引擎，该引擎具有成熟数据库的所有特性。程序员工作在一个面向对象的、灵活的网络结构下而不是严格、静态的表中——但是他们可以享受到具备完全的事务特性、企业级的数据库的所有好处。</p>
+</div>
+<div class="section" id="id3">
+<h3>2.图形数据结构<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h3>
+<p>在一个图中包含两种基本的数据类型：Nodes（节点） 和 Relationships（关系）。Nodes 和 Relationships 包含key/value形式的属性。Nodes通过Relationships所定义的关系相连起来，形成关系型网络结构。</p>
+<img alt="../_images/neo4j.png" src="../_images/neo4j.png" />
+</div>
+<div class="section" id="id4">
+<h3>3.Neo4j安装<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
+<p>Neo4j可以被安装成一个独立运行的服务端程序，客户端程序通过REST API进行访问。也可以嵌入式安装，即安装为编程语言的第三方类库，目前只支持Java和Python语言。因Neo4j是用Java语言开发的，所以确保将要安装的机器上已安装了jre或者jdk。</p>
+<p>此种安装方式简单，各平台安装过程基本一样</p>
+<p>1.从 <a class="reference external" href="https://neo4j.org/download">Neo4j官网</a> 上下载最新的版本，根据安装的平台选择适当的版本。
+2.解压安装包，解压后运行终端，进入解压后文件夹中的bin文件夹。
+3.在终端中运行命令完成安装。</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>neo4j install-service
+</pre></div>
+</div>
+<p>4.在终端中运行命令开启服务。</p>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>neo4j start
+</pre></div>
+</div>
+<p>5.通过stop命令可以关闭服务，status命令查看运行状态。</p>
+</div>
 </div>
 <div class="section" id="python3">
-<h2>Python3<a class="headerlink" href="#python3" title="Permalink to this headline">¶</a></h2>
-<p>Anaconda</p>
+<h2>二、Python3<a class="headerlink" href="#python3" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="anaconda">
+<h3>1.Anaconda<a class="headerlink" href="#anaconda" title="Permalink to this headline">¶</a></h3>
+<p>从 <a class="reference external" href="https://www.continuum.io/downloads">Anaconda官网</a> 上下载3.5版本，根据安装的平台选择适当的版本。</p>
+</div>
 <div class="section" id="python">
-<h3>Python依赖包<a class="headerlink" href="#python" title="Permalink to this headline">¶</a></h3>
+<h3>2.Python依赖包<a class="headerlink" href="#python" title="Permalink to this headline">¶</a></h3>
+<p>从requirements.txt安装，由于安装chat时会自动安装依赖，所以这一步也可省略。</p>
 <ul class="simple">
-<li>chardet</li>
+<li>api</li>
 <li>jieba</li>
 <li>numpy</li>
 <li>py2neo</li>
-<li>pynlpir</li>
 <li>requests</li>
 <li>xlrd</li>
 <li>xlwt</li>
 </ul>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>pip install -r requirements.txt
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="chat">
+<h2>三、Chat<a class="headerlink" href="#chat" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-bash"><div class="highlight"><pre><span></span>pip install chat
+</pre></div>
 </div>
 </div>
 </div>
