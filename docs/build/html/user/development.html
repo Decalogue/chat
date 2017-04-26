@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>开发 Development &mdash; chat 1.0.0 documentation</title>
+  <title>开发 Development &mdash; chat 1.0.3 documentation</title>
   
 
   
@@ -30,7 +30,7 @@
   
 
   
-    <link rel="top" title="chat 1.0.0 documentation" href="../index.html"/>
+    <link rel="top" title="chat 1.0.3 documentation" href="../index.html"/>
         <link rel="next" title="深入了解" href="architecture.html"/>
         <link rel="prev" title="个性化定制您的聊天机器人" href="custom.html"/> 
 
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                1.0.0
+                1.0.3
               </div>
             
           
@@ -93,11 +93,11 @@
 <li class="toctree-l3"><a class="reference internal" href="#id5">编写文档</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="#id8">如何参与我们</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#id6">如何参与我们</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#github">在GitHub上编辑</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id9">文档</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id10">测试</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#id11">发送拉请求</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id7">文档</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id8">测试</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#id9">发送拉请求</a></li>
 </ul>
 </li>
 </ul>
@@ -205,13 +205,11 @@
 </div>
 <div class="section" id="id5">
 <h3>编写文档<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h3>
-<p>无论什么时候您发现有些文档没有解释清楚，存在误导，敷衍带过或者根本就是错的。
-请及时更新它！<a href="#id6"><span class="problematic" id="id7">*</span></a>Edit on GitHub*的链接就在每一篇文档的右上角
-并且API引用列表中的每篇文档的*[source]*的链接可以帮助您快速地定位任何文字的根源。</p>
+<p>无论什么时候您发现有些文档没有解释清楚，存在误导，敷衍带过或者根本就是错的。请及时更新它！<em>Edit on GitHub</em> 的链接就在每一篇文档的右上角并且API引用列表中的每篇文档的*[source]*的链接可以帮助您快速地定位任何文字的根源。</p>
 </div>
 </div>
-<div class="section" id="id8">
-<h2>如何参与我们<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="id6">
+<h2>如何参与我们<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="github">
 <h3>在GitHub上编辑<a class="headerlink" href="#github" title="Permalink to this headline">¶</a></h3>
 <p>正如刚刚文档中修复BUG所说的简单方法，
@@ -220,8 +218,8 @@
 你只需要一个免费的GitHub账户就可以做到了。</p>
 <p>对于任何较大幅度的修改，请遵循以下步骤来更新Chat开发。</p>
 </div>
-<div class="section" id="id9">
-<h3>文档<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id7">
+<h3>文档<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h3>
 <p>文档由 <a class="reference external" href="http://sphinx-doc.org/latest/index.html">Sphinx</a> 生成。
 如果要本地编辑它，运行下列命令：
 .. code:: bash</p>
@@ -234,8 +232,7 @@ make html</div></blockquote>
 <span class="n">make</span> <span class="n">html</span>
 </pre></div>
 </div>
-<p>然后，打开 <code class="docutils literal"><span class="pre">docs/build/index.html</span></code> 来查看会出现在 <a href="#id13"><span class="problematic" id="id14">`readthedocs&lt;http://tensorlayer.readthedocs/org/&gt;`_</span></a> 文档。
-如果您更改了很多内容，并且似乎出现了许多误导性的错误信息或警告，运行``make clean html``来让Sphinx重新生成所有文件。</p>
+<p>然后，打开 <code class="docutils literal"><span class="pre">docs/build/index.html</span></code> 来查看会出现在 <a class="reference external" href="http://chat-cn.readthedocs.io/zh_CN/latest/">Read the docs</a> 文档。如果您更改了很多内容，并且似乎出现了许多误导性的错误信息或警告，运行``make clean html``来让Sphinx重新生成所有文件。</p>
 <p>编写英文文档文字时，请尽可能地按照现有文档的文字习惯，
 来保证整个库文字的一致性。所使用的语法及约定的相关信息，请参考以下文档：</p>
 <ul class="simple">
@@ -244,16 +241,15 @@ make html</div></blockquote>
 <li><a class="reference external" href="https://github.com/numpy/numpy/blob/master/doc/HOWTO_DOCUMENT.rst.txt">A Guide to NumPy/SciPy Documentation</a></li>
 </ul>
 </div>
-<div class="section" id="id10">
-<h3>测试<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id8">
+<h3>测试<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li>每当您更改任何代码的时候，您应该运行测试脚本来测试它是否能优化现有属性。</li>
-<li>您修改的每个BUG说明一个缺少的测试案例，</li>
+<li>您修改的每个BUG说明一个缺少的测试案例，所以每个修复BUG的方案应该配置一个您没修复前的测试案例。</li>
 </ul>
-<p>所以每个修复BUG的方案应该配置一个您没修复前的测试案例。</p>
 </div>
-<div class="section" id="id11">
-<h3>发送拉请求<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="id9">
+<h3>发送拉请求<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h3>
 <p>当您对您添加的内容感到满意并且测试通过，文档规范，简明，不存在任何注释错误。
 您可以将您的更改提交到一个新的分支(branch)，并且将这个分支与您的副本(fork)合并，
 然后通过GitHub的网站发送一个拉请求(pull request)</p>
@@ -308,7 +304,7 @@ GitHub会关闭那个问题。</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'1.0.0',
+            VERSION:'1.0.3',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
