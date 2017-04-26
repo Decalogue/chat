@@ -38,7 +38,7 @@
 * 易扩展性：添加新模块超级容易，只需要仿照现有的模块编写新的类或函数即可。创建新模块的便利性使得Chat更适合于快速开发。
 * 知识图谱：基于图数据库的知识图表达提供了更快的搜索速度与智能。
 
-> 如果你阅读在线中文文档时有什么问题，你可以在github上下载这个项目，然后去 **/docs/build/html/index.html** 阅读离线中文文档。或者在[Read the docs](http://chat-cn.readthedocs.io/zh_CN/latest/)中阅读官方原文档。
+> 如果你阅读在线中文文档时有什么问题，你可以在github上下载这个项目，然后去 ` **/docs/build/html/index.html** ` 阅读离线中文文档。或者在[Read the docs](http://chat-cn.readthedocs.io/zh_CN/latest/)中阅读官方原文档。
 
 `Copyright © 2017 Rain. All Rights Reserved.`
 
