@@ -162,9 +162,9 @@
   <div class="section" id="api">
 <h1>API - 常用工具箱<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h1>
 <img alt="../_images/mytools.ico" src="../_images/mytools.ico" />
-<span class="target" id="module-mytools"></span><p>mytools</p>
-<p>A collection of useful tools, including batch processing, performance analysis, data analysis, etc..
-实用的工具集合，包含批处理，性能分析，数据分析等。</p>
+<span class="target" id="module-chat.mytools"></span><p>A collection of useful tools. 实用工具集合。</p>
+<p>Including batch processing, performance analysis, data analysis, etc..
+包含批处理，性能分析，数据分析等。</p>
 <p>Available functions:
 - All classes and functions: 所有类和函数</p>
 <table border="1" class="longtable docutils">
@@ -173,98 +173,91 @@
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#mytools.get_mac_address" title="mytools.get_mac_address"><code class="xref py py-obj docutils literal"><span class="pre">get_mac_address</span></code></a>()</td>
-<td></td>
+<tr class="row-odd"><td><a class="reference internal" href="#chat.mytools.get_mac_address" title="chat.mytools.get_mac_address"><code class="xref py py-obj docutils literal"><span class="pre">get_mac_address</span></code></a>()</td>
+<td>Get mac address.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#mytools.get_hostname" title="mytools.get_hostname"><code class="xref py py-obj docutils literal"><span class="pre">get_hostname</span></code></a>()</td>
-<td></td>
+<tr class="row-even"><td><a class="reference internal" href="#chat.mytools.get_hostname" title="chat.mytools.get_hostname"><code class="xref py py-obj docutils literal"><span class="pre">get_hostname</span></code></a>()</td>
+<td>Get hostname.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#mytools.get_ip_address" title="mytools.get_ip_address"><code class="xref py py-obj docutils literal"><span class="pre">get_ip_address</span></code></a>(hostname)</td>
-<td></td>
+<tr class="row-odd"><td><a class="reference internal" href="#chat.mytools.get_ip_address" title="chat.mytools.get_ip_address"><code class="xref py py-obj docutils literal"><span class="pre">get_ip_address</span></code></a>(hostname)</td>
+<td>Get ip address.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#mytools.get_current_function_name" title="mytools.get_current_function_name"><code class="xref py py-obj docutils literal"><span class="pre">get_current_function_name</span></code></a>()</td>
-<td>class MyClass:</td>
+<tr class="row-even"><td><a class="reference internal" href="#chat.mytools.get_current_function_name" title="chat.mytools.get_current_function_name"><code class="xref py py-obj docutils literal"><span class="pre">get_current_function_name</span></code></a>()</td>
+<td>Get current function name.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#mytools.Walk" title="mytools.Walk"><code class="xref py py-obj docutils literal"><span class="pre">Walk</span></code></a>()</td>
+<tr class="row-odd"><td><a class="reference internal" href="#chat.mytools.Walk" title="chat.mytools.Walk"><code class="xref py py-obj docutils literal"><span class="pre">Walk</span></code></a>()</td>
 <td>Walk directory to batch processing.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#mytools.time_me" title="mytools.time_me"><code class="xref py py-obj docutils literal"><span class="pre">time_me</span></code></a>([info,&nbsp;format_string])</td>
+<tr class="row-even"><td><a class="reference internal" href="#chat.mytools.time_me" title="chat.mytools.time_me"><code class="xref py py-obj docutils literal"><span class="pre">time_me</span></code></a>([info,&nbsp;format_string])</td>
 <td>Performance analysis - time</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#mytools.get_current_time" title="mytools.get_current_time"><code class="xref py py-obj docutils literal"><span class="pre">get_current_time</span></code></a>([format_string,&nbsp;info])</td>
+<tr class="row-odd"><td><a class="reference internal" href="#chat.mytools.get_current_time" title="chat.mytools.get_current_time"><code class="xref py py-obj docutils literal"><span class="pre">get_current_time</span></code></a>([format_string,&nbsp;info])</td>
 <td>Get current time with specific format_string.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#mytools.random_item" title="mytools.random_item"><code class="xref py py-obj docutils literal"><span class="pre">random_item</span></code></a>(mylist)</td>
+<tr class="row-even"><td><a class="reference internal" href="#chat.mytools.random_item" title="chat.mytools.random_item"><code class="xref py py-obj docutils literal"><span class="pre">random_item</span></code></a>(mylist)</td>
 <td>Get random item of data.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#mytools.file_replace" title="mytools.file_replace"><code class="xref py py-obj docutils literal"><span class="pre">file_replace</span></code></a>(source_file,&nbsp;destination_file)</td>
+<tr class="row-odd"><td><a class="reference internal" href="#chat.mytools.file_replace" title="chat.mytools.file_replace"><code class="xref py py-obj docutils literal"><span class="pre">file_replace</span></code></a>(source_file,&nbsp;destination_file)</td>
 <td>File replace.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#mytools.read_excel" title="mytools.read_excel"><code class="xref py py-obj docutils literal"><span class="pre">read_excel</span></code></a>(filepath)</td>
+<tr class="row-even"><td><a class="reference internal" href="#chat.mytools.read_excel" title="chat.mytools.read_excel"><code class="xref py py-obj docutils literal"><span class="pre">read_excel</span></code></a>(filepath)</td>
 <td>Get excel source</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#mytools.set_excel_style" title="mytools.set_excel_style"><code class="xref py py-obj docutils literal"><span class="pre">set_excel_style</span></code></a>(name,&nbsp;height[,&nbsp;bold])</td>
-<td></td>
+<tr class="row-odd"><td><a class="reference internal" href="#chat.mytools.set_excel_style" title="chat.mytools.set_excel_style"><code class="xref py py-obj docutils literal"><span class="pre">set_excel_style</span></code></a>(name,&nbsp;height[,&nbsp;bold])</td>
+<td>Set excel style.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#mytools.write_excel" title="mytools.write_excel"><code class="xref py py-obj docutils literal"><span class="pre">write_excel</span></code></a>([filename,&nbsp;sheets])</td>
-<td></td>
+<tr class="row-even"><td><a class="reference internal" href="#chat.mytools.write_excel" title="chat.mytools.write_excel"><code class="xref py py-obj docutils literal"><span class="pre">write_excel</span></code></a>([filename,&nbsp;sheets])</td>
+<td>Write excel from data.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#mytools.generate_dict" title="mytools.generate_dict"><code class="xref py py-obj docutils literal"><span class="pre">generate_dict</span></code></a>(dictpath,&nbsp;sourcepath)</td>
+<tr class="row-odd"><td><a class="reference internal" href="#chat.mytools.generate_dict" title="chat.mytools.generate_dict"><code class="xref py py-obj docutils literal"><span class="pre">generate_dict</span></code></a>(dictpath,&nbsp;sourcepath)</td>
 <td>Generate dictionary file from sourcefile.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#mytools.waitting" title="mytools.waitting"><code class="xref py py-obj docutils literal"><span class="pre">waitting</span></code></a>()</td>
-<td></td>
+<tr class="row-even"><td><a class="reference internal" href="#chat.mytools.waitting" title="chat.mytools.waitting"><code class="xref py py-obj docutils literal"><span class="pre">waitting</span></code></a>()</td>
+<td>Print waitting.</td>
 </tr>
 </tbody>
 </table>
 <div class="section" id="mac">
 <h2>获取Mac地址<a class="headerlink" href="#mac" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
-<dt id="mytools.get_mac_address">
-<code class="descclassname">mytools.</code><code class="descname">get_mac_address</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mytools.html#get_mac_address"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mytools.get_mac_address" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dt id="chat.mytools.get_mac_address">
+<code class="descclassname">chat.mytools.</code><code class="descname">get_mac_address</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/chat/mytools.html#get_mac_address"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#chat.mytools.get_mac_address" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get mac address.</p>
+</dd></dl>
 
 </div>
 <div class="section" id="id1">
 <h2>获取主机名<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
-<dt id="mytools.get_hostname">
-<code class="descclassname">mytools.</code><code class="descname">get_hostname</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mytools.html#get_hostname"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mytools.get_hostname" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dt id="chat.mytools.get_hostname">
+<code class="descclassname">chat.mytools.</code><code class="descname">get_hostname</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/chat/mytools.html#get_hostname"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#chat.mytools.get_hostname" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get hostname.</p>
+</dd></dl>
 
 </div>
 <div class="section" id="ip">
 <h2>获取IP地址<a class="headerlink" href="#ip" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
-<dt id="mytools.get_ip_address">
-<code class="descclassname">mytools.</code><code class="descname">get_ip_address</code><span class="sig-paren">(</span><em>hostname</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mytools.html#get_ip_address"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mytools.get_ip_address" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dt id="chat.mytools.get_ip_address">
+<code class="descclassname">chat.mytools.</code><code class="descname">get_ip_address</code><span class="sig-paren">(</span><em>hostname</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/chat/mytools.html#get_ip_address"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#chat.mytools.get_ip_address" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get ip address.</p>
+</dd></dl>
 
 </div>
 <div class="section" id="id2">
 <h2>获取当前运行函数名<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
-<dt id="mytools.get_current_function_name">
-<code class="descclassname">mytools.</code><code class="descname">get_current_function_name</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mytools.html#get_current_function_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mytools.get_current_function_name" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="docutils">
-<dt>class MyClass:</dt>
-<dd><dl class="first last docutils">
-<dt>def myfunction(self):</dt>
-<dd>print(&#8220;%s.%s invoked&#8221;%(self.__class__.__name__, get_current_function_name()))</dd>
-</dl>
-</dd>
-<dt>if __name__ == &#8220;__main__&#8221;:</dt>
-<dd>myclass = MyClass()
-myclass.myfunction()</dd>
-</dl>
+<dt id="chat.mytools.get_current_function_name">
+<code class="descclassname">chat.mytools.</code><code class="descname">get_current_function_name</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/chat/mytools.html#get_current_function_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#chat.mytools.get_current_function_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get current function name.</p>
 </dd></dl>
 
 </div>
 <div class="section" id="id3">
 <h2>遍历目录进行批处理<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
-<dt id="mytools.Walk">
-<code class="descclassname">mytools.</code><code class="descname">Walk</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mytools.html#Walk"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mytools.Walk" title="Permalink to this definition">¶</a></dt>
+<dt id="chat.mytools.Walk">
+<code class="descclassname">chat.mytools.</code><code class="descname">Walk</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/chat/mytools.html#Walk"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#chat.mytools.Walk" title="Permalink to this definition">¶</a></dt>
 <dd><p>Walk directory to batch processing.
 遍历目录进行批处理。</p>
 <p>Subclasses may override the &#8216;handle_file&#8217; method to provide custom file processing mode.
@@ -280,8 +273,8 @@ myclass.myfunction()</dd>
 <div class="section" id="id4">
 <h2>程序时间性能分析<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
-<dt id="mytools.time_me">
-<code class="descclassname">mytools.</code><code class="descname">time_me</code><span class="sig-paren">(</span><em>info='used'</em>, <em>format_string='ms'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mytools.html#time_me"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mytools.time_me" title="Permalink to this definition">¶</a></dt>
+<dt id="chat.mytools.time_me">
+<code class="descclassname">chat.mytools.</code><code class="descname">time_me</code><span class="sig-paren">(</span><em>info='used'</em>, <em>format_string='ms'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/chat/mytools.html#time_me"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#chat.mytools.time_me" title="Permalink to this definition">¶</a></dt>
 <dd><p>Performance analysis - time</p>
 <p>Decorator of time performance analysis.
 性能分析——计时统计
@@ -297,9 +290,11 @@ time.clock()在不同的系统上含义不同。在UNIX系统上，它返回的�
 3.time.process_time()提供进程时间。</p>
 <dl class="docutils">
 <dt>Args:</dt>
-<dd>info: Customize print info. 自定义提示信息。
-format_string: Specifies the timing unit. 指定计时单位，例如&#8217;s&#8217;: 秒，&#8217;ms&#8217;: 毫秒。
-Defaults to &#8216;s&#8217;.</dd>
+<dd><p class="first">info: Customize print info. 自定义提示信息。
+format_string: Specifies the timing unit. 指定计时单位，例如&#8217;s&#8217;: 秒，&#8217;ms&#8217;: 毫秒。</p>
+<blockquote class="last">
+<div>Defaults to &#8216;s&#8217;.</div></blockquote>
+</dd>
 </dl>
 </dd></dl>
 
@@ -307,8 +302,8 @@ Defaults to &#8216;s&#8217;.</dd>
 <div class="section" id="id5">
 <h2>获取当前时间<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
-<dt id="mytools.get_current_time">
-<code class="descclassname">mytools.</code><code class="descname">get_current_time</code><span class="sig-paren">(</span><em>format_string='%Y-%m-%d-%H-%M-%S'</em>, <em>info=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mytools.html#get_current_time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mytools.get_current_time" title="Permalink to this definition">¶</a></dt>
+<dt id="chat.mytools.get_current_time">
+<code class="descclassname">chat.mytools.</code><code class="descname">get_current_time</code><span class="sig-paren">(</span><em>format_string='%Y-%m-%d-%H-%M-%S'</em>, <em>info=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/chat/mytools.html#get_current_time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#chat.mytools.get_current_time" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get current time with specific format_string.
 获取指定日期表示方式的当前时间。</p>
 <dl class="docutils">
@@ -325,8 +320,8 @@ Defaults to &#8216;s&#8217;.</dd>
 <div class="section" id="id6">
 <h2>列表随机元素<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
-<dt id="mytools.random_item">
-<code class="descclassname">mytools.</code><code class="descname">random_item</code><span class="sig-paren">(</span><em>mylist</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mytools.html#random_item"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mytools.random_item" title="Permalink to this definition">¶</a></dt>
+<dt id="chat.mytools.random_item">
+<code class="descclassname">chat.mytools.</code><code class="descname">random_item</code><span class="sig-paren">(</span><em>mylist</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/chat/mytools.html#random_item"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#chat.mytools.random_item" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get random item of data.
 从数据中获取随机元素。</p>
 <dl class="docutils">
@@ -339,8 +334,8 @@ Defaults to &#8216;s&#8217;.</dd>
 <div class="section" id="id7">
 <h2>文件替换<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
-<dt id="mytools.file_replace">
-<code class="descclassname">mytools.</code><code class="descname">file_replace</code><span class="sig-paren">(</span><em>source_file</em>, <em>destination_file</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mytools.html#file_replace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mytools.file_replace" title="Permalink to this definition">¶</a></dt>
+<dt id="chat.mytools.file_replace">
+<code class="descclassname">chat.mytools.</code><code class="descname">file_replace</code><span class="sig-paren">(</span><em>source_file</em>, <em>destination_file</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/chat/mytools.html#file_replace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#chat.mytools.file_replace" title="Permalink to this definition">¶</a></dt>
 <dd><p>File replace.
 文件替换。</p>
 <dl class="docutils">
@@ -354,8 +349,8 @@ destination_file：The full path of destination file. 目标文件完整路径�
 <div class="section" id="excel">
 <h2>读取excel<a class="headerlink" href="#excel" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
-<dt id="mytools.read_excel">
-<code class="descclassname">mytools.</code><code class="descname">read_excel</code><span class="sig-paren">(</span><em>filepath</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mytools.html#read_excel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mytools.read_excel" title="Permalink to this definition">¶</a></dt>
+<dt id="chat.mytools.read_excel">
+<code class="descclassname">chat.mytools.</code><code class="descname">read_excel</code><span class="sig-paren">(</span><em>filepath</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/chat/mytools.html#read_excel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#chat.mytools.read_excel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get excel source</p>
 <dl class="docutils">
 <dt>Args:</dt>
@@ -369,24 +364,26 @@ destination_file：The full path of destination file. 目标文件完整路径�
 <div class="section" id="id8">
 <h2>设置excel样式<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
-<dt id="mytools.set_excel_style">
-<code class="descclassname">mytools.</code><code class="descname">set_excel_style</code><span class="sig-paren">(</span><em>name</em>, <em>height</em>, <em>bold=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mytools.html#set_excel_style"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mytools.set_excel_style" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dt id="chat.mytools.set_excel_style">
+<code class="descclassname">chat.mytools.</code><code class="descname">set_excel_style</code><span class="sig-paren">(</span><em>name</em>, <em>height</em>, <em>bold=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/chat/mytools.html#set_excel_style"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#chat.mytools.set_excel_style" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set excel style.</p>
+</dd></dl>
 
 </div>
 <div class="section" id="id9">
 <h2>写入excel<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
-<dt id="mytools.write_excel">
-<code class="descclassname">mytools.</code><code class="descname">write_excel</code><span class="sig-paren">(</span><em>filename='demo.xlsx'</em>, <em>sheets=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mytools.html#write_excel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mytools.write_excel" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dt id="chat.mytools.write_excel">
+<code class="descclassname">chat.mytools.</code><code class="descname">write_excel</code><span class="sig-paren">(</span><em>filename='demo.xlsx'</em>, <em>sheets=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/chat/mytools.html#write_excel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#chat.mytools.write_excel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write excel from data.</p>
+</dd></dl>
 
 </div>
 <div class="section" id="id10">
 <h2>生成词典<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
-<dt id="mytools.generate_dict">
-<code class="descclassname">mytools.</code><code class="descname">generate_dict</code><span class="sig-paren">(</span><em>dictpath</em>, <em>sourcepath</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mytools.html#generate_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mytools.generate_dict" title="Permalink to this definition">¶</a></dt>
+<dt id="chat.mytools.generate_dict">
+<code class="descclassname">chat.mytools.</code><code class="descname">generate_dict</code><span class="sig-paren">(</span><em>dictpath</em>, <em>sourcepath</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/chat/mytools.html#generate_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#chat.mytools.generate_dict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate dictionary file from sourcefile.</p>
 <dl class="docutils">
 <dt>Args:</dt>
@@ -399,9 +396,10 @@ sourcepath: The full path of source file. 源文件完整路径。</dd>
 <div class="section" id="id11">
 <h2>显示等待中<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
-<dt id="mytools.waitting">
-<code class="descclassname">mytools.</code><code class="descname">waitting</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mytools.html#waitting"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mytools.waitting" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dt id="chat.mytools.waitting">
+<code class="descclassname">chat.mytools.</code><code class="descname">waitting</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/chat/mytools.html#waitting"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#chat.mytools.waitting" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print waitting.</p>
+</dd></dl>
 
 </div>
 </div>

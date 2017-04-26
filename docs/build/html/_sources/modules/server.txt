@@ -2,7 +2,7 @@ API - 语义服务器
 ========================
 
 .. image:: my_figs/server.ico 
-.. automodule:: server
+.. automodule:: chat.server
 
 .. autosummary::
 

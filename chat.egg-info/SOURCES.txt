@@ -28,6 +28,7 @@ chat/dict/jieba/idf.txt.big
 chat/dict/jieba/stop_words.txt
 chat/dict/jieba/synonymdict.txt
 chat/dict/jieba/userdict.txt
+dist/chat-1.0.3.dev5.tar.gz
 docs/Makefile
 docs/make.bat
 docs/build/doctrees/environment.pickle
@@ -235,6 +236,7 @@ docs/source/user/my_figs/user.png
 tests/__init__.py
 tests/test_client.py
 tests/test_database.py
+tests/test_download.py
 tests/test_http.py
 tests/test_mytools.py
 tests/test_semantic.py

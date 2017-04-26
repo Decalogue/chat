@@ -2,7 +2,7 @@ API - 下载语义知识库
 ========================
 
 .. image:: my_figs/packages.ico 
-.. automodule:: download
+.. automodule:: chat.download
 
 .. autosummary::
 

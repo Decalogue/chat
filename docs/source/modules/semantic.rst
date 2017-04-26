@@ -2,7 +2,7 @@ API - 语义工具箱
 ========================
 
 .. image:: my_figs/semantic.ico 
-.. automodule:: semantic
+.. automodule:: chat.semantic
 
 .. autosummary::
 

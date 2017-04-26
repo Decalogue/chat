@@ -2,7 +2,7 @@ API - 常用工具箱
 ========================
 
 .. image:: my_figs/mytools.ico 
-.. automodule:: mytools
+.. automodule:: chat.mytools
 
 .. autosummary::
 

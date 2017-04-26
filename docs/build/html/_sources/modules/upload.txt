@@ -2,7 +2,7 @@ API - 上传本地知识库
 ========================
 
 .. image:: my_figs/packages.ico 
-.. automodule:: upload
+.. automodule:: chat.upload
 
 .. autosummary::
 

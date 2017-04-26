@@ -2,7 +2,7 @@ API - 语义数据库管理
 ========================
 
 .. image:: my_figs/database.ico 
-.. automodule:: database
+.. automodule:: chat.database
 
 .. autosummary::
 

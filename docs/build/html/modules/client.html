@@ -152,37 +152,123 @@
   <div class="section" id="api">
 <h1>API - 语义客户端<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h1>
 <img alt="../_images/client.ico" src="../_images/client.ico" />
+<span class="target" id="module-chat.client"></span><p>Chat client. 聊天客户端。</p>
+<p>Available functions:
+- question_pack: Package the question as the JSON format specified by the server.
+将问题打包为服务器指定的json格式。
+- config_pack: Package the config info as the JSON format specified by the server.
+将配置信息打包为服务器指定的json格式。
+- match：Match the answers from the semantic knowledge database.
+从语义知识数据库搜索答案。
+- config：Configure the semantic knowledge database.
+配置语义知识数据库。</p>
 <table border="1" class="longtable docutils">
 <colgroup>
 <col width="10%" />
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">question_pack</span></code></td>
-<td></td>
+<tr class="row-odd"><td><a class="reference internal" href="#chat.client.question_pack" title="chat.client.question_pack"><code class="xref py py-obj docutils literal"><span class="pre">question_pack</span></code></a>([info,&nbsp;userid])</td>
+<td>Package the question as the JSON format specified by the server.</td>
 </tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">config_pack</span></code></td>
-<td></td>
+<tr class="row-even"><td><a class="reference internal" href="#chat.client.config_pack" title="chat.client.config_pack"><code class="xref py py-obj docutils literal"><span class="pre">config_pack</span></code></a>([info,&nbsp;userid])</td>
+<td>Package the config info as the JSON format specified by the server.</td>
 </tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">match</span></code></td>
-<td></td>
+<tr class="row-odd"><td><a class="reference internal" href="#chat.client.match" title="chat.client.match"><code class="xref py py-obj docutils literal"><span class="pre">match</span></code></a>([question,&nbsp;userid])</td>
+<td>Match the answers from the semantic knowledge database.</td>
 </tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">config</span></code></td>
-<td></td>
+<tr class="row-even"><td><a class="reference internal" href="#chat.client.config" title="chat.client.config"><code class="xref py py-obj docutils literal"><span class="pre">config</span></code></a>([info,&nbsp;userid])</td>
+<td>Configure the semantic knowledge database.</td>
 </tr>
 </tbody>
 </table>
 <div class="section" id="id1">
 <h2>封装问题<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="chat.client.question_pack">
+<code class="descclassname">chat.client.</code><code class="descname">question_pack</code><span class="sig-paren">(</span><em>info=''</em>, <em>userid='userid'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/chat/client.html#question_pack"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#chat.client.question_pack" title="Permalink to this definition">¶</a></dt>
+<dd><p>Package the question as the JSON format specified by the server.
+将问题打包为服务器指定的json格式。</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><dl class="first last docutils">
+<dt>info: User question. 用户的聊天或提问。</dt>
+<dd>Defaults to &#8220;&#8221;.</dd>
+<dt>userid: User id. 用户唯一标识。</dt>
+<dd>Defaults to &#8220;userid&#8221;.</dd>
+</dl>
+</dd>
+<dt>Returns:</dt>
+<dd>Packaged JSON format data. 打包好的json格式数据。</dd>
+</dl>
+</dd></dl>
+
 </div>
 <div class="section" id="id2">
 <h2>封装配置<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="chat.client.config_pack">
+<code class="descclassname">chat.client.</code><code class="descname">config_pack</code><span class="sig-paren">(</span><em>info=''</em>, <em>userid='userid'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/chat/client.html#config_pack"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#chat.client.config_pack" title="Permalink to this definition">¶</a></dt>
+<dd><p>Package the config info as the JSON format specified by the server.
+将配置信息打包为服务器指定的json格式。</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><dl class="first last docutils">
+<dt>info: User config info. 用户配置信息。</dt>
+<dd>Defaults to &#8220;&#8221;.</dd>
+<dt>userid: User id. 用户唯一标识。</dt>
+<dd>Defaults to &#8220;userid&#8221;.</dd>
+</dl>
+</dd>
+<dt>Returns:</dt>
+<dd>Packaged JSON format data. 打包好的json格式数据。</dd>
+</dl>
+</dd></dl>
+
 </div>
 <div class="section" id="id3">
 <h2>搜索答案<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="chat.client.match">
+<code class="descclassname">chat.client.</code><code class="descname">match</code><span class="sig-paren">(</span><em>question='question'</em>, <em>userid='userid'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/chat/client.html#match"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#chat.client.match" title="Permalink to this definition">¶</a></dt>
+<dd><p>Match the answers from the semantic knowledge database.
+从语义知识数据库搜索答案。</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><dl class="first last docutils">
+<dt>question: User question. 用户问题。</dt>
+<dd>Defaults to &#8220;question&#8221;.</dd>
+<dt>userid: User id. 用户唯一标识。</dt>
+<dd>Defaults to &#8220;userid&#8221;.</dd>
+</dl>
+</dd>
+<dt>Returns:</dt>
+<dd>Packaged JSON format data of answer. 打包好的答案json格式数据。</dd>
+</dl>
+</dd></dl>
+
 </div>
 <div class="section" id="id4">
 <h2>配置语义知识库<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="chat.client.config">
+<code class="descclassname">chat.client.</code><code class="descname">config</code><span class="sig-paren">(</span><em>info=''</em>, <em>userid='userid'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/chat/client.html#config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#chat.client.config" title="Permalink to this definition">¶</a></dt>
+<dd><p>Configure the semantic knowledge database.
+配置语义知识数据库。</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><dl class="first last docutils">
+<dt>info: User config info. 用户配置信息，以空格分隔的知识库名称字符串。</dt>
+<dd>Defaults to &#8220;&#8221;. 返回可配置选项信息。</dd>
+<dt>userid: User id. 用户唯一标识。</dt>
+<dd>Defaults to &#8220;userid&#8221;.</dd>
+</dl>
+</dd>
+<dt>Returns:</dt>
+<dd>Packaged JSON format data of config result. 打包好的配置结果json格式数据。</dd>
+</dl>
+</dd></dl>
+
 </div>
 </div>
 

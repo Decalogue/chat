@@ -2,7 +2,7 @@ API - 语义客户端
 ========================
 
 .. image:: my_figs/client.ico 
-.. automodule:: client
+.. automodule:: chat.client
 
 .. autosummary::
 

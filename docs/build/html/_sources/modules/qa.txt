@@ -2,7 +2,7 @@ API - 语义理解问答
 ========================
 
 .. image:: my_figs/qa.ico 
-.. automodule:: qa
+.. automodule:: chat.qa
 
 .. autosummary::
 
