@@ -245,7 +245,7 @@ class Robot():
         # 在线语义
         if not self.topic:
             # 1.音乐(唱一首xxx的xxx)
-            if "唱一首" in question or "我想听" in question:
+            if "唱一首" in question or "唱首" in question or "我想听" in question:
                 result["behavior"] = int("0x0001", 16)
                 result["content"] = "好的，正在准备哦"
             # 2.附近有什么好吃的

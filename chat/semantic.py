@@ -46,8 +46,14 @@ def synonym_cut(sentence, pattern="wf"):
         synonym_vector = analyse.extract_tags(sentence, topK=10)
     elif pattern == "wf":
         result = posseg.cut(sentence)
-        synonym_vector = [(item.word, item.flag) for item in result \
-        if item.word not in punctuation_all]
+        # synonym_vector = [(item.word, item.flag) for item in result \
+        # if item.word not in punctuation_all]
+        # Modify in 2017.4.27 
+        for item in result:
+            if item.word not in punctuation_all:
+                if len(item.flag) < 4:
+                    item.flag = list(posseg.cut(item.word))[0].flag
+                synonym_vector.append((item.word, item.flag))
     elif pattern == "tf":
         result = posseg.cut(sentence)
         tags = analyse.extract_tags(sentence, topK=10)
