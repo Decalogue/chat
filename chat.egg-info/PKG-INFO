@@ -1,0 +1,16 @@
+Metadata-Version: 1.1
+Name: chat
+Version: 1.0.4.dev26
+Summary: Chat robot based on natural language understanding and machine learning.
+Home-page: http://pypi.python.org/pypi/chat
+Author: Decalogue
+Author-email: 1044908508@qq.com
+License: MIT
+Description: 
+        README.md
+Platform: UNKNOWN
+Classifier: Development Status :: 4 - Beta
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Information Technology
+Classifier: Natural Language :: English

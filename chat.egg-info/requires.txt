@@ -1,0 +1,7 @@
+api==1.0.0.dev5
+jieba==0.38
+numpy==1.12.1
+py2neo==3.1.2
+requests==2.12.1
+xlrd==1.0.0
+xlwt==1.2.0
