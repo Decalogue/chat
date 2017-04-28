@@ -122,6 +122,7 @@ class Database():
             sheet_names = data_sheets
         for sheet_name in sheet_names: # 可自定义要导入的子表格
             table = data.sheet_by_name(sheet_name)
+            topics = []
             # 1.Select specified table
             # table = data.sheet_by_index(0)
             if data:
@@ -154,12 +155,26 @@ class Database():
                         behavior=behavior, parameter=parameter, url=url, tag=tag, \
                         keywords=keywords, api=api, txt=txt, img=img, chart=chart, \
                         delimiter="|")
+                        # 添加到场景标签列表
+                        topics.append(topic)
                 except Exception as error:
                     print('Error: %s' %error)
                     return None
             else:
                 print('Error! Data of %s is empty!' %sheet_name)
                 return None
+            # Modify in 2017.4.28
+            # 若子表格名字不存在，新建配置子图，否则只修改topic属性
+            config_node = self.graph.find_one("Config", "name", sheet_name)
+            if not config_node:
+                self.graph.run('MATCH (user:User {userid: "' + self.gconfig["userid"] + \
+                '"})\nCREATE (config:Config {name: "' + sheet_name + '", topic: "' + \
+                ",".join(set(topics)) + '"})\nCREATE (user)-[:has {bselected: 1, available: 1}]->(config)')
+            else:
+                alltopics = config_node["topic"].split(",")
+                alltopics.extend(topics)
+                config_node["topic"] = ",".join(set(alltopics))
+                self.graph.push(config_node)
 
     def handle_txt(self, filename=None):
         """

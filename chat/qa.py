@@ -93,7 +93,8 @@ class Robot():
         match_string = "MATCH (user:User)-[r:has {bselected:1, available:1}]->(config:Config)" + \
             "where user.userid='" + userid + "' RETURN config"
         data = self.graph.run(match_string).data()
-        usertopics = [item["config"]["topic"] for item in data]
+        for item in data:
+            usertopics.extend(item["config"]["topic"].split(","))
         print("用户：", userid, "\n已有知识库列表：", usertopics)
         return usertopics
 

@@ -6,14 +6,30 @@
 
 The socketserver module simplifies the task of writing network servers.
 """
-
+import os
 import json
 import socketserver
 # import chardet
 from .qa import Robot
+from .database import Database
+from .mytools import Walk
+
+# TODO: Add userid to os.environ["UserId"]
+database = Database(password="train", userid="A0002")
+
+class WalkUserData(Walk):
+    def handle_file(self, filepath, pattern=None):
+        database.handle_excel(filepath)
+
+def add_qa(path=None, names=None):
+    """Add subgraph from excel data.
+    """
+    walker = WalkUserData()
+    fnamelist = walker.dir_process(1, path, style="fnamelist")
+    print("知识库更新内容:", fnamelist)
+
 
 robot = Robot()
-
 
 class MyTCPHandler(socketserver.BaseRequestHandler):
     """The request handler class for nlu server.
@@ -34,7 +50,7 @@ class MyTCPHandler(socketserver.BaseRequestHandler):
             # print("Encoding: " + encoding)
             # self.data = self.data.decode(encoding)
             self.data = self.data.decode("UTF-8")
-            print("Data:\n")
+            print("Data:")
             print(self.data)
             # step 1.Bytes to json obj and extract question
             json_data = json.loads(self.data)
@@ -62,6 +78,8 @@ def start(host="localhost", port=7000):
         port: server port. 服务器端口设置。
             Defaults to 7000.
     """
+    # 开机自动更新知识库
+    add_qa("D:\新知识库")
     # 多线程处理多用户请求
     sock = socketserver.ThreadingTCPServer((host, port), MyTCPHandler)
     sock.serve_forever()
