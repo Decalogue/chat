@@ -10,7 +10,7 @@ Available functions:
 - All classes and functions: 所有类和函数
 """
 from py2neo import Graph, Node, Relationship
-from api import nlu_tuling, get_location_by_ip
+from .api import nlu_tuling, get_location_by_ip
 from .semantic import synonym_cut, get_tag, similarity, get_navigation_target
 from .mytools import time_me, get_current_time, random_item
 
