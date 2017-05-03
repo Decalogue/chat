@@ -147,7 +147,6 @@ class Robot():
                 iquestion = self.iformat(node["name"])
                 if question == iquestion:
                     print("Similarity Score: Original sentence")
-                    print(result)
                     result["content"] = self.iformat(random_item(node["content"].split("|")))
                     result["context"] = node["topic"]
                     if node["url"]:
@@ -205,6 +204,30 @@ class Robot():
         if "理财产品" in question or "理财" in question:
             result["behavior"] = int("0x1002", 16) # 进入在线场景
             result["question"] = "理财产品" # 重定义为标准问题
+            self.is_scene = True # 在线场景标志
+        if "免费wifi" in question or "wifi" in question:
+            result["behavior"] = int("0x1002", 16) # 进入在线场景
+            result["question"] = "有没有免费的wifi" # 重定义为标准问题
+            self.is_scene = True # 在线场景标志
+        if "存款利率" in question:
+            result["behavior"] = int("0x1002", 16) # 进入在线场景
+            result["question"] = "存款利率" # 重定义为标准问题
+            self.is_scene = True # 在线场景标志
+        if "我要取钱" in question or "取钱" in question:
+            result["behavior"] = int("0x1002", 16) # 进入在线场景
+            result["question"] = "我要取钱" # 重定义为标准问题
+            self.is_scene = True # 在线场景标志
+        if "信用卡挂失" in question or "信用卡挂失" in question:
+            result["behavior"] = int("0x1002", 16) # 进入在线场景
+            result["question"] = "信用卡挂失" # 重定义为标准问题
+            self.is_scene = True # 在线场景标志
+        if "开通云闪付" in question:
+            result["behavior"] = int("0x1002", 16) # 进入在线场景
+            result["question"] = "开通云闪付" # 重定义为标准问题
+            self.is_scene = True # 在线场景标志
+        if "办理粤通卡" in question:
+            result["behavior"] = int("0x1002", 16) # 进入在线场景
+            result["question"] = "办理粤通卡" # 重定义为标准问题
             self.is_scene = True # 在线场景标志
         if "退出业务场景" in question or "退出" in question or "返回" in question:
             result["behavior"] = int("0x0020", 16) # 场景退出
