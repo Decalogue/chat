@@ -15,7 +15,7 @@ from .database import Database
 from .mytools import Walk
 
 # TODO: Add userid to os.environ["UserId"]
-database = Database(password="train", userid="A0002")
+database = Database(password="train", userid="userid", is_admin=False)
 
 class WalkUserData(Walk):
     def handle_file(self, filepath, pattern=None):

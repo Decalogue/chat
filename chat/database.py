@@ -40,7 +40,8 @@ class Database():
     - rdb: Relational database. 关系数据库。
     - graph: Graph database. 图数据库。
     """
-    def __init__(self, password=None, userid="userid"):
+    def __init__(self, password=None, userid="userid", is_admin=True):
+        self.is_admin = is_admin
         self.rdb = None
         self.graph = Graph("http://localhost:7474/db/data", password=password)
         self.gconfig = self.graph.find_one("User", "userid", userid)
@@ -139,7 +140,8 @@ class Database():
                     for i in range(2, nrows):
                         name = table.cell(i, col_index[0]).value
                         content = table.cell(i, col_index[1]).value
-                        topic = table.cell(i, col_index[2]).value
+                        # TODO 确定用户可以自定义哪些内容
+                        topic = table.cell(i, col_index[2]).value if self.is_admin else "user_chat"
                         behavior = table.cell(i, col_index[3]).value
                         parameter = table.cell(i, col_index[4]).value
                         url = table.cell(i, col_index[5]).value
