@@ -280,7 +280,8 @@ class Robot():
             elif "天气" in question:
                 weather = nlu_tuling(question, loc=self.address)
                 result["behavior"] = int("0x0000", 16)
-                result["content"] = weather.split(";")[0].split(",")[1]
+                temp = weather.split(";")[0].split(",")[1].split()
+                result["content"] = temp[0] + temp[2] + temp[3]
                 result["context"] = "nlu_tuling"
             # 4.导航
             elif "带我去" in question or "去" in question:
