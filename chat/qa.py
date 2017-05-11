@@ -153,7 +153,7 @@ class Robot():
             if not sv1:
                 return result
             for location in self.locations:
-                if question == location:
+                if location in question:
                     print("Original navigation")
                     result["content"] = location
                     result["context"] = "user_navigation"
