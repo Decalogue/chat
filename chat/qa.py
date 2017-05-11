@@ -19,7 +19,8 @@ from .mytools import time_me, get_current_time, random_item
 def get_navigation_location():
     db = sqlite3.connect("C:/docu/db/contentDB.db")
     cursor = db.execute("SELECT name from goalvoice")
-    names = [row[0] for row in cursor]
+    # 过滤0记录
+    names = [row[0] for row in cursor if row[0]]
     return names
 
 class Robot():
