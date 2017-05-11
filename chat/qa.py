@@ -9,11 +9,18 @@ NLU based on Natural Language Processing and Graph Database.
 Available functions:
 - All classes and functions: 所有类和函数
 """
+import sqlite3
 from py2neo import Graph, Node, Relationship
 from .api import nlu_tuling, get_location_by_ip
 from .semantic import synonym_cut, get_tag, similarity, get_navigation_target
 from .mytools import time_me, get_current_time, random_item
 
+# Development requirements from Mr Tang in 2017-5-11.
+def get_navigation_location():
+    db = sqlite3.connect("C:/docu/db/contentDB.db")
+    cursor = db.execute("SELECT name from goalvoice")
+    names = [row[0] for row in cursor]
+    return names
 
 class Robot():
     """NLU Robot.
@@ -26,6 +33,8 @@ class Robot():
     """
     def __init__(self):
         self.graph = Graph("http://localhost:7474/db/data/", password="train")
+        # Development requirements from Mr Tang in 2017-5-11.
+        self.locations = get_navigation_location()
         self.pattern = 'semantic'
         self.is_scene = False # 在线场景标志，默认为False
         self.address = get_location_by_ip()["content"]["address"] # 调用百度地图IP定位api
@@ -125,6 +134,43 @@ class Robot():
         else:
             self.graph.create(node)
 
+    # Development requirements from Mr Tang in 2017-5-11.
+    def extract_navigation(self, question):
+        """Extract navigation。抽取导航地点。
+        QA匹配模式：从导航地点列表选取匹配度最高的地点。
+
+        Args:
+            question: User question. 用户问题。
+        """
+        temp_sim = 0
+        result = dict(question=question, content=self.iformat(random_item(self.do_not_know)), \
+            context="", url="", behavior=0, parameter=0)
+	    # semantic: 切分为同义词标签向量，根据标签相似性计算相似度矩阵，由相似性矩阵计算句子相似度
+	    # vec: 切分为词向量，根据word2vec计算相似度矩阵，由相似性矩阵计算句子相似度
+        if self.pattern == 'semantic':
+        # elif self.pattern == 'vec':
+            sv1 = synonym_cut(question, 'wf')
+            if not sv1:
+                return result
+            for location in self.locations:
+                if question == location:
+                    print("Original navigation")
+                    result["content"] = location
+                    result["context"] = "user_navigation"
+                    result["behavior"] = int("0x001B", 16)
+                    return result
+                sv2 = synonym_cut(location, 'wf')
+                if sv2:
+                    temp_sim = similarity(sv1, sv2, 'j')
+			    # 匹配加速，不必选取最高相似度，只要达到阈值就终止匹配
+                if temp_sim > 0.9:
+                    print("Navigation location: " + location + " Similarity Score: " + str(temp_sim))
+                    result["content"] = location
+                    result["context"] = "user_navigation"
+                    result["behavior"] = int("0x001B", 16)
+                    return result
+        return result
+
     def extract_synonym(self, question, subgraph):
         """Extract synonymous QA in NLU database。
         QA匹配模式：从图形数据库选取匹配度最高的问答对。
@@ -198,6 +244,22 @@ class Robot():
             Dict contains answer, current topic, url, behavior and parameter.
             返回包含答案，当前话题，资源包，行为指令及对应参数的字典。
         """
+        # self.add_to_memory(question, userid)
+        # 本地语义：全图模式
+        #tag = get_tag(question)
+        #subgraph = self.graph.find("NluCell", "tag", tag)
+        #result = self.extract_synonym(question, subgraph)
+        
+        # 本地语义：场景+全图+用户配置模式
+        # 多用户根据userid动态获取对应的配置信息
+        self.gconfig = self.graph.find_one("User", "userid", userid)
+        self.usertopics = self.get_usertopics(userid=userid)
+        
+        # 导航: Development requirements from Mr Tang in 2017-5-11.
+        result = self.extract_navigation(question)
+        if result["context"] == "user_navigation":
+            return result
+
         # 云端在线场景
         result = dict(question=question, content="ok", context="basic_cmd", url="", \
         behavior=int("0x0000", 16), parameter=0)
@@ -241,17 +303,7 @@ class Robot():
             result["content"] = question
             return result
 
-        # self.add_to_memory(question, userid)
-        # 本地语义：全图模式
-        #tag = get_tag(question)
-        #subgraph = self.graph.find("NluCell", "tag", tag)
-        #result = self.extract_synonym(question, subgraph)
-
-        # 本地语义：场景+全图+用户配置模式
-        # 多用户根据userid动态获取对应的配置信息
-        self.gconfig = self.graph.find_one("User", "userid", userid)
-        self.usertopics = self.get_usertopics(userid=userid)
-
+        # 常用命令，交互，业务
         tag = get_tag(question, self.gconfig)
         subgraph_all = list(self.graph.find("NluCell", "tag", tag))
         # subgraph_scene = [node for node in subgraph_all if node["topic"]==self.topic]
@@ -266,6 +318,7 @@ class Robot():
         result = self.extract_synonym(question, usergraph_all)
         # result  = self.extract_synonym(question, subgraph_all)
         self.topic = result["context"]
+
         # 在线语义
         if not self.topic:
             # 1.音乐(唱一首xxx的xxx)
@@ -284,9 +337,9 @@ class Robot():
                 result["content"] = temp[0] + temp[2] + temp[3]
                 result["context"] = "nlu_tuling"
             # 4.导航
-            elif "带我去" in question or "去" in question:
-                result["behavior"] = int("0x001B", 16)
-                result["content"] = get_navigation_target(info=question)
+            # elif "带我去" in question or "去" in question:
+                # result["behavior"] = int("0x001B", 16)
+                # result["content"] = get_navigation_target(info=question)
             # 5.nlu_tuling
             # else:
                 # result["content"] = nlu_tuling(question, loc=self.address)
