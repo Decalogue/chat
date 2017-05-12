@@ -345,4 +345,9 @@ class Robot():
             # else:
                 # result["content"] = nlu_tuling(question, loc=self.address)
                 # result["context"] = "nlu_tuling"
+            # 待完善的姓名不匹配问题
+            elif question.startswith("我叫"):
+                result["behavior"] = int("0x000A", 16)
+                result["content"] = "3,2,1，茄子"
+                result["context"] = "basic_cmd"
         return result
