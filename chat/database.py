@@ -19,11 +19,15 @@ relationships, subgraph and graph;
 Available functions:
 - All classes and functions: 所有类和函数
 """
+import os
 import string
 from optparse import OptionParser
 from py2neo import Graph, Node, Relationship, NodeSelector
 from .mytools import read_excel
 from .semantic import get_tag
+
+# Add in 2017-5-12 知识库excel文件路径
+datapath = os.path.split(os.path.realpath(__file__))[0]
 
 
 class Database():
@@ -94,6 +98,20 @@ class Database():
             self.graph.run("MATCH (n)-[r:" + name + "]->(m) DETACH DELETE r DELETE m")
         elif pattern == "nrm":
             self.graph.run("MATCH (n)-[r:" + name + "]-(m) DETACH DELETE r DELETE n DELETE m")
+
+    def reset(self, pattern="n", name=None):
+        """Reset data of label in database.
+        重置数据库子图。
+
+        Args:
+            pattern: Type of subgraph. 子图类型。
+            name: Name of subgraph. 子图名称。
+        """
+        self.delete(pattern="n", name="NluCell")
+        print("Delete successfully!")
+        filename = dictpath + "\\data\\chat.xls"
+        self.handle_excel(filename)
+        print("Reset successfully!")
 
     def add_qa(self, nodeclass="NluCell", name=None, content=None, topic="", \
     behavior="", parameter="", url="", tag="", keywords="", api="", txt="", \

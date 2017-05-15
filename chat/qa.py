@@ -164,7 +164,7 @@ class Robot():
                 if sv2:
                     temp_sim = similarity(sv1, sv2, 'j')
 			    # 匹配加速，不必选取最高相似度，只要达到阈值就终止匹配
-                if temp_sim > 0.9:
+                if temp_sim > 0.92:
                     print("Navigation location: " + location + " Similarity Score: " + str(temp_sim))
                     result["content"] = location
                     result["context"] = "user_navigation"
@@ -213,7 +213,7 @@ class Robot():
                 if sv2:
                     temp_sim = similarity(sv1, sv2, 'j')
 			    # 匹配加速，不必选取最高相似度，只要达到阈值就终止匹配
-                if temp_sim > 0.9:
+                if temp_sim > 0.92:
                     print("Q: " + iquestion + " Similarity Score: " + str(temp_sim))
                     result["content"] = self.iformat(random_item(node["content"].split("|")))
                     result["context"] = node["topic"]

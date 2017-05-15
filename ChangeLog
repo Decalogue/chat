@@ -1,6 +1,7 @@
 CHANGES
 =======
 
+* 修复测试遇到的问题
 * Update dict
 * Update get_navigation_location
 * v1.0.5

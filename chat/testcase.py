@@ -30,6 +30,7 @@ def generate_test_cases(filename=None, custom_sheets=None):
     for col, key in enumerate(keys):
         new_sheet.write(1, col, key, set_excel_style('Arial Black', 220, True))
     count = 0
+    testlist = []
     # 生成内容       
     for sheet_name in sheet_names:
         table = data.sheet_by_name(sheet_name)
@@ -49,11 +50,12 @@ def generate_test_cases(filename=None, custom_sheets=None):
                 for i in range(2, nrows):
                     name = table.cell(i, col_index[0]).value
                     content = table.cell(i, col_index[1]).value
-                    questions = [sentence.format(**gconfig) for sentence in name.split("|")]
-                    answers = [sentence.format(**gconfig) for sentence in content.split("|")]
+                    questions = name.format(**gconfig).split("|")
+                    answers = content.format(**gconfig).split("|")
+                    testlist.extend(questions)
                     new_sheet.write(i+count, 0, "\n".join(questions))
                     new_sheet.write(i+count, 1, "\n".join(answers))
-                count = nrows - 2
+                count += nrows - 2
             except Exception as error:
                 print('Error: %s' %error)
                 return None
@@ -61,3 +63,6 @@ def generate_test_cases(filename=None, custom_sheets=None):
             print('Error! Data of %s is empty!' %sheet_name)
             return None
     file.save("testcase.xls") # 保存文件
+    with open("testcase.txt", 'w', encoding="UTF-8") as new:
+        for item in testlist:
+            new.write(item + "\n")
