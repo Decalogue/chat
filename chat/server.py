@@ -28,7 +28,9 @@ def add_qa(path=None, names=None):
     fnamelist = walker.dir_process(1, path, style="fnamelist")
     print("知识库更新内容:", fnamelist)
 
-
+# 开机自动更新知识库
+add_qa("D:\新知识库")
+# 初始化语义服务器
 robot = Robot()
 
 class MyTCPHandler(socketserver.BaseRequestHandler):
@@ -78,9 +80,7 @@ def start(host="localhost", port=7000):
         port: server port. 服务器端口设置。
             Defaults to 7000.
     """
-    # 开机自动更新知识库
-    add_qa("D:\新知识库")
-    # 多线程处理多用户请求
+    # 多线程处理多用户并发请求
     sock = socketserver.ThreadingTCPServer((host, port), MyTCPHandler)
     sock.serve_forever()
 

@@ -41,14 +41,19 @@ def nlu_tuling(question, loc="上海"):
     elif r['code'] == 314000: # 诗词类
         return '\n'.join([r['text'].replace('<br>','\n')])
 
-def get_location_by_ip(): 
+def get_location_by_ip(city="上海市"): 
     url = "http://api.map.baidu.com/location/ip"
     data = {
         "ak": "wllxHD5CmWv8qX6CN2lyY73a",
         "coor": "bd09ll"
     }
-    result = requests.post(url, data, timeout=20).text
-    location = json.loads(result)
+    try:
+        result = requests.post(url, data, timeout=20).text
+        location = json.loads(result)["content"]["address"]
+        print("网络正常，当前所在城市：", location)
+    except:
+        location = city
+        print("网络异常，采用默认城市：", location)
     return location
 
 def get_ll_by_address(address="", city="北京市"): 

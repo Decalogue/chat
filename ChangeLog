@@ -1,6 +1,7 @@
 CHANGES
 =======
 
+* 修改匹配相似度参数
 * 修复测试遇到的问题
 * Update dict
 * Update get_navigation_location

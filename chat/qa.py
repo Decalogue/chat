@@ -10,12 +10,14 @@ Available functions:
 - All classes and functions: 所有类和函数
 """
 import sqlite3
+from collections import deque
+from concurrent.futures import ProcessPoolExecutor
 from py2neo import Graph, Node, Relationship
 from .api import nlu_tuling, get_location_by_ip
 from .semantic import synonym_cut, get_tag, similarity, get_navigation_target
 from .mytools import time_me, get_current_time, random_item
 
-# Development requirements from Mr Tang in 2017-5-11.
+# 获取导航地点——Development requirements from Mr Tang in 2017-5-11.
 def get_navigation_location():
     db = sqlite3.connect("C:/docu/db/contentDB.db")
     cursor = db.execute("SELECT name from goalvoice")
@@ -34,16 +36,20 @@ class Robot():
     """
     def __init__(self):
         self.graph = Graph("http://localhost:7474/db/data/", password="train")
-        # Development requirements from Mr Tang in 2017-5-11.
-        self.locations = get_navigation_location()
         self.pattern = 'semantic'
-        self.is_scene = False # 在线场景标志，默认为False
-        self.address = get_location_by_ip()["content"]["address"] # 调用百度地图IP定位api
-        self.topic = ""
-        self.qa_id = get_current_time()
+        # 获取导航地点
+        self.locations = get_navigation_location()
+        # 在线场景标志，默认为False
+        self.is_scene = False
+        # 调用百度地图IP定位api，需要在线，网络异常时返回默认地址：上海市
+        self.address = get_location_by_ip()
         self.gconfig = None
         self.usertopics = []
-        # Pre loading concept
+        self.topic = ""
+        self.qa_id = get_current_time()
+		# 短期记忆：最近问过的10个问题与10个答案
+        self.qmemory = deque(maxlen=10)
+        self.amemory = deque(maxlen=10)
         self.do_not_know = [
             "这个问题太难了，{robotname}还在学习中",
             "这个问题{robotname}不会，要么我去问下",
@@ -61,8 +67,6 @@ class Robot():
             "您问的问题好有深度呀",
             "{robotname}没有听明白，您能再说一遍吗"
         ]
-		# Robot Memory
-        self.memory = []
 
     def __str__(self):
         return "Hello! I'm {robotname} and I'm {age} years old.".format(**self.gconfig)
@@ -114,6 +118,7 @@ class Robot():
         """
         return sentence.format(**self.gconfig)
 
+    # @time_me()
     def add_to_memory(self, question="question", userid="userid"):
         """Add user question to memory.
         将用户当前对话加入信息记忆。
@@ -124,14 +129,12 @@ class Robot():
             userid: 用户唯一标识。
                 Defaults to "userid".
         """
-        self.memory.append(question)
         previous_node = self.graph.find_one("Memory", "qa_id", self.qa_id)
         self.qa_id = get_current_time()
         node = Node("Memory", question=question, userid=userid, qa_id=self.qa_id)
         if previous_node:
-            relation_previous = Relationship(node, "previous", previous_node)
-            relation_next = Relationship(previous_node, "next", node)
-            self.graph.create(relation_previous | relation_next)
+            relation = Relationship(previous_node, "next", node)
+            self.graph.create(relation)
         else:
             self.graph.create(node)
 
@@ -146,30 +149,26 @@ class Robot():
         temp_sim = 0
         result = dict(question=question, content=self.iformat(random_item(self.do_not_know)), \
             context="", url="", behavior=0, parameter=0)
-	    # semantic: 切分为同义词标签向量，根据标签相似性计算相似度矩阵，由相似性矩阵计算句子相似度
-	    # vec: 切分为词向量，根据word2vec计算相似度矩阵，由相似性矩阵计算句子相似度
-        if self.pattern == 'semantic':
-        # elif self.pattern == 'vec':
-            sv1 = synonym_cut(question, 'wf')
-            if not sv1:
+        sv1 = synonym_cut(question, 'wf')
+        if not sv1:
+            return result
+        for location in self.locations:
+            if location in question:
+                print("Original navigation")
+                result["content"] = location
+                result["context"] = "user_navigation"
+                result["behavior"] = int("0x001B", 16)
                 return result
-            for location in self.locations:
-                if location in question:
-                    print("Original navigation")
-                    result["content"] = location
-                    result["context"] = "user_navigation"
-                    result["behavior"] = int("0x001B", 16)
-                    return result
-                sv2 = synonym_cut(location, 'wf')
-                if sv2:
-                    temp_sim = similarity(sv1, sv2, 'j')
-			    # 匹配加速，不必选取最高相似度，只要达到阈值就终止匹配
-                if temp_sim > 0.92:
-                    print("Navigation location: " + location + " Similarity Score: " + str(temp_sim))
-                    result["content"] = location
-                    result["context"] = "user_navigation"
-                    result["behavior"] = int("0x001B", 16)
-                    return result
+            sv2 = synonym_cut(location, 'wf')
+            if sv2:
+                temp_sim = similarity(sv1, sv2, 'j')
+            # 匹配加速，不必选取最高相似度，只要达到阈值就终止匹配
+            if temp_sim > 0.92:
+                print("Navigation location: " + location + " Similarity Score: " + str(temp_sim))
+                result["content"] = location
+                result["context"] = "user_navigation"
+                result["behavior"] = int("0x001B", 16)
+                return result
         return result
 
     def extract_synonym(self, question, subgraph):
@@ -245,12 +244,14 @@ class Robot():
             Dict contains answer, current topic, url, behavior and parameter.
             返回包含答案，当前话题，资源包，行为指令及对应参数的字典。
         """
-        # self.add_to_memory(question, userid)
+        # 添加到问题记忆
+        self.qmemory.append(question)
+        self.add_to_memory(question, userid)
         # 本地语义：全图模式
         #tag = get_tag(question)
         #subgraph = self.graph.find("NluCell", "tag", tag)
         #result = self.extract_synonym(question, subgraph)
-        
+        newlist = map
         # 本地语义：场景+全图+用户配置模式
         # 多用户根据userid动态获取对应的配置信息
         self.gconfig = self.graph.find_one("User", "userid", userid)
@@ -264,7 +265,7 @@ class Robot():
         # 云端在线场景
         result = dict(question=question, content="ok", context="basic_cmd", url="", \
         behavior=int("0x0000", 16), parameter=0)
-        if "理财产品" in question or "理财" in question:
+        if "理财产品" in question and "取号" not in question:
             result["behavior"] = int("0x1002", 16) # 进入在线场景
             result["question"] = "理财产品" # 重定义为标准问题
             self.is_scene = True # 在线场景标志
@@ -305,6 +306,9 @@ class Robot():
             return result
 
         # 常用命令，交互，业务
+        # 上下文——重复命令
+        if "再来一个" in question:
+            return self.amemory[-1]
         tag = get_tag(question, self.gconfig)
         subgraph_all = list(self.graph.find("NluCell", "tag", tag))
         # subgraph_scene = [node for node in subgraph_all if node["topic"]==self.topic]
@@ -315,15 +319,22 @@ class Robot():
             result = self.extract_synonym(question, usergraph_scene)
             if result["context"]:
                 self.topic = result["context"]
+                self.amemory.append(result) # 添加到答案记忆
                 return result
         result = self.extract_synonym(question, usergraph_all)
         # result  = self.extract_synonym(question, subgraph_all)
         self.topic = result["context"]
+        self.amemory.append(result) # 添加到答案记忆
 
         # 在线语义
         if not self.topic:
+            # TODO：待完善的姓名不匹配问题
+            if question.startswith("我叫"):
+                result["behavior"] = int("0x000A", 16)
+                result["content"] = "3,2,1，茄子"
+                result["context"] = "basic_cmd"
             # 1.音乐(唱一首xxx的xxx)
-            if "唱一首" in question or "唱首" in question or "我想听" in question:
+            elif "唱一首" in question or "唱首" in question or "我想听" in question:
                 result["behavior"] = int("0x0001", 16)
                 result["content"] = "好的，正在准备哦"
             # 2.附近有什么好吃的
@@ -345,9 +356,4 @@ class Robot():
             # else:
                 # result["content"] = nlu_tuling(question, loc=self.address)
                 # result["context"] = "nlu_tuling"
-            # 待完善的姓名不匹配问题
-            elif question.startswith("我叫"):
-                result["behavior"] = int("0x000A", 16)
-                result["content"] = "3,2,1，茄子"
-                result["context"] = "basic_cmd"
         return result
