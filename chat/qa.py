@@ -251,12 +251,15 @@ class Robot():
         #tag = get_tag(question)
         #subgraph = self.graph.find("NluCell", "tag", tag)
         #result = self.extract_synonym(question, subgraph)
-        newlist = map
+
         # 本地语义：场景+全图+用户配置模式
         # 多用户根据userid动态获取对应的配置信息
         self.gconfig = self.graph.find_one("User", "userid", userid)
         self.usertopics = self.get_usertopics(userid=userid)
-        
+
+        # 问题过滤器
+        question = question.lstrip(self.gconfig["robotname"])
+
         # 导航: Development requirements from Mr Tang in 2017-5-11.
         result = self.extract_navigation(question)
         if result["context"] == "user_navigation":
@@ -298,9 +301,9 @@ class Robot():
             self.is_scene = False
             return result
         if self.is_scene:
-            if "上一步" in question or "上一部" in question:
+            if "上一步" in question or "上一部" in question or "上一页" in question or "上一个" in question:
                 result["behavior"] = int("0x001D", 16) # 场景上一步
-            elif "下一步" in question or "下一部" in question:
+            elif "下一步" in question or "下一部" in question or "下一页" in question or "下一个" in question:
                 result["behavior"] = int("0x001E", 16) # 场景下一步
             result["content"] = question
             return result
