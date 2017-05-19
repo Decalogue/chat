@@ -174,6 +174,7 @@ def jaccard(synonym_vector1, synonym_vector2):
         sv_rows = []
     matrix = mat(sv_matrix)
     result = sum_cosine(matrix, 0.8)
+    # result = sum_cosine(matrix, 0.85) # 区分“电脑”和“打印机”：标签前5位相同
     total = result["total"]
     total_dif = result["total_dif"]
     num = result["num_not_match"]

@@ -14,7 +14,8 @@ from .qa import Robot
 from .database import Database
 from .mytools import Walk
 
-# TODO: Add userid to os.environ["UserId"]
+# TODO: 提供用户注册和登录功能
+# is_admin=False 表示非管理员身份，此模式下导入的知识库topic属性均为user_chat
 database = Database(password="train", userid="userid", is_admin=False)
 
 class WalkUserData(Walk):

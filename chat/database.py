@@ -48,8 +48,12 @@ class Database():
         self.is_admin = is_admin
         self.rdb = None
         self.graph = Graph("http://localhost:7474/db/data", password=password)
-        self.gconfig = self.graph.find_one("User", "userid", userid)
         self.selector = NodeSelector(self.graph)
+        # DeprecationWarning: Graph.find_one is deprecated, use NodeSelector instead. 2017-5-18
+        # self.gconfig = self.graph.find_one("User", "userid", userid)
+        # 用法1：subgraph = selector.select("Label", property=value)
+        # 用法2：subgraph = selector.select("Person").where("_.name =~ 'J.*'", "1960 <= _.born < 1970")
+        self.gconfig = self.selector.select("User", userid=userid).first()
         self.usage = "usage: python %prog [options] arg"
         self.version = "%prog 1.0"
         self.parser = OptionParser(usage=self.usage, version=self.version)
@@ -75,45 +79,47 @@ class Database():
         if self.options.verbose:
             print("reading %s..." % self.options.filename)
         if self.options.delete:
-            for name in self.args:
-                self.delete(pattern=self.options.delete, name=name)
+            for label in self.args:
+                self.delete(pattern=self.options.delete, label=label)
 
-    def delete(self, pattern="n", name=None):
+    def delete(self, pattern="n", label=None):
         """Batch delete data or subgraph in database.
         在数据库中批量删除数据或者子图。
 
         Args:
             pattern: Type of subgraph. 子图类型。
-            name: Name of subgraph. 子图名称。
+            label: Label of subgraph. 子图标签。
         """
         if pattern == "all":
             self.graph.delete_all()
         elif pattern == "n":
-            self.graph.run("MATCH(n:" + name + ") DETACH DELETE n")
+            self.graph.run("MATCH(n:" + label + ") DETACH DELETE n")
         elif pattern == "r":
-            self.graph.run("MATCH (n)-[r:" + name + "]-(m) DETACH DELETE r")
+            self.graph.run("MATCH (n)-[r:" + label + "]-(m) DETACH DELETE r")
         elif pattern == "nr":
-            self.graph.run("MATCH (n)<-[r:" + name + "]-(m) DETACH DELETE r DELETE n")
+            self.graph.run("MATCH (n)<-[r:" + label + "]-(m) DETACH DELETE r DELETE n")
         elif pattern == "rm":
-            self.graph.run("MATCH (n)-[r:" + name + "]->(m) DETACH DELETE r DELETE m")
+            self.graph.run("MATCH (n)-[r:" + label + "]->(m) DETACH DELETE r DELETE m")
         elif pattern == "nrm":
-            self.graph.run("MATCH (n)-[r:" + name + "]-(m) DETACH DELETE r DELETE n DELETE m")
+            self.graph.run("MATCH (n)-[r:" + label + "]-(m) DETACH DELETE r DELETE n DELETE m")
 
-    def reset(self, pattern="n", name=None):
+    def reset(self, pattern="n", label=None, filename=None):
         """Reset data of label in database.
         重置数据库子图。
 
         Args:
             pattern: Type of subgraph. 子图类型。
-            name: Name of subgraph. 子图名称。
-        """
-        self.delete(pattern="n", name="NluCell")
+            label: Label of subgraph. 子图标签。
+        """ 
+        self.delete(pattern="n", label="NluCell")
         print("Delete successfully!")
-        filename = dictpath + "\\data\\chat.xls"
-        self.handle_excel(filename)
+        if os.path.exists(filename):
+            self.handle_excel(filename)
+        else:
+            print("You can set 'filename=<filepath>' when you call 'Database.reset.'")
         print("Reset successfully!")
 
-    def add_qa(self, nodeclass="NluCell", name=None, content=None, topic="", \
+    def add_qa(self, label="NluCell", name=None, content=None, topic="", \
     behavior="", parameter="", url="", tag="", keywords="", api="", txt="", \
     img="", chart="", delimiter=None):
         """
@@ -124,7 +130,7 @@ class Database():
         questions = name.split(delimiter)
         for question in questions:
             tag = get_tag(question, self.gconfig)
-            node = Node(nodeclass, name=question, content=content, topic=topic, \
+            node = Node(label, name=question, content=content, topic=topic, \
             behavior=behavior, parameter=parameter, url=url, tag=tag, \
             keywords=keywords, api=api, txt=txt, img=img, chart=chart, hot="0")
             self.graph.create(node)
@@ -185,7 +191,9 @@ class Database():
                 return None
             # Modify in 2017.4.28
             # 若子表格名字不存在，新建配置子图，否则只修改topic属性
-            config_node = self.graph.find_one("Config", "name", sheet_name)
+            # DeprecationWarning: Graph.find_one is deprecated, use NodeSelector instead. 2017-5-18
+            # config_node = self.graph.find_one("Config", "name", sheet_name)
+            config_node = self.selector.select("Config", name=sheet_name).first()
             if not config_node:
                 self.graph.run('MATCH (user:User {userid: "' + self.gconfig["userid"] + \
                 '"})\nCREATE (config:Config {name: "' + sheet_name + '", topic: "' + \
@@ -200,7 +208,7 @@ class Database():
         """
         Processing text file to generate subgraph.
         """
-        assert filename is not None, "filename can not be None"
+        assert filename is not None, "filename can not be None!"
         with open(filename, encoding="UTF-8") as file:
             question = file.readline().rstrip()
             while question:
@@ -209,3 +217,88 @@ class Database():
                 print("answer: " + answer)
                 self.add_qa(name=question, content=answer, delimiter="|")
                 question = file.readline().rstrip()
+
+    def register_subgraph(self, *, label="Config", name=None, topic=None):
+        """注册子知识库
+        """
+        assert name is not None, "Subgraph name can not be None!"
+        assert topic is not None, "Subgraph topic can not be None!"
+        subgraph = self.selector.select(label, name=name).first()
+        if subgraph:
+            topics = subgraph["topic"].split(",")
+            topics.extend(topic.split(","))
+            subgraph["topic"] = ",".join(set(topics))
+            self.graph.push(subgraph)
+        else:
+            node = Node(label, name=name, topic=topic)
+            self.graph.create(node)
+
+    def register_user(self, *, label="User", profile=None):
+        """注册用户
+        """
+        userid = input("\n欢迎注册！请输入userid: ")
+        while not userid:
+            userid = input("userid不能为空！请输入userid: ")
+        while self.graph.run("MATCH (user:User {userid: '" + userid + "'}) RETURN user").data():
+            userid = input("用户已存在！请输入新的userid: ")
+        username = input("username: ")
+        robotname = input("robotname: ")
+        robotage = input("robotage: ")
+        robotgender = input("robotgender: ")
+        mother = input("mother: ")
+        father = input("father: ")
+        companyname = input("companyname: ")
+        companytype = input("companytype: ")
+        servicename = input("servicename: ")
+        director = input("director: ")
+        address = input("address: ")
+        province = input("province: ")
+        city = input("city: ")
+        node = Node(label, userid=userid, username=username, robotname=robotname, \
+        robotage=robotage, robotgender=robotgender, mother=mother, father=father, \
+        companyname=companyname, companytype=companytype, servicename=servicename, \
+        director=director, address=address, province=province, city=city)
+        self.graph.create(node)
+        print("注册成功！")
+        # 设置知识库权限
+        subgraph_names = [item["name"] for item in self.selector.select("Config")]
+        print("可配置知识库列表：", subgraph_names)
+        for name in subgraph_names:
+            self.manage_user(userid=userid, name=name)
+
+    def manage_user(self, *, userid=None, name=None):
+        """管理用户
+        """
+        assert userid is not None, "Userid can not be None!"
+        assert name is not None, "Subgraph name can not be None!"
+        user = self.selector.select("User", userid=userid).first()
+        if not user:
+            print("用户不存在，建议您先注册！")
+            return
+        subgraph = self.selector.select("Config", name=name).first()
+        if not subgraph:
+            print("知识库不存在，建议您先注册！")
+            return
+
+        print("\n待配置知识库：", name)
+        bselected = input("是否选择 [1/0]: ")
+        if not bselected: bselected = "1"
+        available = input("是否可用 [1/0]: ")
+        if not available: available = "1"
+        set_string = "MATCH (user:User {userid: '" + userid + "'}), (subgraph:Config {name: '" \
+        + name + "'}) CREATE UNIQUE (user)-[r:has]->(subgraph) SET r.bselected=" \
+        + bselected + ", r.available=" + available
+        self.graph.run(set_string)
+        # match_string = "MATCH (user:User {userid: '" + userid + \
+        # "'})-[r:has]->(subgraph:Config {name: '" + name +"'}) RETURN r"
+        # relation = self.graph.run(match_string).data()
+        # if relation: # set
+            # set_string = "MATCH (user:User {userid: '" + userid + \
+        # "'})-[r:has]->(subgraph:Config {name: '" + name +"'}) SET r.bselected=" + bselected +", r.available=" + available
+            # self.graph.run(set_string)
+        # else: # create
+            # create_string = "MATCH (user:User {userid: '" + userid + \
+            # "'}), (subgraph:Config {name: '" + name +"'})" + \
+            # " CREATE UNIQUE (user)-[:has {bselected: " + bselected + \
+            # ", available: " + available + "}]->(subgraph)"
+            # self.graph.run(create_string)

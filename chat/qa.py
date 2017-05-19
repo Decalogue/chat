@@ -245,8 +245,9 @@ class Robot():
             返回包含答案，当前话题，资源包，行为指令及对应参数的字典。
         """
         # 添加到问题记忆
-        self.qmemory.append(question)
-        self.add_to_memory(question, userid)
+        # self.qmemory.append(question)
+        # self.add_to_memory(question, userid)
+
         # 本地语义：全图模式
         #tag = get_tag(question)
         #subgraph = self.graph.find("NluCell", "tag", tag)
