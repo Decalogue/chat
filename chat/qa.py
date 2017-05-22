@@ -35,21 +35,28 @@ class Robot():
     - memory: The context memory of robot. 机器人对话上下文记忆。
     """
     def __init__(self):
+        # 连接图知识库
         self.graph = Graph("http://localhost:7474/db/data/", password="train")
+        # 语义模式：'semantic' or 'vec'
         self.pattern = 'semantic'
-        # 获取导航地点
+        # 获取导航地点数据库
         self.locations = get_navigation_location()
         # 在线场景标志，默认为False
         self.is_scene = False
-        # 调用百度地图IP定位api，需要在线，网络异常时返回默认地址：上海市
+        # 在线调用百度地图IP定位api，网络异常时返回默认地址：上海市
         self.address = get_location_by_ip()
+        # 机器人配置信息
         self.gconfig = None
+        # 可用话题列表
         self.usertopics = []
+        # 当前QA话题
         self.topic = ""
+        # 当前QA id
         self.qa_id = get_current_time()
 		# 短期记忆：最近问过的10个问题与10个答案
         self.qmemory = deque(maxlen=10)
         self.amemory = deque(maxlen=10)
+        # 匹配不到时随机回答
         self.do_not_know = [
             "这个问题太难了，{robotname}还在学习中",
             "这个问题{robotname}不会，要么我去问下",
@@ -69,7 +76,7 @@ class Robot():
         ]
 
     def __str__(self):
-        return "Hello! I'm {robotname} and I'm {age} years old.".format(**self.gconfig)
+        return "Hello! I'm {robotname} and I'm {robotage} years old.".format(**self.gconfig)
 
     @time_me()
     def configure(self, info="", userid="userid"):
