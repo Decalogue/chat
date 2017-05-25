@@ -14,7 +14,7 @@ from collections import deque
 from concurrent.futures import ProcessPoolExecutor
 from py2neo import Graph, Node, Relationship
 from .api import nlu_tuling, get_location_by_ip
-from .semantic import synonym_cut, get_tag, similarity, get_navigation_target
+from .semantic import synonym_cut, get_tag, similarity, get_navigation_target, check_swords
 from .mytools import time_me, get_current_time, random_item
 
 # 获取导航地点——Development requirements from Mr Tang in 2017-5-11.
@@ -265,8 +265,11 @@ class Robot():
         self.gconfig = self.graph.find_one("User", "userid", userid)
         self.usertopics = self.get_usertopics(userid=userid)
 
-        # 问题过滤器
-        question = question.lstrip(self.gconfig["robotname"])
+        # 问题过滤器(添加敏感词过滤 2017-5-25)
+        if check_swords(question):
+            print("问题包含敏感词！")
+            return dict(question=question, content=self.iformat(random_item(self.do_not_know)), \
+            context="", url="", behavior=0, parameter=0)
 
         # 导航: Development requirements from Mr Tang in 2017-5-11.
         result = self.extract_navigation(question)

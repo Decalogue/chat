@@ -11,6 +11,7 @@ Available functions:
 - All classes and functions: 所有类和函数
 """
 import os
+import codecs
 from string import punctuation
 import jieba
 dictpath = os.path.split(os.path.realpath(__file__))[0]
@@ -25,6 +26,26 @@ punctuation_zh = " 、，。°？！：；“”’‘～…【】（）《》�
 punctuation_all = list(punctuation) + list(punctuation_zh)
 # 句尾语气词过滤
 tone_words = "。？！的了呢吧吗啊啦"
+# 敏感词库 Modified in 2017-5-25
+try:
+    with codecs.open(dictpath + "\\dict\\sensitive_words.txt", "rb", "UTF-8") as file:
+        sensitive_words = file.read().split()
+except:
+    sensitive_words = []
+
+def check_swords(sentence):
+    """检测是否包含敏感词
+    """
+    for word in sensitive_words:
+        if word in sentence:
+            return True
+    return False
+    # words = synonym_cut(sentence, pattern="w")
+    # swords = set(sensitive_words).intersection(words)
+    # if swords:
+        # return True
+    # else:
+        # return False
 
 def synonym_cut(sentence, pattern="wf"):
     """Cut the sentence into a synonym vector tag.
