@@ -248,14 +248,3 @@ def get_musicinfo(sentence):
     singer = words[0]
     song = words[1]
     return (singer, song)
-
-def get_navigation_target(format_string=None, info=None):
-    """Get navigation target in sentence.
-    """
-    print(format_string)
-    words = ["带我去", "去"]
-    for keyword in words:
-        if info.startswith(keyword):
-            target = info.lstrip(keyword)
-            break
-    return target

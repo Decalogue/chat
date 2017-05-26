@@ -14,7 +14,7 @@ from collections import deque
 from concurrent.futures import ProcessPoolExecutor
 from py2neo import Graph, Node, Relationship
 from .api import nlu_tuling, get_location_by_ip
-from .semantic import synonym_cut, get_tag, similarity, get_navigation_target, check_swords
+from .semantic import synonym_cut, get_tag, similarity, check_swords
 from .mytools import time_me, get_current_time, random_item
 
 # 获取导航地点——Development requirements from Mr Tang in 2017-5-11.
@@ -320,7 +320,7 @@ class Robot():
             return result
 
         # 常用命令，交互，业务
-        # 上下文——重复命令
+        # 上下文——重复命令 TODO：确认返回的是正确的指令而不是例如唱歌时的结束语“可以了”
         if "再来一个" in question:
             return self.amemory[-1]
         tag = get_tag(question, self.gconfig)
@@ -362,11 +362,7 @@ class Robot():
                 temp = weather.split(";")[0].split(",")[1].split()
                 result["content"] = temp[0] + temp[2] + temp[3]
                 result["context"] = "nlu_tuling"
-            # 4.导航
-            # elif "带我去" in question or "去" in question:
-                # result["behavior"] = int("0x001B", 16)
-                # result["content"] = get_navigation_target(info=question)
-            # 5.nlu_tuling
+            # 4.nlu_tuling
             # else:
                 # result["content"] = nlu_tuling(question, loc=self.address)
                 # result["context"] = "nlu_tuling"

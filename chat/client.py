@@ -16,6 +16,7 @@ Available functions:
 
 import json
 import socket
+from .mytools import time_me
 
 mysock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 mysock.connect(("localhost", 7000))
@@ -117,5 +118,18 @@ def start():
             result = match(question=question, userid=userid)
         print(json.loads(result))
 
-if __name__ == '__main__':
-    start()
+@time_me()
+def batch_test(filename):
+    """Batch test.
+    """
+    assert filename is not None, "filename can not be None"
+    with open("result.txt", 'w', encoding="UTF-8") as result:
+        with open(filename, 'r', encoding="UTF-8") as testcase:
+            for line in testcase:
+                if not line:
+                    continue
+                question = line.rstrip()
+                answer = match(question=question, userid="userid")
+                result.write(question +"\n")
+                content = json.loads(answer)["content"]
+                result.write(content+ "\n\n")

@@ -14,8 +14,7 @@ class TestMe(TestCase):
         pass
 
     def test_reset(self):
-        pass
-        # self.datebase.reset(pattern="n", label="NluCell", filename="C:/nlu/data/chat.xls")
+        self.database.reset(pattern="n", label="NluCell", filename="C:/nlu/data/chat.xls")
 
     @time_me(format_string="ms")
     def test_add_qa(self):
@@ -31,8 +30,8 @@ class TestMe(TestCase):
         # self.database.register_subgraph(name="新命令", topic="new_chat")
 
     def test_register_user(self):
-        # pass
-        self.database.register_user()
+        pass
+        # self.database.register_user()
 
     def test_manage_user(self):
         pass
