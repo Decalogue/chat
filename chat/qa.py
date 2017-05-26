@@ -279,6 +279,7 @@ class Robot():
         # 云端在线场景
         result = dict(question=question, content="ok", context="basic_cmd", url="", \
         behavior=int("0x0000", 16), parameter=0)
+        # TODO: 简化为统一模式
         if "理财产品" in question and "取号" not in question:
             result["behavior"] = int("0x1002", 16) # 进入在线场景
             result["question"] = "理财产品" # 重定义为标准问题
@@ -295,7 +296,7 @@ class Robot():
             result["behavior"] = int("0x1002", 16) # 进入在线场景
             result["question"] = "我要取钱" # 重定义为标准问题
             self.is_scene = True # 在线场景标志
-        if "信用卡挂失" in question or "信用卡挂失" in question:
+        if "信用卡挂失" in question:
             result["behavior"] = int("0x1002", 16) # 进入在线场景
             result["question"] = "信用卡挂失" # 重定义为标准问题
             self.is_scene = True # 在线场景标志
@@ -307,10 +308,13 @@ class Robot():
             result["behavior"] = int("0x1002", 16) # 进入在线场景
             result["question"] = "办理粤通卡" # 重定义为标准问题
             self.is_scene = True # 在线场景标志
-        if "退出业务场景" in question or "退出" in question or "返回" in question:
-            result["behavior"] = int("0x0020", 16) # 场景退出
-            self.is_scene = False
-            return result
+        # 退出在线场景
+        end_scene = ["退出业务场景", "退出", "返回", "结束", "发挥"]
+        for item in end_scene:
+            if item in question:
+                result["behavior"] = int("0x0020", 16) # 场景退出
+                self.is_scene = False
+                return result
         if self.is_scene:
             if "上一步" in question or "上一部" in question or "上一页" in question or "上一个" in question:
                 result["behavior"] = int("0x001D", 16) # 场景上一步
