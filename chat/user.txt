@@ -1,0 +1,29 @@
+CREATE (userid:User {userid: "userid", robotname: "小民", robotage: "1岁", robotgender: "男孩", mother: "宁波GQY股份有限公司", father: "宁波GQY公司", username: "", companyname: "宁波GQY股份有限公司", companytype: "科技", servicename: "GQY业务", director: "郭总", address: "宁波GQY股份有限公司上海分公司", province: "浙江", city: "上海市"})
+CREATE (admin:User {userid: "A0001", robotname: "小民", robotage: "1岁", robotgender: "男孩", mother: "宁波GQY股份有限公司", father: "宁波GQY公司", username: "", companyname: "宁波GQY股份有限公司", companytype: "科技", servicename: "GQY业务", director: "郭总", address: "宁波GQY股份有限公司上海分公司", province: "浙江", city: "上海市"})
+CREATE (test:User {userid: "test", robotname: "小民", robotage: "1岁", robotgender: "男孩", mother: "宁波GQY股份有限公司", father: "宁波GQY公司", username: "", companyname: "宁波GQY股份有限公司", companytype: "科技", servicename: "GQY业务", director: "郭总", address: "宁波GQY股份有限公司上海分公司", province: "浙江", city: "上海市"})
+
+CREATE (cmd:Config {name: "基础命令", topic: "basic_cmd"})
+CREATE (chat:Config {name: "基础问答", topic: "basic_chat"})
+CREATE (bank:Config {name: "基础银行", topic: "basic_bank"})
+CREATE (cmbc:Config {name: "民生银行", topic: "bank_cmbc"})
+CREATE (user:Config {name: "客户问答", topic: "user_chat"})
+
+CREATE
+    (userid)-[:has {bselected: 1, available: 1}]->(cmd),
+    (userid)-[:has {bselected: 1, available: 1}]->(chat),
+    (userid)-[:has {bselected: 0, available: 1}]->(bank),
+    (userid)-[:has {bselected: 0, available: 0}]->(cmbc),
+    (userid)-[:has {bselected: 1, available: 1}]->(user)
+CREATE
+    (admin)-[:has {bselected: 1, available: 1}]->(cmd),
+    (admin)-[:has {bselected: 1, available: 1}]->(chat),
+    (admin)-[:has {bselected: 0, available: 1}]->(bank),
+    (admin)-[:has {bselected: 0, available: 1}]->(cmbc),
+    (admin)-[:has {bselected: 1, available: 1}]->(user)
+CREATE
+    (test)-[:has {bselected: 1, available: 1}]->(cmd),
+    (test)-[:has {bselected: 1, available: 1}]->(chat),
+    (test)-[:has {bselected: 1, available: 1}]->(bank),
+    (test)-[:has {bselected: 1, available: 1}]->(cmbc),
+    (test)-[:has {bselected: 1, available: 1}]->(user)
+    

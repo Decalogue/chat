@@ -280,6 +280,7 @@ class Robot():
         result = dict(question=question, content="ok", context="basic_cmd", url="", \
         behavior=int("0x0000", 16), parameter=0)
         # TODO: 简化为统一模式
+        # TODO {'behavior': 0, 'content': '理财产品取号', 'context': 'basic_cmd', 'parameter': 0, 'question': '理财产品取号', 'url': ''}
         if "理财产品" in question and "取号" not in question:
             result["behavior"] = int("0x1002", 16) # 进入在线场景
             result["question"] = "理财产品" # 重定义为标准问题
@@ -304,10 +305,17 @@ class Robot():
             result["behavior"] = int("0x1002", 16) # 进入在线场景
             result["question"] = "开通云闪付" # 重定义为标准问题
             self.is_scene = True # 在线场景标志
-        if "办理粤通卡" in question:
+        if "办理粤卡通" in question:
             result["behavior"] = int("0x1002", 16) # 进入在线场景
-            result["question"] = "办理粤通卡" # 重定义为标准问题
+            result["question"] = "办理粤卡通" # 重定义为标准问题
             self.is_scene = True # 在线场景标志
+        # 进入在线场景
+        # start_scene = ["理财产品", "wifi", "存款利率", "取钱", "信用卡挂失", "开通云闪付", "办理粤卡通"]
+        # for item in start_scene:
+            # if item in question:
+                # result["behavior"] = int("0x1002", 16) # 进入在线场景
+                # result["question"] = "办理粤卡通" # 重定义为标准问题
+                # self.is_scene = True # 在线场景标志
         # 退出在线场景
         end_scene = ["退出业务场景", "退出", "返回", "结束", "发挥"]
         for item in end_scene:
@@ -315,7 +323,15 @@ class Robot():
                 result["behavior"] = int("0x0020", 16) # 场景退出
                 self.is_scene = False
                 return result
+        previous_step = ["上一步", "上一部", "上一页", "上一个"]
+        next_step = ["下一步", "下一部", "下一页", "下一个"]
         if self.is_scene:
+            # for item in previous_step:
+                # if item in question:
+                    # result["behavior"] = int("0x001D", 16) # 场景上一步
+            # for item in next_step:
+                # if item in question:
+                    # result["behavior"] = int("0x001E", 16) # 场景下一步
             if "上一步" in question or "上一部" in question or "上一页" in question or "上一个" in question:
                 result["behavior"] = int("0x001D", 16) # 场景上一步
             elif "下一步" in question or "下一部" in question or "下一页" in question or "下一个" in question:
@@ -326,7 +342,9 @@ class Robot():
         # 常用命令，交互，业务
         # 上下文——重复命令 TODO：确认返回的是正确的指令而不是例如唱歌时的结束语“可以了”
         if "再来一个" in question:
+            # TODO：从记忆里选取最近的有意义行为作为重复的内容
             return self.amemory[-1]
+        # 本地标准语义
         tag = get_tag(question, self.gconfig)
         subgraph_all = list(self.graph.find("NluCell", "tag", tag))
         # subgraph_scene = [node for node in subgraph_all if node["topic"]==self.topic]
