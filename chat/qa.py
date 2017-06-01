@@ -84,6 +84,9 @@ class Robot():
         配置知识库。
         """
         assert userid is not "", "The userid can not be empty!"
+        match_string = "MATCH (config:Config) RETURN config.name as name"
+        subgraphs = [item[0] for item in self.graph.run(match_string)]
+        print("所有知识库：", subgraphs)
         if not info:
             config = {"databases": []}
             match_string = "MATCH (user:User)-[r:has]->(config:Config)" + \
@@ -94,11 +97,19 @@ class Robot():
             print("可配置信息：", config)
             return config
         else:
-            namelist = info.split()
-        print("新配置信息：", namelist)
-        for name in namelist:
+            selected_names = info.split()
+        forbidden_names = list(set(subgraphs).difference(set(selected_names)))
+        print("选中知识库：", selected_names)
+        print("禁用知识库：", forbidden_names)
+        # TODO：待合并精简
+        for name in selected_names:
             match_string = "MATCH (user:User)-[r:has]->(config:Config) where user.userid='" \
                 + userid + "' AND config.name='" + name + "' SET r.bselected=1"
+            # print(match_string)
+            self.graph.run(match_string)
+        for name in forbidden_names:
+            match_string = "MATCH (user:User)-[r:has]->(config:Config) where user.userid='" \
+                + userid + "' AND config.name='" + name + "' SET r.bselected=0"
             # print(match_string)
             self.graph.run(match_string)
         return self.get_usertopics(userid=userid)
@@ -377,7 +388,7 @@ class Robot():
             elif "附近" in question or "好吃的" in question:
                 result["behavior"] = int("0x001C", 16)
                 result["content"] = self.address
-            # 3.nlu_tuling(天气)
+            # 3.nlu_tuling(天气) TO Upgrade
             elif "天气" in question:
                 weather = nlu_tuling(question, loc=self.address)
                 result["behavior"] = int("0x0000", 16)
