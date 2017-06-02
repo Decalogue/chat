@@ -157,6 +157,7 @@ class Robot():
             self.graph.create(node)
 
     # Development requirements from Mr Tang in 2017-5-11.
+    # 由模糊匹配->全匹配 from Mr Tang in 2017-6-1.
     def extract_navigation(self, question):
         """Extract navigation。抽取导航地点。
         QA匹配模式：从导航地点列表选取匹配度最高的地点。
@@ -164,29 +165,29 @@ class Robot():
         Args:
             question: User question. 用户问题。
         """
-        temp_sim = 0
         result = dict(question=question, content=self.iformat(random_item(self.do_not_know)), \
             context="", url="", behavior=0, parameter=0)
-        sv1 = synonym_cut(question, 'wf')
-        if not sv1:
-            return result
+        # temp_sim = 0
+        # sv1 = synonym_cut(question, 'wf')
+        # if not sv1:
+            # return result
         for location in self.locations:
-            if location in question:
+            if "去" in question and location in question:
                 print("Original navigation")
                 result["content"] = location
                 result["context"] = "user_navigation"
                 result["behavior"] = int("0x001B", 16)
                 return result
-            sv2 = synonym_cut(location, 'wf')
-            if sv2:
-                temp_sim = similarity(sv1, sv2, 'j')
+            # sv2 = synonym_cut(location, 'wf')
+            # if sv2:
+                # temp_sim = similarity(sv1, sv2, 'j')
             # 匹配加速，不必选取最高相似度，只要达到阈值就终止匹配
-            if temp_sim > 0.92:
-                print("Navigation location: " + location + " Similarity Score: " + str(temp_sim))
-                result["content"] = location
-                result["context"] = "user_navigation"
-                result["behavior"] = int("0x001B", 16)
-                return result
+            # if temp_sim > 0.92:
+                # print("Navigation location: " + location + " Similarity Score: " + str(temp_sim))
+                # result["content"] = location
+                # result["context"] = "user_navigation"
+                # result["behavior"] = int("0x001B", 16)
+                # return result
         return result
 
     def extract_synonym(self, question, subgraph):
@@ -316,7 +317,7 @@ class Robot():
             result["behavior"] = int("0x1002", 16) # 进入在线场景
             result["question"] = "开通云闪付" # 重定义为标准问题
             self.is_scene = True # 在线场景标志
-        if "办理粤卡通" in question:
+        if "办理粤卡通" in question or "办理粤通卡" in question:
             result["behavior"] = int("0x1002", 16) # 进入在线场景
             result["question"] = "办理粤卡通" # 重定义为标准问题
             self.is_scene = True # 在线场景标志
