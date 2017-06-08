@@ -32,7 +32,7 @@ def add_qa(path=None, names=None):
 # 开机自动更新知识库
 add_qa("D:\新知识库")
 # 初始化语义服务器
-robot = Robot()
+robot = Robot(password="train")
 
 class MyTCPHandler(socketserver.BaseRequestHandler):
     """The request handler class for nlu server.

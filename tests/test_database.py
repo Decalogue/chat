@@ -14,8 +14,8 @@ class TestMe(TestCase):
         pass
 
     def test_reset(self):
+        # self.database.reset(pattern="n", label="NluCell", filename="C:/rain/cloud/one/data/one.xls")
         self.database.reset(pattern="n", label="NluCell", filename="C:/nlu/data/chat.xls")
-
     @time_me(format_string="ms")
     def test_add_qa(self):
         pass

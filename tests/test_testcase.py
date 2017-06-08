@@ -5,7 +5,7 @@
 """
 import sys
 sys.path.append("../")
-from chat.testcase import generate_test_cases, batch_test
+from chat.testcase import generate_test_cases
 
 if __name__ == '__main__':
     generate_test_cases(filename="C:/nlu/data/chat.xls", custom_sheets=["基础命令", "基础问答"])

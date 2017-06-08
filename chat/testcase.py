@@ -7,7 +7,7 @@ from py2neo import Graph, Node, Relationship
 from .mytools import read_excel, set_excel_style
 
 graph = Graph("http://localhost:7474/db/data/", password="train")
-gconfig = graph.find_one("User", "userid", "userid")
+gconfig = graph.find_one("User", "userid", "A0001")
 
 def generate_test_cases(filename=None, custom_sheets=None):
     """Generating test cases from data of excel.

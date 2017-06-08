@@ -119,17 +119,19 @@ def start():
         print(json.loads(result))
 
 @time_me()
-def batch_test(filename):
+def batch_test(filename, userid="A0001"):
     """Batch test.
     """
     assert filename is not None, "filename can not be None"
+    data = []
     with open("result.txt", 'w', encoding="UTF-8") as result:
         with open(filename, 'r', encoding="UTF-8") as testcase:
             for line in testcase:
                 if not line:
                     continue
                 question = line.rstrip()
-                answer = match(question=question, userid="userid")
+                answer = json.loads(match(question=question, userid=userid))
+                data.append(answer)
                 result.write(question +"\n")
-                content = json.loads(answer)["content"]
-                result.write(content+ "\n\n")
+                result.write(answer["content"]+ "\n\n")
+    return data

@@ -34,9 +34,9 @@ class Robot():
     - pattern: The pattern for NLU tool: 'semantic' or 'vec'. 语义标签或词向量模式。
     - memory: The context memory of robot. 机器人对话上下文记忆。
     """
-    def __init__(self):
+    def __init__(self, password="train"):
         # 连接图知识库
-        self.graph = Graph("http://localhost:7474/db/data/", password="train")
+        self.graph = Graph("http://localhost:7474/db/data/", password=password)
         # 语义模式：'semantic' or 'vec'
         self.pattern = 'semantic'
         # 获取导航地点数据库
@@ -84,6 +84,10 @@ class Robot():
         配置知识库。
         """
         assert userid is not "", "The userid can not be empty!"
+        # TO UPGRADE 对传入的userid参数分析，若不合适则报相应消息 2017-6-7
+        if userid != "A0001":
+            userid = "A0001"
+            print("userid 不是标准A0001，已经更改为A0001")
         match_string = "MATCH (config:Config) RETURN config.name as name"
         subgraphs = [item[0] for item in self.graph.run(match_string)]
         print("所有知识库：", subgraphs)
