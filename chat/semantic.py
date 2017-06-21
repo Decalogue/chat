@@ -30,7 +30,6 @@ tone_words = "。？！的了呢吧吗啊啦"
 try:
     with codecs.open(dictpath + "\\dict\\swords.txt", "r", "UTF-8") as file:
             sensitive_words = set(file.read().split())
-            newfile.wirte("\n".join(sensitive_words))
 except:
     sensitive_words = []
 
