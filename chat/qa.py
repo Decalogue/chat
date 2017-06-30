@@ -16,6 +16,7 @@ from py2neo import Graph, Node, Relationship
 from .api import nlu_tuling, get_location_by_ip
 from .semantic import synonym_cut, get_tag, similarity, check_swords
 from .mytools import time_me, get_current_time, random_item
+from .word2pinyin import pinyin_cut, jaccard_pinyin # Add in 2017-6-23
 
 # 获取导航地点——Development requirements from Mr Tang in 2017-5-11.
 def get_navigation_location():
@@ -194,6 +195,44 @@ class Robot():
                 # return result
         return result
 
+    def extract_pinyin(self, question, subgraph):
+        """Extract synonymous QA in NLU database。
+        QA匹配模式：从图形数据库选取匹配度最高的问答对。
+
+        Args:
+            question: User question. 用户问题。
+            subgraph: Sub graphs corresponding to the current dialogue. 当前对话领域对应的子图。
+        """
+        temp_sim = 0
+        result = dict(question=question, content=self.iformat(random_item(self.do_not_know)), \
+            context="", url="", behavior=0, parameter=0)
+        sv1 = pinyin_cut(question)
+        print(sv1)
+        for node in subgraph:
+            iquestion = self.iformat(node["name"])
+            sv2 = pinyin_cut(iquestion)
+            print("  ", sv2)
+            temp_sim = jaccard_pinyin(sv1, sv2)
+            print(temp_sim)
+            # 匹配加速，不必选取最高相似度，只要达到阈值就终止匹配
+            if temp_sim > 0.75:
+                print("Q: " + iquestion + " Similarity Score: " + str(temp_sim))
+                result["content"] = self.iformat(random_item(node["content"].split("|")))
+                result["context"] = node["topic"]
+                if node["url"]:
+                    # result["url"] = json.loads(random_item(node["url"].split("|")))
+                    result["url"] = random_item(node["url"].split("|"))
+                if node["behavior"]:
+                    result["behavior"] = int(node["behavior"], 16)
+                if node["parameter"]:
+                    result["parameter"] = int(node["parameter"])
+                func = node["api"]
+                if func:
+                    exec("result['content'] = " + func + "('" + result["content"] + \
+                        "', " + "question)")
+                return result
+        return result
+
     def extract_synonym(self, question, subgraph):
         """Extract synonymous QA in NLU database。
         QA匹配模式：从图形数据库选取匹配度最高的问答对。
@@ -286,7 +325,9 @@ class Robot():
             print("问题包含敏感词！")
             return dict(question=question, content=self.iformat(random_item(self.do_not_know)), \
             context="", url="", behavior=0, parameter=0)
-
+        # 姓氏引起误匹配重定义
+        if question.startswith("小") and len(question) == 2:
+            question = self.gconfig['robotname']
         # 导航: Development requirements from Mr Tang in 2017-5-11.
         result = self.extract_navigation(question)
         if result["context"] == "user_navigation":
@@ -369,11 +410,13 @@ class Robot():
         # if subgraph_scene:
         if usergraph_scene:
             result = self.extract_synonym(question, usergraph_scene)
+            # result = self.extract_pinyin(question, usergraph_scene)
             if result["context"]:
                 self.topic = result["context"]
                 self.amemory.append(result) # 添加到答案记忆
                 return result
         result = self.extract_synonym(question, usergraph_all)
+        # result = self.extract_pinyin(question, usergraph_all)
         # result  = self.extract_synonym(question, subgraph_all)
         self.topic = result["context"]
         self.amemory.append(result) # 添加到答案记忆

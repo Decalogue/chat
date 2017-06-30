@@ -14,9 +14,20 @@ class TestMe(TestCase):
         pass
 
     def test_reset(self):
+        pass
         # self.database.reset(pattern="n", label="NluCell", filename="C:/rain/cloud/one/data/one.xls")
-        self.database.reset(pattern="n", label="NluCell", filename="C:/nlu/data/chat.xls")
-    @time_me(format_string="ms")
+        # self.database.reset(pattern="n", label="NluCell", filename="C:/nlu/data/chat.xls")
+ 
+    def test_reset_ts(self):
+        """Reset data of label 'TestStandard' in database.
+        """
+        self.database.reset_ts(pattern="n", label="TestStandard", filename="C:/nlu/data/ts.xls")
+
+    def test_add_ts(self):
+        pass
+        # self.database.handle_ts("C:/nlu/data/ts.xls")
+
+    # @time_me(format_string="ms")
     def test_add_qa(self):
         pass
         # 1.Add qa with excel

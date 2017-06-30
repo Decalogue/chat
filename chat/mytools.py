@@ -226,6 +226,7 @@ def get_current_time(format_string="%Y-%m-%d-%H-%M-%S", info=None):
         current_time = result.encode().decode('unicode-escape')
     return current_time
 
+# TODO：根据《流畅的Python》123页5.5节修改完善
 def random_item(mylist):
     """Get random item of data.
     从数据中获取随机元素。

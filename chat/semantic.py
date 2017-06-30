@@ -29,7 +29,7 @@ tone_words = "。？！的了呢吧吗啊啦"
 # 敏感词库 Modified in 2017-5-25
 try:
     with codecs.open(dictpath + "\\dict\\swords.txt", "r", "UTF-8") as file:
-            sensitive_words = set(file.read().split())
+        sensitive_words = set(file.read().split())
 except:
     sensitive_words = []
 

@@ -1,6 +1,6 @@
-CREATE (userid:User {userid: "userid", robotname: "小民", robotage: "1岁", robotgender: "男孩", mother: "宁波GQY股份有限公司", father: "宁波GQY公司", username: "", companyname: "宁波GQY股份有限公司", companytype: "科技", servicename: "GQY业务", director: "郭总", address: "宁波GQY股份有限公司上海分公司", province: "浙江", city: "上海市"})
-CREATE (admin:User {userid: "A0001", robotname: "小民", robotage: "1岁", robotgender: "男孩", mother: "宁波GQY股份有限公司", father: "宁波GQY公司", username: "", companyname: "宁波GQY股份有限公司", companytype: "科技", servicename: "GQY业务", director: "郭总", address: "宁波GQY股份有限公司上海分公司", province: "浙江", city: "上海市"})
-CREATE (test:User {userid: "test", robotname: "小民", robotage: "1岁", robotgender: "男孩", mother: "宁波GQY股份有限公司", father: "宁波GQY公司", username: "", companyname: "宁波GQY股份有限公司", companytype: "科技", servicename: "GQY业务", director: "郭总", address: "宁波GQY股份有限公司上海分公司", province: "浙江", city: "上海市"})
+CREATE (userid:User {userid: "userid", robotname: "小民", robotage: "1岁", robotgender: "男孩", mother: "宁波GQY股份有限公司", father: "宁波GQY股份有限公司", username: "", companyname: "宁波GQY股份有限公司", companytype: "科技", servicename: "GQY业务", director: "郭总", address: "宁波GQY股份有限公司上海分公司", province: "浙江", city: "上海市"})
+CREATE (admin:User {userid: "A0001", robotname: "小民", robotage: "1岁", robotgender: "男孩", mother: "宁波GQY股份有限公司", father: "宁波GQY股份有限公司", username: "", companyname: "宁波GQY股份有限公司", companytype: "科技", servicename: "GQY业务", director: "郭总", address: "宁波GQY股份有限公司上海分公司", province: "浙江", city: "上海市"})
+CREATE (test:User {userid: "test", robotname: "小民", robotage: "1岁", robotgender: "男孩", mother: "宁波GQY股份有限公司", father: "宁波GQY股份有限公司", username: "", companyname: "宁波GQY股份有限公司", companytype: "科技", servicename: "GQY业务", director: "郭总", address: "宁波GQY股份有限公司上海分公司", province: "浙江", city: "上海市"})
 
 CREATE (cmd:Config {name: "基础命令", topic: "basic_cmd"})
 CREATE (chat:Config {name: "基础问答", topic: "basic_chat"})

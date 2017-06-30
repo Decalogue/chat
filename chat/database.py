@@ -111,6 +111,7 @@ class Database():
             pattern: Type of subgraph. 子图类型。
             label: Label of subgraph. 子图标签。
         """ 
+        assert filename is not None, "filename can not be None."
         self.delete(pattern="n", label="NluCell")
         print("Delete successfully!")
         if os.path.exists(filename):
@@ -118,6 +119,23 @@ class Database():
         else:
             print("You can set 'filename=<filepath>' when you call 'Database.reset.'")
         print("Reset successfully!")
+
+    def reset_ts(self, pattern="n", label="TestStandard", filename=None):
+        """Reset data of label in database.
+        重置数据库子图。
+
+        Args:
+            pattern: Type of subgraph. 子图类型。
+            label: Label of subgraph. 子图标签。
+        """ 
+        assert filename is not None, "filename can not be None."
+        self.delete(pattern="n", label=label)
+        print("Delete test standard successfully!")
+        if os.path.exists(filename):
+            self.handle_ts(filename)
+        else:
+            print("You can set 'filename=<filepath>' when you call 'Database.reset.'")
+        print("Reset test standard successfully!")
 
     def add_qa(self, label="NluCell", name=None, content=None, topic="", \
     behavior="", parameter="", url="", tag="", keywords="", api="", txt="", \
@@ -134,6 +152,59 @@ class Database():
             behavior=behavior, parameter=parameter, url=url, tag=tag, \
             keywords=keywords, api=api, txt=txt, img=img, chart=chart, hot="0")
             self.graph.create(node)
+
+    def add_ts(self, label="TestStandard", question=None, content=None, context="", \
+    behavior="", parameter="", url=""):
+        """
+        Add test standard node in graph.
+        """
+        assert question is not None, "question must be string."
+        assert content is not None, "content must be string."
+        for item in question.split():
+            node = Node(label, question=item, content=content, context=context, \
+            behavior=behavior, parameter=parameter, url=url)
+            self.graph.create(node)
+
+    def handle_ts(self, filename=None, custom_sheets=None):
+        """Processing data of test standard.
+        """
+        assert filename is not None, "filename can not be None."
+        data = read_excel(filename)
+        data_sheets = data.sheet_names()
+        if custom_sheets:
+            sheet_names = list(set(data_sheets).intersection(set(custom_sheets)))
+        else:
+            sheet_names = data_sheets
+        for sheet_name in sheet_names: # 可自定义要导入的子表格
+            table = data.sheet_by_name(sheet_name)
+            # 1.Select specified table
+            # table = data.sheet_by_index(0)
+            if data:
+                # 2.Select specified column
+                col_format = ['A', 'B', 'C', 'D', 'E', 'F']
+                try:
+                    nrows = table.nrows
+                    # ncols = table.ncols
+                    str_upcase = [i for i in string.ascii_uppercase]
+                    i_upcase = range(len(str_upcase))
+                    ncols_dir = dict(zip(str_upcase, i_upcase))
+                    col_index = [ncols_dir.get(i) for i in col_format]
+                    # 前两行为表头
+                    for i in range(2, nrows):
+                        question = table.cell(i, col_index[0]).value
+                        content = table.cell(i, col_index[1]).value
+                        context = table.cell(i, col_index[2]).value
+                        behavior = table.cell(i, col_index[3]).value
+                        parameter = table.cell(i, col_index[4]).value
+                        url = table.cell(i, col_index[5]).value
+                        self.add_ts(question=question, content=content, context=context, \
+                        behavior=behavior, parameter=parameter, url=url)
+                except Exception as error:
+                    print('Error: %s' %error)
+                    return None
+            else:
+                print('Error! Data of %s is empty!' %sheet_name)
+                return None
 
     def handle_excel(self, filename=None, custom_sheets=None):
         """Processing data of excel.

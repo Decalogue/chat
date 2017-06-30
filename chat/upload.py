@@ -14,6 +14,13 @@ def add_excel(names=None):
     filename = askopenfilename(filetypes=[('QA的excel文档', '*.xls')])
     database.handle_excel(filename, custom_sheets=names)
 
+def add_ts(names=None):
+    """Add subgraph from excel data.
+    """
+    database = Database(password="train")
+    filename = askopenfilename(filetypes=[('测试标准的excel文档', '*.xls')])
+    database.handle_ts(filename, custom_sheets=names)
+
 def add_subgraph():
     """Add subgraph from other graph database.
     """
