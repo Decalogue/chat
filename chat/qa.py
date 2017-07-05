@@ -57,7 +57,7 @@ class Robot():
 		# 短期记忆：最近问过的10个问题与10个答案
         self.qmemory = deque(maxlen=10)
         self.amemory = deque(maxlen=10)
-        # 匹配不到时随机回答
+        # 匹配不到时随机回答 TODO：记录回答不上的所有问题，
         self.do_not_know = [
             "这个问题太难了，{robotname}还在学习中",
             "这个问题{robotname}不会，要么我去问下",
@@ -364,7 +364,7 @@ class Robot():
             self.is_scene = True # 在线场景标志
         if "办理粤卡通" in question or "办理粤通卡" in question:
             result["behavior"] = int("0x1002", 16) # 进入在线场景
-            result["question"] = "办理粤卡通" # 重定义为标准问题
+            result["question"] = "办理粤通卡" # 重定义为标准问题 修正：2017-7-3
             self.is_scene = True # 在线场景标志
         # 进入在线场景
         # start_scene = ["理财产品", "wifi", "存款利率", "取钱", "信用卡挂失", "开通云闪付", "办理粤卡通"]
@@ -443,7 +443,11 @@ class Robot():
                 temp = weather.split(";")[0].split(",")[1].split()
                 result["content"] = temp[0] + temp[2] + temp[3]
                 result["context"] = "nlu_tuling"
-            # 4.nlu_tuling
+            # 4.追加记录回答不上的所有问题
+            # else:
+                # with open("do_not_know.txt", 'w', encoding="UTF-8") as file:
+                    # file.
+            # 5.nlu_tuling
             # else:
                 # result["content"] = nlu_tuling(question, loc=self.address)
                 # result["context"] = "nlu_tuling"
