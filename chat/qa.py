@@ -328,6 +328,12 @@ class Robot():
         # 姓氏引起误匹配重定义
         if question.startswith("小") and len(question) == 2:
             question = self.gconfig['robotname']
+        # 称呼过滤 Add in 2017-7-5
+        for robotname in ["小民", "小明", "小名", "晓明"]:
+            if question.startswith(robotname) and len(question) >= 4:
+                question = question.lstrip(robotname)
+        if not question:
+            question = self.gconfig['robotname']
         # 导航: Development requirements from Mr Tang in 2017-5-11.
         result = self.extract_navigation(question)
         if result["context"] == "user_navigation":
