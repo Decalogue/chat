@@ -8,6 +8,7 @@ Local and online TTS. 离在线语音合成。
 Available functions:
 - All classes and functions: 所有类和函数
 """
+import os
 import uuid
 import requests
 import pygame.mixer as mixer
@@ -36,7 +37,7 @@ class TTS():
     - url_post_base: The url of get requests。 POST请求的URL地址。
     - language: The language of send text。 发送文本的语言。
     """
-    def __init__(self, audioplayer=None):
+    def __init__(self, audioplayer=None, tempdir="."):
         if audioplayer:
             self.audioplayer = audioplayer
         else:
@@ -50,6 +51,7 @@ class TTS():
         self.access_token = self.get_token()
         self.mac_address = uuid.UUID(int=uuid.getnode()).hex[-12:]
         self.language = 'zh'
+        self.tempdir = tempdir if os.path.isdir(tempdir) else "."
 
     def get_token(self):
         """Get token.
@@ -82,11 +84,9 @@ class TTS():
         headers = {"Content-Type": "audio/mp3"}
         try:
             response = requests.get(url=self.url_get_base, params=data, headers=headers)
-            filename = "log/temp_" + get_current_time() + ".mp3"
-            file = open(filename, "wb")
-            file.write(response.content)
-            file.close()
-
+            filename = self.tempdir + "/" + get_current_time() + ".mp3"
+            with open(filename, "wb") as file:
+                file.write(response.content)
             self.audioplayer.music.load(filename)
             self.audioplayer.music.play()
         except RequestError as error:

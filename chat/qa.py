@@ -253,7 +253,8 @@ class Robot():
                 return result
             for node in subgraph:
                 iquestion = self.iformat(node["name"])
-                if question == iquestion:
+                # TODO: 添加question包含在iquestion里面的情况
+                if question == iquestion or iquestion in question:
                     print("Similarity Score: Original sentence")
                     result["content"] = self.iformat(random_item(node["content"].split("|")))
                     result["context"] = node["topic"]
