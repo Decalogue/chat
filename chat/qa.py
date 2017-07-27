@@ -293,6 +293,36 @@ class Robot():
                     return result
         return result
 
+    def extract_keysentence(self, question):
+        """Extract keysentence QA in NLU database。
+        QA匹配模式：从图形数据库选取包含关键句的问答对。
+
+        Args:
+            question: User question. 用户问题。
+        """
+        result = dict(question=question, content=self.iformat(random_item(self.do_not_know)), \
+            context="", url="", behavior=0, parameter=0)
+        match_string = "MATCH (n:NluCell) WHERE '" + question + "' CONTAINS n.name RETURN n LIMIT 1"
+        node = list(self.graph.run(match_string).data())[0]['n']
+        if node:
+            print("Similarity Score: Key sentence")
+            result["content"] = self.iformat(random_item(node["content"].split("|")))
+            result["context"] = node["topic"]
+            if node["url"]:
+                # result["url"] = json.loads(random_item(node["url"].split("|")))
+                result["url"] = random_item(node["url"].split("|"))
+            if node["behavior"]:
+                result["behavior"] = int(node["behavior"], 16)
+            if node["parameter"]:
+                result["parameter"] = int(node["parameter"])
+            # 知识实体节点api抽取原始问题中的关键信息，据此本地查询/在线调用第三方api/在线爬取
+            func = node["api"]
+            if func:
+                exec("result['content'] = " + func + "('" + result["content"] + \
+                    "', " + "question)")
+            return result
+        return result
+
     @time_me()
     def search(self, question="question", userid="userid"):
         """Nlu search. 语义搜索。
@@ -409,7 +439,15 @@ class Robot():
             # TODO：从记忆里选取最近的有意义行为作为重复的内容
             return self.amemory[-1]
         # 本地标准语义
+        # 模式1：包含关键句就匹配
+        result = self.extract_keysentence(question)
+        if result["context"]:
+            self.topic = result["context"]
+            self.amemory.append(result) # 添加到答案记忆
+            return result
+        # 模式2：选取语义得分大于阈值
         tag = get_tag(question, self.gconfig)
+        # TODO：添加语义标签和关键词综合匹配的情况
         subgraph_all = list(self.graph.find("NluCell", "tag", tag))
         # subgraph_scene = [node for node in subgraph_all if node["topic"]==self.topic]
         usergraph_all = [node for node in subgraph_all if node["topic"] in self.usertopics]
@@ -430,13 +468,8 @@ class Robot():
 
         # 在线语义
         if not self.topic:
-            # TODO：待完善的姓名不匹配问题
-            if question.startswith("我叫"):
-                result["behavior"] = int("0x000A", 16)
-                result["content"] = "3,2,1，茄子"
-                result["context"] = "basic_cmd"
             # 1.音乐(唱一首xxx的xxx)
-            elif "唱一首" in question or "唱首" in question or "我想听" in question:
+            if "唱一首" in question or "唱首" in question or "我想听" in question:
                 result["behavior"] = int("0x0001", 16)
                 result["content"] = "好的，正在准备哦"
             # 2.附近有什么好吃的

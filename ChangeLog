@@ -1,6 +1,7 @@
 CHANGES
 =======
 
+* 修正更新问题
 * 添加问题中只要包含关键语义就匹配的情况
 * 修正‘跟我来’和‘过来’误识别的情况。-2017-7-10
 * Add tts 语音合成
@@ -25,7 +26,7 @@ CHANGES
 * 修改匹配相似度参数
 * 修复测试遇到的问题
 * Update dict
-* Update get_navigation_location
+* Update get\_navigation\_location
 * v1.0.5
 * Update qa
 * Updata weather
