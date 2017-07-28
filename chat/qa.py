@@ -351,6 +351,7 @@ class Robot():
         self.gconfig = self.graph.find_one("User", "userid", userid)
         self.usertopics = self.get_usertopics(userid=userid)
 
+        # 一、预处理=====================================================
         # 问题过滤器(添加敏感词过滤 2017-5-25)
         if check_swords(question):
             print("问题包含敏感词！")
@@ -365,12 +366,12 @@ class Robot():
                 question = question.lstrip(robotname)
         if not question:
             question = self.gconfig['robotname']
-        # 导航: Development requirements from Mr Tang in 2017-5-11.
+        # 二、导航=======================================================
         result = self.extract_navigation(question)
         if result["context"] == "user_navigation":
             return result
 
-        # 云端在线场景
+        # 三、云端在线场景================================================
         result = dict(question=question, content="ok", context="basic_cmd", url="", \
         behavior=int("0x0000", 16), parameter=0)
         # TODO: 简化为统一模式
@@ -438,14 +439,9 @@ class Robot():
         if "再来一个" in question:
             # TODO：从记忆里选取最近的有意义行为作为重复的内容
             return self.amemory[-1]
-        # 本地标准语义
-        # 模式1：包含关键句就匹配
-        result = self.extract_keysentence(question)
-        if result["context"]:
-            self.topic = result["context"]
-            self.amemory.append(result) # 添加到答案记忆
-            return result
-        # 模式2：选取语义得分大于阈值
+
+        # 四、本地标准语义================================================
+        # 模式1：选取语义得分大于阈值
         tag = get_tag(question, self.gconfig)
         # TODO：添加语义标签和关键词综合匹配的情况
         subgraph_all = list(self.graph.find("NluCell", "tag", tag))
@@ -466,7 +462,15 @@ class Robot():
         self.topic = result["context"]
         self.amemory.append(result) # 添加到答案记忆
 
-        # 在线语义
+        # 模式2：包含关键句就匹配
+        if not self.topic:
+            result = self.extract_keysentence(question)
+            if result["context"]:
+                self.topic = result["context"]
+                self.amemory.append(result) # 添加到答案记忆
+                return result
+
+        # 五、在线语义====================================================
         if not self.topic:
             # 1.音乐(唱一首xxx的xxx)
             if "唱一首" in question or "唱首" in question or "我想听" in question:
