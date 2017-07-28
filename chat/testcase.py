@@ -9,7 +9,7 @@ from .mytools import read_excel, set_excel_style
 graph = Graph("http://localhost:7474/db/data/", password="train")
 gconfig = graph.find_one("User", "userid", "A0001")
 
-def generate_test_cases(filename=None, custom_sheets=None):
+def generate_test_cases(*, filename=None, custom_sheets=None, savedir='.'):
     """Generating test cases from data of excel.
     
     custom_sheets 选择的子表格集合
@@ -62,7 +62,7 @@ def generate_test_cases(filename=None, custom_sheets=None):
         else:
             print('Error! Data of %s is empty!' %sheet_name)
             return None
-    file.save("testcase.xls") # 保存文件
-    with open("testcase.txt", 'w', encoding="UTF-8") as new:
+    file.save(savedir + "/testcase.xls") # 保存文件
+    with open(savedir + "/testcase.txt", 'w', encoding="UTF-8") as new:
         for item in testlist:
             new.write(item + "\n")

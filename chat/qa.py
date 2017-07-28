@@ -303,8 +303,9 @@ class Robot():
         result = dict(question=question, content=self.iformat(random_item(self.do_not_know)), \
             context="", url="", behavior=0, parameter=0)
         match_string = "MATCH (n:NluCell) WHERE '" + question + "' CONTAINS n.name RETURN n LIMIT 1"
-        node = list(self.graph.run(match_string).data())[0]['n']
-        if node:
+        subgraph = self.graph.run(match_string).data()
+        if subgraph:
+            node = list(subgraph)[0]['n']
             print("Similarity Score: Key sentence")
             result["content"] = self.iformat(random_item(node["content"].split("|")))
             result["context"] = node["topic"]
