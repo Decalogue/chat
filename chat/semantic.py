@@ -25,7 +25,7 @@ from numpy import mat, zeros, where
 punctuation_zh = " 、，。°？！：；“”’‘～…【】（）《》｛｝×―－·→℃"
 punctuation_all = list(punctuation) + list(punctuation_zh)
 # 句尾语气词过滤
-tone_words = "。？！的了呢吧吗啊啦"
+tone_words = "。？！的了呢吧吗啊啦呀"
 # 敏感词库 Modified in 2017-5-25
 try:
     with codecs.open(dictpath + "\\dict\\swords.txt", "r", "UTF-8") as file:
