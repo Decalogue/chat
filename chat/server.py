@@ -12,7 +12,7 @@ import socketserver
 # import chardet
 from .qa import Robot
 from .database import Database
-from .mytools import Walk
+from .mytools import Walk, get_current_time
 
 # TODO: 提供用户注册和登录功能（目前机器人上userid都是"A0001"）
 # is_admin=False 表示非管理员身份，此模式下导入的知识库topic属性均为user_chat
@@ -64,6 +64,13 @@ class MyTCPHandler(socketserver.BaseRequestHandler):
             elif "config_content" in json_data.keys():
                 result = robot.configure(info=json_data["config_content"], \
                 userid=json_data["userid"])
+            # print(result)
+            with open("C:/nlu/bin/log.txt", "a", encoding="UTF-8") as file:
+                file.write(get_current_time("%Y-%m-%d %H:%M:%S") + "\n" \
+                    + json_data["ask_content"] + "\n")
+                for key in ["question", "content", "behavior", "url", "context", "parameter"]:
+                    file.write(key + ": " + str(result[key]) + "\n")
+                file.write("\n")
             # step 3.Send
             # self.request.sendall(json.dumps(result).encode(encoding))
             self.request.sendall(json.dumps(result).encode("UTF-8"))
