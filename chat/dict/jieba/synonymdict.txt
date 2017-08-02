@@ -91241,6 +91241,7 @@ take 2000 Kb05C01=
 小明 2000 robotname
 晓敏 2000 robotname
 晓明 2000 robotname
+陈晓明 2000 robotname
 小米 2000 robotname
 融融 2000 robotname
 荣荣 2000 robotname

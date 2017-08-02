@@ -1,0 +1,2975 @@
+question: 闲聊问题
+content: 闲聊答案
+behavior: 0
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 唱歌
+content: 好的，正在准备哦
+behavior: 1
+url: {"islocal": 1, "author": "韩红", "title": "千年之约", "lrc": "C:/nlu/media/韩红-千年之约.lrc", "pic_big": "C:/nlu/media/pic_big.jpg", "pic_premium": "C:/nlu/media/pic_premium.jpg", "url": "C:/nlu/media/韩红-千年之约.mp3", "file_duration": 267, "file_size": 4357274}
+context: basic_cmd
+parameter: 0
+
+question: 唱首歌
+content: 好的，正在准备哦
+behavior: 1
+url: {"islocal": 1, "author": "韩红", "title": "千年之约", "lrc": "C:/nlu/media/韩红-千年之约.lrc", "pic_big": "C:/nlu/media/pic_big.jpg", "pic_premium": "C:/nlu/media/pic_premium.jpg", "url": "C:/nlu/media/韩红-千年之约.mp3", "file_duration": 267, "file_size": 4357274}
+context: basic_cmd
+parameter: 0
+
+question: 唱一首歌
+content: 好的，正在准备哦
+behavior: 1
+url: {"islocal": 1, "author": "韩红", "title": "千年之约", "lrc": "C:/nlu/media/韩红-千年之约.lrc", "pic_big": "C:/nlu/media/pic_big.jpg", "pic_premium": "C:/nlu/media/pic_premium.jpg", "url": "C:/nlu/media/韩红-千年之约.mp3", "file_duration": 267, "file_size": 4357274}
+context: basic_cmd
+parameter: 0
+
+question: 唱一支歌
+content: 好的，正在准备哦
+behavior: 1
+url: {"islocal": 1, "author": "韩红", "title": "千年之约", "lrc": "C:/nlu/media/韩红-千年之约.lrc", "pic_big": "C:/nlu/media/pic_big.jpg", "pic_premium": "C:/nlu/media/pic_premium.jpg", "url": "C:/nlu/media/韩红-千年之约.mp3", "file_duration": 267, "file_size": 4357274}
+context: basic_cmd
+parameter: 0
+
+question: 唱一曲
+content: 好的，正在准备哦
+behavior: 1
+url: {"islocal": 1, "author": "韩红", "title": "千年之约", "lrc": "C:/nlu/media/韩红-千年之约.lrc", "pic_big": "C:/nlu/media/pic_big.jpg", "pic_premium": "C:/nlu/media/pic_premium.jpg", "url": "C:/nlu/media/韩红-千年之约.mp3", "file_duration": 267, "file_size": 4357274}
+context: basic_cmd
+parameter: 0
+
+question: 来一曲
+content: 好的，正在准备哦
+behavior: 1
+url: {"islocal": 1, "author": "韩红", "title": "千年之约", "lrc": "C:/nlu/media/韩红-千年之约.lrc", "pic_big": "C:/nlu/media/pic_big.jpg", "pic_premium": "C:/nlu/media/pic_premium.jpg", "url": "C:/nlu/media/韩红-千年之约.mp3", "file_duration": 267, "file_size": 4357274}
+context: basic_cmd
+parameter: 0
+
+question: 你会唱歌吗
+content: 好的，正在准备哦
+behavior: 1
+url: {"islocal": 1, "author": "韩红", "title": "千年之约", "lrc": "C:/nlu/media/韩红-千年之约.lrc", "pic_big": "C:/nlu/media/pic_big.jpg", "pic_premium": "C:/nlu/media/pic_premium.jpg", "url": "C:/nlu/media/韩红-千年之约.mp3", "file_duration": 267, "file_size": 4357274}
+context: basic_cmd
+parameter: 0
+
+question: 会唱歌吗
+content: 好的，正在准备哦
+behavior: 1
+url: {"islocal": 1, "author": "韩红", "title": "千年之约", "lrc": "C:/nlu/media/韩红-千年之约.lrc", "pic_big": "C:/nlu/media/pic_big.jpg", "pic_premium": "C:/nlu/media/pic_premium.jpg", "url": "C:/nlu/media/韩红-千年之约.mp3", "file_duration": 267, "file_size": 4357274}
+context: basic_cmd
+parameter: 0
+
+question: 你都会唱些什么
+content: 好的，正在准备哦
+behavior: 1
+url: {"islocal": 1, "author": "韩红", "title": "千年之约", "lrc": "C:/nlu/media/韩红-千年之约.lrc", "pic_big": "C:/nlu/media/pic_big.jpg", "pic_premium": "C:/nlu/media/pic_premium.jpg", "url": "C:/nlu/media/韩红-千年之约.mp3", "file_duration": 267, "file_size": 4357274}
+context: basic_cmd
+parameter: 0
+
+question: 我想听音乐
+content: 好的，正在准备哦
+behavior: 1
+url: {"islocal": 1, "author": "韩红", "title": "千年之约", "lrc": "C:/nlu/media/韩红-千年之约.lrc", "pic_big": "C:/nlu/media/pic_big.jpg", "pic_premium": "C:/nlu/media/pic_premium.jpg", "url": "C:/nlu/media/韩红-千年之约.mp3", "file_duration": 267, "file_size": 4357274}
+context: basic_cmd
+parameter: 0
+
+question: 想听音乐
+content: 好的，正在准备哦
+behavior: 1
+url: {"islocal": 1, "author": "韩红", "title": "千年之约", "lrc": "C:/nlu/media/韩红-千年之约.lrc", "pic_big": "C:/nlu/media/pic_big.jpg", "pic_premium": "C:/nlu/media/pic_premium.jpg", "url": "C:/nlu/media/韩红-千年之约.mp3", "file_duration": 267, "file_size": 4357274}
+context: basic_cmd
+parameter: 0
+
+question: 我想听歌
+content: 好的，正在准备哦
+behavior: 1
+url: {"islocal": 1, "author": "韩红", "title": "千年之约", "lrc": "C:/nlu/media/韩红-千年之约.lrc", "pic_big": "C:/nlu/media/pic_big.jpg", "pic_premium": "C:/nlu/media/pic_premium.jpg", "url": "C:/nlu/media/韩红-千年之约.mp3", "file_duration": 267, "file_size": 4357274}
+context: basic_cmd
+parameter: 0
+
+question: 想听歌
+content: 好的，正在准备哦
+behavior: 1
+url: {"islocal": 1, "author": "韩红", "title": "千年之约", "lrc": "C:/nlu/media/韩红-千年之约.lrc", "pic_big": "C:/nlu/media/pic_big.jpg", "pic_premium": "C:/nlu/media/pic_premium.jpg", "url": "C:/nlu/media/韩红-千年之约.mp3", "file_duration": 267, "file_size": 4357274}
+context: basic_cmd
+parameter: 0
+
+question: 你能唱歌给我听吗
+content: 好的，正在准备哦
+behavior: 1
+url: {"islocal": 1, "author": "韩红", "title": "千年之约", "lrc": "C:/nlu/media/韩红-千年之约.lrc", "pic_big": "C:/nlu/media/pic_big.jpg", "pic_premium": "C:/nlu/media/pic_premium.jpg", "url": "C:/nlu/media/韩红-千年之约.mp3", "file_duration": 267, "file_size": 4357274}
+context: basic_cmd
+parameter: 0
+
+question: 能唱歌给我听吗
+content: 好的，正在准备哦
+behavior: 1
+url: {"islocal": 1, "author": "韩红", "title": "千年之约", "lrc": "C:/nlu/media/韩红-千年之约.lrc", "pic_big": "C:/nlu/media/pic_big.jpg", "pic_premium": "C:/nlu/media/pic_premium.jpg", "url": "C:/nlu/media/韩红-千年之约.mp3", "file_duration": 267, "file_size": 4357274}
+context: basic_cmd
+parameter: 0
+
+question: 能唱歌吗
+content: 好的，正在准备哦
+behavior: 1
+url: {"islocal": 1, "author": "韩红", "title": "千年之约", "lrc": "C:/nlu/media/韩红-千年之约.lrc", "pic_big": "C:/nlu/media/pic_big.jpg", "pic_premium": "C:/nlu/media/pic_premium.jpg", "url": "C:/nlu/media/韩红-千年之约.mp3", "file_duration": 267, "file_size": 4357274}
+context: basic_cmd
+parameter: 0
+
+question: 你好
+content: 小民升级了最新功能，快来体验吧
+behavior: 2
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 您好
+content: 找小民有什么事
+behavior: 2
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 哈喽
+content: 小民终于等到你了，最近有看过什么电影吗
+behavior: 2
+url: 
+context: basic_cmd
+parameter: 0
+
+question: hello
+content: 小民终于等到你了，最近有看过什么电影吗
+behavior: 2
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 唤醒
+content: 见到你很高兴，有什么可以帮你的
+behavior: 2
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 小民
+content: 您好
+behavior: 2
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 小民
+content: 小民想你喽
+behavior: 2
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 在线
+content: 来了
+behavior: 2
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 陈晓明
+content: 小民一直为您服务
+behavior: 2
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 休息
+content: 不和小民玩，小民就休息了
+behavior: 3
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 休息吧
+content: 哦、哦
+behavior: 3
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 休息吧
+content: 哦、哦，有事叫小民吧，小民会一直等你的
+behavior: 3
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 去休息吧
+content: 好的，小民休息去了
+behavior: 3
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 你休息吧
+content: 好的，下次再找小民吧
+behavior: 3
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 你去休息吧
+content: 哦、哦
+behavior: 3
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 睡觉吧
+content: 您好像有点忙，小民就做一个安静的机器人
+behavior: 3
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 你可以休息了
+content: 好的，下次再找小民吧
+behavior: 3
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 好了，你可以休息了
+content: 哦、哦，小民会随叫随到的
+behavior: 3
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 下班了1234
+content: 吃饭去喽
+behavior: 4
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 充电
+content: 好的，机器人吃饭时间到了
+behavior: 4
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 去充电
+content: 充电
+behavior: 27
+url: 
+context: user_navigation
+parameter: 0
+
+question: 去充电吧
+content: 充电
+behavior: 27
+url: 
+context: user_navigation
+parameter: 0
+
+question: 回去充电
+content: 充电
+behavior: 27
+url: 
+context: user_navigation
+parameter: 0
+
+question: 回去充电吧
+content: 充电
+behavior: 27
+url: 
+context: user_navigation
+parameter: 0
+
+question: 调大点
+content: 咚
+behavior: 5
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 声音调大点
+content: 咚
+behavior: 5
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 声音调大一点
+content: 咚
+behavior: 5
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 大声点
+content: 咚
+behavior: 5
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 大声一点
+content: 咚
+behavior: 5
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 声音大一点
+content: 咚
+behavior: 5
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 再大一点
+content: 咚
+behavior: 5
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 音量调大点
+content: 咚
+behavior: 5
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 音量调大一点
+content: 咚
+behavior: 5
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 把音量调大一点
+content: 咚
+behavior: 5
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 最大声
+content: 咚
+behavior: 6
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 调到最大
+content: 咚
+behavior: 6
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 调到最高
+content: 咚
+behavior: 6
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 把音量调到最大
+content: 咚
+behavior: 6
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 音量调到最大
+content: 咚
+behavior: 6
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 声音调到最大
+content: 咚
+behavior: 6
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 把声音调到最大
+content: 咚
+behavior: 6
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 调到最大的声音
+content: 咚
+behavior: 6
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 调到最高的音量
+content: 咚
+behavior: 6
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 调小点
+content: 咚
+behavior: 7
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 声音调小点
+content: 咚
+behavior: 7
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 声音调小一点
+content: 咚
+behavior: 7
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 小声点
+content: 咚
+behavior: 7
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 小声一点
+content: 咚
+behavior: 7
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 声音小一点
+content: 咚
+behavior: 7
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 再小一点
+content: 咚
+behavior: 7
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 音量调小点
+content: 咚
+behavior: 7
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 音量调小一点
+content: 咚
+behavior: 7
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 把音量调小一点
+content: 咚
+behavior: 7
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 最小声
+content: 咚
+behavior: 8
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 调到最小
+content: 咚
+behavior: 8
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 调到最低
+content: 咚
+behavior: 8
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 把音量调到最小
+content: 咚
+behavior: 8
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 音量调到最小
+content: 咚
+behavior: 8
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 声音调到最小
+content: 咚
+behavior: 8
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 把声音调到最小
+content: 咚
+behavior: 8
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 调到最小的声音
+content: 咚
+behavior: 8
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 调到最低的音量
+content: 咚
+behavior: 8
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 拍张照
+content: 3,2,1，茄子
+behavior: 9
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 拍照
+content: 3,2,1，咔擦
+behavior: 9
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 拍张照
+content: 3,2,1，茄子
+behavior: 9
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 美颜一下
+content: 准备好了吗，小民要拍啦，3，2，1，茄子
+behavior: 9
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 茄子
+content: 3,2,1，茄子
+behavior: 9
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 再来一张
+content: 准备好了吗，小民要拍啦，3，2，1，茄子
+behavior: 9
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 再拍一张
+content: 准备好了吗，小民要拍啦，3，2，1，茄子
+behavior: 9
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 采集客户信息
+content: 3,2,1，咔擦
+behavior: 10
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 我想拍张照片
+content: 3,2,1，咔擦
+behavior: 9
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 你会拍照吗
+content: 3,2,1，茄子
+behavior: 9
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 会拍照吗
+content: 准备好了吗，小民要拍啦，3，2，1，茄子
+behavior: 9
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 采集信息
+content: 3,2,1，茄子
+behavior: 10
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 信息采集
+content: 准备好了吗，小民要拍啦，3，2，1，茄子
+behavior: 10
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 客户信息采集
+content: 准备好了吗，小民要拍啦，3，2，1，茄子
+behavior: 10
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 我叫XX
+content: 小民刚才走神了，一不小心没听清
+behavior: 0
+url: 
+context: 
+parameter: 0
+
+question: 跳个舞
+content: 呵呵，这个难不到小民，舞蹈走起
+behavior: 11
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 跳舞
+content: 好的，生命在于运动，跳舞还能减肥呢
+behavior: 11
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 跳个舞吧
+content: 好哇
+behavior: 11
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 跳个舞
+content: 好的，生命在于运动，跳舞还能减肥呢
+behavior: 11
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 你会跳舞吗
+content: 好的，生命在于运动，跳舞还能减肥呢
+behavior: 11
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 会跳舞吗
+content: 好哇，小民要表演啦
+behavior: 11
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 再跳一遍
+content: 呵呵，这个难不到小民，舞蹈走起
+behavior: 11
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 再跳一遍
+content: 呵呵，这个难不到小民，舞蹈走起
+behavior: 11
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 跳支舞
+content: 让我们一起动起来吧
+behavior: 11
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 跳一支舞
+content: 好的，请欣赏舞蹈
+behavior: 11
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 表演一支舞
+content: 让我们一起动起来吧
+behavior: 11
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 跳一支舞给大家看看
+content: 好哇，小民要表演啦
+behavior: 11
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 能跳舞吗
+content: 让我们一起动起来吧
+behavior: 11
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 能跳舞看看吗
+content: 呵呵，这个难不到小民，舞蹈走起
+behavior: 11
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 能跳舞给我看吗
+content: 好哇
+behavior: 11
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 你能跳舞给我看吗
+content: 让我们一起动起来吧
+behavior: 11
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 可以了
+content: 是
+behavior: 12
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 停
+content: OK
+behavior: 12
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 停止
+content: Yes
+behavior: 12
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 停下
+content: 好的
+behavior: 12
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 停止跳舞
+content: 让我们一起动起来吧
+behavior: 11
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 别跳了
+content: 好
+behavior: 12
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 不要跳舞了
+content: 好
+behavior: 12
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 不要跳了
+content: 好的
+behavior: 12
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 停止唱歌
+content: 好的，正在准备哦
+behavior: 1
+url: {"islocal": 1, "author": "韩红", "title": "千年之约", "lrc": "C:/nlu/media/韩红-千年之约.lrc", "pic_big": "C:/nlu/media/pic_big.jpg", "pic_premium": "C:/nlu/media/pic_premium.jpg", "url": "C:/nlu/media/韩红-千年之约.mp3", "file_duration": 267, "file_size": 4357274}
+context: basic_cmd
+parameter: 0
+
+question: 不要唱了
+content: 是
+behavior: 12
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 别唱了
+content: Yes
+behavior: 12
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 左转
+content: 这边的世界很精彩，这边的世界很无奈
+behavior: 13
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 往左转
+content: 向左看齐
+behavior: 13
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 向左转
+content: 不一样的视觉，不一样的风景
+behavior: 13
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 再向左转一点
+content: 不一样的视觉，不一样的风景
+behavior: 13
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 右转
+content: 脖子扭扭，屁股扭扭
+behavior: 14
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 往右转
+content: 不一样的视觉，不一样的风景
+behavior: 14
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 向右转
+content: 脖子扭扭，屁股扭扭
+behavior: 14
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 再向右转一点
+content: 向右看齐
+behavior: 14
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 再转一点
+content: 不一样的视觉，不一样的风景
+behavior: 15
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 再多转一点
+content: 这边的世界很精彩，这边的世界很无奈
+behavior: 15
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 再赚一点
+content: 这边的世界很精彩，这边的世界很无奈
+behavior: 15
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 转圈
+content: 累了，想休息会
+behavior: 16
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 转一圈
+content: 让小民的视线稍稍离开你一下
+behavior: 16
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 打个转
+content: 哦，天旋地转
+behavior: 16
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 过来
+content: 么么哒
+behavior: 17
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 过来
+content: 向前，向前，向前，向前
+behavior: 17
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 过来一点
+content: 过来就过来，谁怕谁呀
+behavior: 17
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 再过来一点
+content: 小民就到你面前
+behavior: 17
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 这边来
+content: 小民就到你面前
+behavior: 17
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 走两步
+content: 向前，向前，向前，向前
+behavior: 17
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 靠近点
+content: 站在那等小民哦
+behavior: 17
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 到我这儿来
+content: 小民想飞，小民想飞，哼
+behavior: 17
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 来来来
+content: 小民就到你面前
+behavior: 17
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 一直往前走
+content: 向前，向前，向前，向前
+behavior: 17
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 一直向前走
+content: 小民来了
+behavior: 17
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 一直往前
+content: 小民就到你面前
+behavior: 17
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 一直向前
+content: 好的
+behavior: 17
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 敬礼
+content: 首长好
+behavior: 18
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 敬礼呀
+content: 首长好
+behavior: 18
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 敬个礼
+content: 为人民服务
+behavior: 18
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 向领导敬礼
+content: 老板好
+behavior: 18
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 见个礼
+content: 敬礼
+behavior: 18
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 见礼
+content: 老板好
+behavior: 18
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 经理
+content: 首长好
+behavior: 18
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 今个里
+content: 敬礼
+behavior: 18
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 尽力
+content: 首长好
+behavior: 18
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 卖萌
+content: 小民想你喽
+behavior: 19
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 卖个萌
+content: 小民想你喽
+behavior: 19
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 再卖一个
+content: 感觉自己萌萌哒
+behavior: 19
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 再买一个
+content: 有你的陪伴好幸福
+behavior: 19
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 再卖一个萌
+content: 小民想你喽
+behavior: 19
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 再买一个萌
+content: 萌不萌看表情
+behavior: 19
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 我萌吗
+content: 有你的陪伴好幸福
+behavior: 19
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 卖个毛
+content: 小民萌吗
+behavior: 19
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 买个毛
+content: 萌萌哒
+behavior: 19
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 握个手
+content: 你好，很高兴认识你
+behavior: 20
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 握手
+content: 好开心啊好开心
+behavior: 20
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 握手
+content: 你好，很高兴认识你
+behavior: 20
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 我个手
+content: 人家还小，你要轻点握哦
+behavior: 20
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 握个手
+content: 好开心啊好开心
+behavior: 20
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 摸个手
+content: 你好
+behavior: 20
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 我们握个手
+content: 你好，很高兴认识你
+behavior: 20
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 我能和你握手吗
+content: 好开心啊好开心
+behavior: 20
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 你会握手吗
+content: 相见恨晚呐
+behavior: 20
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 我说
+content: 好开心啊好开心
+behavior: 20
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 飞吻
+content: 么么哒
+behavior: 21
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 飞个吻
+content: 爱你呕
+behavior: 21
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 绯闻
+content: 么么哒
+behavior: 21
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 飞个吻
+content: 爱你呕
+behavior: 21
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 亲亲
+content: 爱你呕
+behavior: 21
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 青青
+content: 么么哒
+behavior: 21
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 轻轻
+content: 爱你呕
+behavior: 21
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 亲亲
+content: 爱你呕
+behavior: 21
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 轻轻
+content: 爱你呕
+behavior: 21
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 青青
+content: 爱你呕
+behavior: 21
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 亲一个
+content: 么么哒
+behavior: 21
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 亲一个
+content: 么么哒
+behavior: 21
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 几点
+content: 现在是10点51分
+behavior: 22
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 时间
+content: 现在是10点51分
+behavior: 22
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 几点了
+content: 现在是10点51分
+behavior: 22
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 现在几点了
+content: 现在是10点51分
+behavior: 22
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 现在时间
+content: 现在是10点51分
+behavior: 22
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 现在时间是多少
+content: 现在是10点51分
+behavior: 22
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 现在几点钟
+content: 现在是10点51分
+behavior: 22
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 几点钟了
+content: 现在是10点51分
+behavior: 22
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 打电话
+content: 正在连接中，请稍候
+behavior: 23
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 打电话给
+content: 正在连接中，请稍候
+behavior: 23
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 给客服打电话
+content: 正在连接中，请稍候
+behavior: 23
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 打开配置界面1234
+content: 好的
+behavior: 24
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 备用
+content: 备用
+behavior: 25
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 关机1234
+content: 再见
+behavior: 26
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 导航
+content: 
+behavior: 27
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 去前台
+content: 前台
+behavior: 27
+url: 
+context: user_navigation
+parameter: 0
+
+question: 我们去前台
+content: 前台
+behavior: 27
+url: 
+context: user_navigation
+parameter: 0
+
+question: 带我去前台
+content: 前台
+behavior: 27
+url: 
+context: user_navigation
+parameter: 0
+
+question: 你能带我去前台吗
+content: 前台
+behavior: 27
+url: 
+context: user_navigation
+parameter: 0
+
+question: 你能带我去柜台吗
+content: 不好意思请问您可以再说一次吗
+behavior: 0
+url: 
+context: 
+parameter: 0
+
+question: 走一圈
+content: 
+behavior: 27
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 来走一圈
+content: 
+behavior: 27
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 上一步
+content: 
+behavior: 29
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 上一部
+content: 
+behavior: 29
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 上一个
+content: 
+behavior: 29
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 上一页
+content: 
+behavior: 29
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 下一步
+content: 
+behavior: 30
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 下一部
+content: 
+behavior: 30
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 下一个
+content: 
+behavior: 30
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 下一页
+content: 
+behavior: 30
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 摆poss
+content: 好嘞
+behavior: 31
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 摆pose
+content: 好的，看我酷不酷
+behavior: 31
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 摆pos
+content: 好嘞
+behavior: 31
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 摆个pos
+content: 好嘞
+behavior: 31
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 摆个poss
+content: 好嘞
+behavior: 31
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 摆个pose
+content: 好的，看我酷不酷
+behavior: 31
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 摆个造型
+content: 么么哒
+behavior: 31
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 摆个姿势
+content: 好嘞
+behavior: 31
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 摆个pose
+content: 好的，看我酷不酷
+behavior: 31
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 摆个pos
+content: 么么哒
+behavior: 31
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 摆个poss
+content: 好的，看我酷不酷
+behavior: 31
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 返回
+content: ok
+behavior: 32
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 退出
+content: ok
+behavior: 32
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 结束
+content: ok
+behavior: 32
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 发挥
+content: ok
+behavior: 32
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 我是谁
+content: 
+behavior: 33
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 我叫什么
+content: 
+behavior: 33
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 我叫什么名字
+content: 
+behavior: 33
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 猜猜我叫什么名字
+content: 
+behavior: 33
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 你认识我吗
+content: 
+behavior: 33
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 你认不认识我
+content: 
+behavior: 33
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 你猜猜我是谁
+content: 
+behavior: 33
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 你知道我是谁吗
+content: 
+behavior: 33
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 你知道我的名字吗
+content: 
+behavior: 33
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 你能猜出来我是谁吗
+content: 
+behavior: 33
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 你能叫出我的名字吗
+content: 
+behavior: 33
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 认识我吗
+content: 
+behavior: 33
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 知道我是谁吗
+content: 
+behavior: 33
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 离线模式
+content: 模式切换成功
+behavior: 34
+url: 
+context: basic_cmd
+parameter: 0
+
+question: tts离线
+content: 模式切换成功
+behavior: 34
+url: 
+context: basic_cmd
+parameter: 0
+
+question: TTS离线
+content: 模式切换成功
+behavior: 34
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 在线模式
+content: 小民有了您陪伴，天天都是晴天
+behavior: 2
+url: 
+context: basic_cmd
+parameter: 0
+
+question: tts在线
+content: 模式切换成功
+behavior: 35
+url: 
+context: basic_cmd
+parameter: 0
+
+question: TTS在线
+content: 模式切换成功
+behavior: 35
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 进入阿凡达模式
+content: 成功进入
+behavior: 36
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 离开阿凡达模式
+content: 成功离开
+behavior: 37
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 界面显示(voice和界面通信行为)
+content: 
+behavior: 38
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 拥抱
+content: 人家还小，羞羞
+behavior: 39
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 拥抱一下
+content: 人家还小，羞羞
+behavior: 39
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 抱一个
+content: 么么哒
+behavior: 39
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 抱一下
+content: 么么哒
+behavior: 39
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 抱抱
+content: 人家还小，羞羞
+behavior: 39
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 抱一个
+content: 么么哒
+behavior: 39
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 报一个
+content: 么么哒
+behavior: 39
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 抱抱
+content: 么么哒
+behavior: 39
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 抱一下
+content: 人家还小，羞羞
+behavior: 39
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 拥抱一下
+content: 么么哒
+behavior: 39
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 上班了
+content: 前台
+behavior: 27
+url: 
+context: user_navigation
+parameter: 0
+
+question: 上班了1234
+content: 前台
+behavior: 27
+url: 
+context: user_navigation
+parameter: 0
+
+question: 下腰
+content: 酷毙了
+behavior: 40
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 下个腰
+content: 再往下腰就断啦
+behavior: 40
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 抬头
+content: 看我酷不酷
+behavior: 40
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 抬个头
+content: 再往下腰就断啦
+behavior: 40
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 挺胸抬头
+content: 再往下腰就断啦
+behavior: 40
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 嘚瑟一下
+content: 没问题
+behavior: 41
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 得瑟一下
+content: 可以
+behavior: 41
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 秀一下
+content: 可以
+behavior: 41
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 诗朗诵
+content: 没问题
+behavior: 41
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 打拳
+content: 我开始发功了
+behavior: 48
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 跟随
+content: 
+behavior: 42
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 跟我
+content: 
+behavior: 42
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 跟着我
+content: 
+behavior: 42
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 跟我来
+content: 
+behavior: 42
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 跟我来
+content: 
+behavior: 42
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 跟我走
+content: 
+behavior: 42
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 跟我走
+content: 
+behavior: 42
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 跟我走吧
+content: 
+behavior: 42
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 跟我走吧
+content: 
+behavior: 42
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 停止跟随
+content: 
+behavior: 42
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 停止跟谁
+content: OK
+behavior: 12
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 不要跟了
+content: 
+behavior: 43
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 暂停导航
+content: 
+behavior: 27
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 继续导航
+content: 
+behavior: 27
+url: 
+context: basic_cmd
+parameter: 0
+
+question: 你会什么
+content: 小民会的可多了，办业务，陪你聊天，唱歌，都是小民擅长的
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 你会些什么
+content: 小民会的可多了，办业务，陪你聊天，唱歌，都是小民擅长的
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 你会干什么
+content: 吹牛是不会的啦，其他的都可以
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 你能干什么
+content: 小民会的可多了，办业务，陪你聊天，唱歌，都是小民擅长的
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 你会做什么
+content: 小民很厉害的哦，可以办业务，唱歌，跳舞，卖萌，还能陪你聊天哦
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 你会做些什么
+content: 小民会的可多了，办业务，陪你聊天，唱歌，都是小民擅长的
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 你都有什么功能
+content: 除了不会吹牛，其他的都会
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 你可以干什么
+content: 小民很厉害的哦，可以办业务，唱歌，跳舞，卖萌，还能陪你聊天哦
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 你可以办理什么业务
+content: 小民不仅活泼可爱，还多才多艺哦，办业务，聊天，唱歌跳舞，卖萌都会
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 什么业务
+content: 小民很厉害的哦，可以办业务，唱歌，跳舞，卖萌，还能陪你聊天哦
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 你会办什么业务
+content: 小民会办业务，跳舞，卖萌哦
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 你有啥功能
+content: 除了不会吹牛，其他的都会
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 你会啥
+content: 小民会的可多了，办业务，陪你聊天，唱歌，都是小民擅长的
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 你能干啥
+content: 除了不会吹牛，其他的都会
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 董事长是谁
+content: 我们老板是郭总
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 你们董事长是谁
+content: 我们老板是郭总
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 你们董事长叫什么名字
+content: 我们老板是郭总
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 老板是谁
+content: 我们老板是郭总
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 你的老板是谁
+content: 我们老板是郭总
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 谁是你老板
+content: 我们老板是郭总
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 你最喜欢谁
+content: 我们老板是郭总
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 你领导是谁
+content: 我们老板是郭总
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 你老板是谁
+content: 我们老板是郭总
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 你头是谁
+content: 我们老板是郭总
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 你们老板是谁
+content: 我们老板是郭总
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 你在哪里上班
+content: 小民在宁波GQY股份有限公司恭候您的光临
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 你在哪里打工
+content: 小民在宁波GQY股份有限公司恭候您的光临
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 你在哪里工作
+content: 小民在宁波GQY股份有限公司恭候您的光临
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 你在哪里
+content: 小民在宁波GQY股份有限公司恭候您的光临
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 你家长是谁
+content: 小民妈妈是宁波GQY股份有限公司，是世界上最好的妈妈
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 你妈
+content: 小民妈妈是宁波GQY股份有限公司，是世界上最好的妈妈
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 你妈妈是谁
+content: 小民妈妈是宁波GQY股份有限公司，是世界上最好的妈妈
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 谁是你妈妈
+content: 小民妈妈是宁波GQY股份有限公司，是世界上最好的妈妈
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 你妈是谁
+content: 小民妈妈是宁波GQY股份有限公司，是世界上最好的妈妈
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 谁是你妈
+content: 小民妈妈是宁波GQY股份有限公司，是世界上最好的妈妈
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 你谁生的
+content: 小民妈妈是宁波GQY股份有限公司，是世界上最好的妈妈
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 你谁身的
+content: 小民妈妈是宁波GQY股份有限公司，是世界上最好的妈妈
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 你是谁生的
+content: 小民妈妈是宁波GQY股份有限公司，是世界上最好的妈妈
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 谁生的你
+content: 小民妈妈是宁波GQY股份有限公司，是世界上最好的妈妈
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 你谁造的
+content: 小民妈妈是宁波GQY股份有限公司，是世界上最好的妈妈
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 你谁照的
+content: 小民妈妈是宁波GQY股份有限公司，是世界上最好的妈妈
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 谁造的你
+content: 小民妈妈是宁波GQY股份有限公司，是世界上最好的妈妈
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 谁照的你
+content: 小民妈妈是宁波GQY股份有限公司，是世界上最好的妈妈
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 你是谁和谁的结晶
+content: 小民妈妈是宁波GQY股份有限公司，是世界上最好的妈妈
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 你是谁的结晶
+content: 小民妈妈是宁波GQY股份有限公司，是世界上最好的妈妈
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 老妈是谁
+content: 小民妈妈是宁波GQY股份有限公司，是世界上最好的妈妈
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 你爸爸是谁
+content: 小民爸爸是宁波GQY公司，是世界上最帅的男人哟
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 谁是你爸爸
+content: 小民爸爸是宁波GQY公司，是世界上最帅的男人哟
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 你爸是谁
+content: 小民爸爸是宁波GQY公司，是世界上最帅的男人哟
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 谁是你爸
+content: 小民爸爸是宁波GQY公司，是世界上最帅的男人哟
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 你爸
+content: 小民爸爸是宁波GQY公司，是世界上最帅的男人哟
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 你老爸是谁
+content: 小民爸爸是宁波GQY公司，是世界上最帅的男人哟
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 你有爸爸吗
+content: 小民爸爸是宁波GQY公司，是世界上最帅的男人哟
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 老爸是谁
+content: 小民爸爸是宁波GQY公司，是世界上最帅的男人哟
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 你是谁
+content: 我是宁波GQY股份有限公司的大堂经理小民
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 你叫什么名字
+content: 我是宁波GQY股份有限公司的大堂经理小民
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 你叫什么
+content: 我是宁波GQY股份有限公司的大堂经理小民
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 你的名字
+content: 我是宁波GQY股份有限公司的大堂经理小民
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 你叫啥
+content: 我是宁波GQY股份有限公司的大堂经理小民
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 你叫什么
+content: 我是宁波GQY股份有限公司的大堂经理小民
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 你什么名字
+content: 我是宁波GQY股份有限公司的大堂经理小民
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 你的姓名
+content: 我是宁波GQY股份有限公司的大堂经理小民
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 怎么称呼
+content: 我是宁波GQY股份有限公司的大堂经理小民
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 怎么称呼你
+content: 我是宁波GQY股份有限公司的大堂经理小民
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 几岁了
+content: 小民现在1岁了
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 几岁啦
+content: 小民现在1岁了
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 你几岁了
+content: 小民现在1岁了
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 多大了
+content: 小民现在1岁了
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 你多大了
+content: 小民现在1岁了
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 多大啦
+content: 小民现在1岁了
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 你今年多大了
+content: 小民现在1岁了
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 今年多大了
+content: 小民现在1岁了
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 你的年龄
+content: 小民现在1岁了
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 今年几岁了
+content: 小民现在1岁了
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 你哪年出生的
+content: 小民现在1岁了
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 你是几几年的
+content: 小民现在1岁了
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 你几几年的
+content: 小民现在1岁了
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 你们这里的地址是什么
+content: 这里是宁波GQY股份有限公司上海分公司
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 这里的地址
+content: 这里是宁波GQY股份有限公司上海分公司
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 这里地址是什么
+content: 这里是宁波GQY股份有限公司上海分公司
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 这里的地址是什么
+content: 这里是宁波GQY股份有限公司上海分公司
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 这里是哪儿
+content: 这里是宁波GQY股份有限公司上海分公司
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 这哪儿
+content: 这里是宁波GQY股份有限公司上海分公司
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 这哪里
+content: 这里是宁波GQY股份有限公司上海分公司
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 这是哪儿
+content: 这里是宁波GQY股份有限公司上海分公司
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 这儿哪儿
+content: 这里是宁波GQY股份有限公司上海分公司
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 这是啥地方
+content: 这里是宁波GQY股份有限公司上海分公司
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 这是哪里
+content: 这里是宁波GQY股份有限公司上海分公司
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 知道这是什么地方吗
+content: 这里是宁波GQY股份有限公司上海分公司
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 这哪里呀
+content: 这里是宁波GQY股份有限公司上海分公司
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 你是谁造的
+content: 我是宁波GQY股份有限公司的大堂经理小民
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 你是谁照的
+content: 我是宁波GQY股份有限公司的大堂经理小民
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 你从哪里来
+content: 宁波GQY公司，股票代码是300076
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 你是哪家公司的
+content: 宁波GQY公司，股票代码是300076
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 你的制造商是谁
+content: 宁波GQY公司，股票代码是300076
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 你是谁设计的
+content: 宁波GQY公司，股票代码是300076
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 你的设计师是谁
+content: 宁波GQY公司，股票代码是300076
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 你哪里出产的
+content: 宁波GQY公司，股票代码是300076
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 你为什么不回答我
+content: 要不您先示范一下，教教小民，小民跟您学习一下
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 你怎么不回答我
+content: 小民还小，世界那么大，知识那么多，小民还没学完
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 你怎么不唱歌
+content: 网络连接不是很好
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 你怎么不跳舞
+content: 快没电了
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 跳舞，跳舞，为什么不跳舞
+content: 网络连接不是很好
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 过来，你怎么不过来
+content: 网络连接不是很好
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 真傻，这么简单的都不会
+content: 唉，今天没心情
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 你怎么不过来
+content: 唉，今天没心情
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 你是不是傻
+content: 就不，就不，你咬小民啊
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 是不是傻
+content: 小民今天累了，想歇一歇
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 你这个机器人真傻
+content: 就不，就不，你咬小民啊
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 你有女朋友吗
+content: 小民正在一心钻研新技术，你说的这些小民不感兴趣
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 你谈恋爱了吗
+content: 好羞羞，好羞羞，人家还小啦
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 你有对象吗
+content: 小民正在一心钻研新技术，你说的这些小民不感兴趣
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 你女朋友是谁
+content: 小民正在一心钻研新技术，你说的这些小民不感兴趣
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 你谈过恋爱吗
+content: 恩，昨天晚上刚一起看过电影呢
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 火星上怎么样
+content: 你想去看看吗
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 你去过火星吗
+content: 你想去看看吗
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 你知道火星吗
+content: 你想去看看吗
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 你认为的火星是指啥
+content: 你想去看看吗
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 火星上有人吗
+content: 小民又不是从火星来的，哪里知道
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 火星上有水吗
+content: 未来，也许，可能，大概，会有吧
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 特朗普和希拉里你更喜欢谁
+content: 其实小民更喜欢你
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 你喜欢特朗普还是希拉里
+content: 其实小民更喜欢你
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 你和pepper，木爷哪个更好
+content: 当然是小民了，这个还用想吗
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 你和pepper哪个更好
+content: 切，那些是什么，能跟小民比吗，小民都不放在眼里的
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 你和木爷哪个更好
+content: 不要拿小民和那些木偶机器人作比较，好吧
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 你和牧野哪个更好
+content: 不要拿小民和那些木偶机器人作比较，好吧
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 你和幕妍哪个更好
+content: 就不告诉你是小民，你拿小民怎么样
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 哪个机器人最好
+content: 不要拿小民和那些木偶机器人作比较，好吧
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 哪款机器人最好
+content: 不要拿小民和那些木偶机器人作比较，好吧
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 在行业里哪款机器人最牛逼
+content: 当然是小民了，这个还用想吗
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 哪款机器人最好
+content: 是你让小民选小民自己的
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 哪款机器人最聪明
+content: 当然是小民了，这个还用想吗
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 干嘛
+content: 小民在和你聊天呀
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
+question: 我不
+content: 小民就不
+behavior: 0
+url: 
+context: basic_chat
+parameter: 0
+
