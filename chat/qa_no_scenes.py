@@ -363,7 +363,7 @@ class Robot():
             question = self.gconfig['robotname']
         # 称呼过滤 Add in 2017-7-5
         for robotname in ["小民", "小明", "小名", "晓明"]:
-            if question.startswith(robotname) and len(question) >= 4 and "在线" not in question:
+            if question.startswith(robotname) and len(question) >= 4:
                 question = question.lstrip(robotname)
         if not question:
             question = self.gconfig['robotname']
@@ -372,68 +372,9 @@ class Robot():
         if result["context"] == "user_navigation":
             return result
 
-        # 三、云端在线场景================================================
-        result = dict(question=question, content="", context="basic_cmd", url="", \
+        result = dict(question=question, content="ok", context="basic_cmd", url="", \
         behavior=int("0x0000", 16), parameter=0)
-        # TODO: 简化为统一模式
-        # TODO {'behavior': 0, 'content': '理财产品取号', 'context': 'basic_cmd', 'parameter': 0, 'question': '理财产品取号', 'url': ''}
-        if "理财产品" in question and "取号" not in question:
-            result["behavior"] = int("0x1002", 16) # 进入在线场景
-            result["question"] = "理财产品" # 重定义为标准问题
-            self.is_scene = True # 在线场景标志
-        if "免费wifi" in question or "wifi" in question:
-            result["behavior"] = int("0x1002", 16) # 进入在线场景
-            result["question"] = "有没有免费的wifi" # 重定义为标准问题
-            self.is_scene = True # 在线场景标志
-        if "存款利率" in question:
-            result["behavior"] = int("0x1002", 16) # 进入在线场景
-            result["question"] = "存款利率" # 重定义为标准问题
-            self.is_scene = True # 在线场景标志
-        if "我要取钱" in question or "取钱" in question:
-            result["behavior"] = int("0x1002", 16) # 进入在线场景
-            result["question"] = "我要取钱" # 重定义为标准问题
-            self.is_scene = True # 在线场景标志
-        if "信用卡挂失" in question:
-            result["behavior"] = int("0x1002", 16) # 进入在线场景
-            result["question"] = "信用卡挂失" # 重定义为标准问题
-            self.is_scene = True # 在线场景标志
-        if "开通云闪付" in question:
-            result["behavior"] = int("0x1002", 16) # 进入在线场景
-            result["question"] = "开通云闪付" # 重定义为标准问题
-            self.is_scene = True # 在线场景标志
-        if "办理粤卡通" in question or "办理粤通卡" in question:
-            result["behavior"] = int("0x1002", 16) # 进入在线场景
-            result["question"] = "办理粤通卡" # 重定义为标准问题 修正：2017-7-3
-            self.is_scene = True # 在线场景标志
-        # 进入在线场景
-        # start_scene = ["理财产品", "wifi", "存款利率", "取钱", "信用卡挂失", "开通云闪付", "办理粤卡通"]
-        # for item in start_scene:
-            # if item in question:
-                # result["behavior"] = int("0x1002", 16) # 进入在线场景
-                # result["question"] = "办理粤卡通" # 重定义为标准问题
-                # self.is_scene = True # 在线场景标志
-        # 退出在线场景
-        end_scene = ["退出业务场景", "退出", "返回", "结束", "发挥"]
-        for item in end_scene:
-            if item == question: # if item in question: # 避免多个退出模式冲突
-                result["behavior"] = int("0x0020", 16) # 场景退出
-                self.is_scene = False
-                return result
-        previous_step = ["上一步", "上一部", "上一页", "上一个"]
-        next_step = ["下一步", "下一部", "下一页", "下一个"]
-        if self.is_scene:
-            # for item in previous_step:
-                # if item in question:
-                    # result["behavior"] = int("0x001D", 16) # 场景上一步
-            # for item in next_step:
-                # if item in question:
-                    # result["behavior"] = int("0x001E", 16) # 场景下一步
-            if "上一步" in question or "上一部" in question or "上一页" in question or "上一个" in question:
-                result["behavior"] = int("0x001D", 16) # 场景上一步
-            elif "下一步" in question or "下一部" in question or "下一页" in question or "下一个" in question:
-                result["behavior"] = int("0x001E", 16) # 场景下一步
-            result["content"] = question
-            return result
+
 
         # 常用命令，交互，业务
         # 上下文——重复命令 TODO：确认返回的是正确的指令而不是例如唱歌时的结束语“可以了”
@@ -485,14 +426,8 @@ class Robot():
             elif "天气" in question:
                 weather = nlu_tuling(question, loc=self.address)
                 result["behavior"] = int("0x0000", 16)
-                try:
-                    # temp = weather.split(";")[0].split(",")[1].split()
-                    # myweather = temp[0] + temp[2] + temp[3]
-                    temp = weather.split(",")
-                    myweather = temp[1] + temp[2]
-                except:
-                    myweather = weather
-                result["content"] = myweather
+                temp = weather.split(";")[0].split(",")[1].split()
+                result["content"] = temp[0] + temp[2] + temp[3]
                 result["context"] = "nlu_tuling"
             # 4.追加记录回答不上的所有问题
             # else:
