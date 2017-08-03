@@ -253,8 +253,7 @@ class Robot():
                 return result
             for node in subgraph:
                 iquestion = self.iformat(node["name"])
-                # TODO: 添加question包含在iquestion里面的情况
-                if question == iquestion or iquestion in question:
+                if question == iquestion:
                     print("Similarity Score: Original sentence")
                     result["content"] = self.iformat(random_item(node["content"].split("|")))
                     result["context"] = node["topic"]
@@ -440,7 +439,6 @@ class Robot():
         if "再来一个" in question:
             # TODO：从记忆里选取最近的有意义行为作为重复的内容
             return self.amemory[-1]
-
         # 四、本地标准语义================================================
         # 模式1：选取语义得分大于阈值
         tag = get_tag(question, self.gconfig)
@@ -449,6 +447,11 @@ class Robot():
         # subgraph_scene = [node for node in subgraph_all if node["topic"]==self.topic]
         usergraph_all = [node for node in subgraph_all if node["topic"] in self.usertopics]
         usergraph_scene = [node for node in usergraph_all if node["topic"] == self.topic]
+
+        # 查看根据语义标签初步确定的子图
+        # for node in usergraph_all:
+            # print(node["name"])
+
         # if subgraph_scene:
         if usergraph_scene:
             result = self.extract_synonym(question, usergraph_scene)
