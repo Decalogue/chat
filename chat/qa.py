@@ -14,7 +14,7 @@ from collections import deque
 from concurrent.futures import ProcessPoolExecutor
 from py2neo import Graph, Node, Relationship
 from .api import nlu_tuling, get_location_by_ip
-from .semantic import synonym_cut, get_tag, similarity, check_swords
+from .semantic import synonym_cut, get_tag, similarity, check_swords, get_location
 from .mytools import time_me, get_current_time, random_item
 from .word2pinyin import pinyin_cut, jaccard_pinyin # Add in 2017-6-23
 
@@ -484,13 +484,25 @@ class Robot():
             elif "附近" in question or "好吃的" in question:
                 result["behavior"] = int("0x001C", 16)
                 result["content"] = self.address
-            # 3.nlu_tuling(天气) TO Upgrade
+            # 3.nlu_tuling(天气)
             elif "天气" in question:
-                weather = nlu_tuling(question, loc=self.address)
+                # 图灵API变更之后 Add in 2017-8-4
+                location = get_location(question)
+                if not location:
+                    # 问句中不包含地址
+                    weather = nlu_tuling(self.address + question)
+                else:
+                    # 问句中包含地址
+                    weather = nlu_tuling(question)
+                # 图灵API变更之前    
+                # weather = nlu_tuling(question, loc=self.address)
                 result["behavior"] = int("0x0000", 16)
                 try:
+                    # 图灵API变更之前
                     # temp = weather.split(";")[0].split(",")[1].split()
                     # myweather = temp[0] + temp[2] + temp[3]
+
+                    # 图灵API变更之后 Add in 2017-8-3
                     temp = weather.split(",")
                     myweather = temp[1] + temp[2]
                 except:
@@ -498,9 +510,9 @@ class Robot():
                 result["content"] = myweather
                 result["context"] = "nlu_tuling"
             # 4.追加记录回答不上的所有问题
-            # else:
-                # with open("do_not_know.txt", 'w', encoding="UTF-8") as file:
-                    # file.
+            else:
+                with open("C:/nlu/bin/do_not_know.txt", "a", encoding="UTF-8") as file:
+                    file.write(question + "\n")
             # 5.nlu_tuling
             # else:
                 # result["content"] = nlu_tuling(question, loc=self.address)

@@ -238,7 +238,7 @@ def similarity(synonym_vector1, synonym_vector2, pattern='j'):
     return sim
 
 def get_location(sentence):
-    """Get location in sentence.
+    """Get location in sentence. 获取句子中的地址。
     """
     location = []
     sv_sentence = synonym_cut(sentence, 'wf')
