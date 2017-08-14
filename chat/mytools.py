@@ -72,7 +72,7 @@ class Walk():
     - filelist: All filenames with full path in directory.
     - fnamelist: All filenames in directory.
     - dirlist: All dirnames with full path in directory.
-    - dnamelist: All filenames in directory.
+    - dnamelist: All dirnames in directory.
     """
     def __init__(self):
         self.filenum = 0
@@ -182,10 +182,11 @@ class Walk():
         Returns:
             You can customize when you override this method. 当你重写该方法时可以自定义。
         """
-        print(self.filenum)
-        print("filepath=" + filepath)
-        print("pattern=" + str(pattern))
-        print("Handling...\n")
+        pass
+        # print(self.filenum)
+        # print("filepath=" + filepath)
+        # print("pattern=" + str(pattern))
+        # print("Handling...\n")
 
 
 def time_me(info="used", format_string="ms"):
