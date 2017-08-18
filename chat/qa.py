@@ -445,6 +445,7 @@ class Robot():
         # TODO：添加语义标签和关键词综合匹配的情况
         subgraph_all = list(self.graph.find("NluCell", "tag", tag))
         # subgraph_scene = [node for node in subgraph_all if node["topic"]==self.topic]
+        # TODO：usergraph_all 包含正常问答和用户自定义问答，可优先匹配用户自定义问答
         usergraph_all = [node for node in subgraph_all if node["topic"] in self.usertopics]
         usergraph_scene = [node for node in usergraph_all if node["topic"] == self.topic]
 
