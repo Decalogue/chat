@@ -147,11 +147,12 @@ class Database():
         assert content is not None, "content must be string."
         questions = name.split(delimiter)
         for question in questions:
-            tag = get_tag(question, self.gconfig)
-            node = Node(label, name=question, content=content, topic=topic, \
-            behavior=behavior, parameter=parameter, url=url, tag=tag, \
-            keywords=keywords, api=api, txt=txt, img=img, chart=chart, hot="0")
-            self.graph.create(node)
+            if question: # 问题不能为空，避免因知识库表格填写格式不对而导致存入空问答对
+                tag = get_tag(question, self.gconfig)
+                node = Node(label, name=question, content=content, topic=topic, \
+                behavior=behavior, parameter=parameter, url=url, tag=tag, \
+                keywords=keywords, api=api, txt=txt, img=img, chart=chart, hot="0")
+                self.graph.create(node)
 
     def add_ts(self, label="TestStandard", question=None, content=None, context="", \
     behavior="", parameter="", url=""):
@@ -161,9 +162,10 @@ class Database():
         assert question is not None, "question must be string."
         assert content is not None, "content must be string."
         for item in question.split():
-            node = Node(label, question=item, content=content, context=context, \
-            behavior=behavior, parameter=parameter, url=url)
-            self.graph.create(node)
+            if item: # 问题不能为空，避免因知识库表格填写格式不对而导致存入空问答对
+                node = Node(label, question=item, content=content, context=context, \
+                behavior=behavior, parameter=parameter, url=url)
+                self.graph.create(node)
 
     def handle_ts(self, filename=None, custom_sheets=None):
         """Processing data of test standard.

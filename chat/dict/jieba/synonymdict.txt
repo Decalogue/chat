@@ -91262,6 +91262,9 @@ take 2000 Kb05C01=
 鑫鑫 2000 robotname
 小龙人 2000 robotname
 小张 2000 robotname
+小宝 2000 robotname
+颖小宝 2000 robotname
+颖税宝 2000 robotname
 pepper 2000 otherrobots
 木爷 2000 otherrobots
 幕妍 2000 otherrobots

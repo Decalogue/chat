@@ -14,14 +14,13 @@ class TestMe(TestCase):
         pass
 
     def test_reset(self):
-        pass
-        # self.database.reset(pattern="n", label="NluCell", filename="C:/rain/cloud/one/data/one.xls")
-        # self.database.reset(pattern="n", label="NluCell", filename="C:/nlu/data/chat.xls")
+        self.database.reset(pattern="n", label="NluCell", filename="C:/nlu/data/chat.xls")
  
     def test_reset_ts(self):
         """Reset data of label 'TestStandard' in database.
         """
-        self.database.reset_ts(pattern="n", label="TestStandard", filename="C:/nlu/data/ts.xls")
+        # self.database.reset_ts(pattern="n", label="TestStandard", filename="C:/nlu/data/ts.xls")
+        pass
 
     def test_add_ts(self):
         pass
