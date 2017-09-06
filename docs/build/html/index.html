@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Chat: 基于自然语言理解与机器学习的聊天机器人。 &mdash; chat 1.0.3 documentation</title>
+  <title>Chat: 基于自然语言理解与机器学习的聊天机器人 &mdash; chat 1.0.5 documentation</title>
   
 
   
@@ -30,7 +30,7 @@
   
 
   
-    <link rel="top" title="chat 1.0.3 documentation" href="#"/>
+    <link rel="top" title="chat 1.0.5 documentation" href="#"/>
         <link rel="next" title="安装 Installation" href="user/installation.html"/> 
 
   
@@ -59,7 +59,7 @@
             
             
               <div class="version">
-                1.0.3
+                1.0.5
               </div>
             
           
@@ -86,7 +86,7 @@
 <li class="toctree-l1"><a class="reference internal" href="user/custom.html">个性化定制您的聊天机器人</a></li>
 <li class="toctree-l1"><a class="reference internal" href="user/development.html">开发 Development</a></li>
 <li class="toctree-l1"><a class="reference internal" href="user/architecture.html">深入了解</a></li>
-<li class="toctree-l1"><a class="reference internal" href="user/tss.html">技术支持</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user/ts.html">技术支持</a></li>
 <li class="toctree-l1"><a class="reference internal" href="user/thanks.html">致谢</a></li>
 </ul>
 <ul>
@@ -128,7 +128,7 @@
   <ul class="wy-breadcrumbs">
     <li><a href="#">Docs</a> &raquo;</li>
       
-    <li>Chat: 基于自然语言理解与机器学习的聊天机器人。</li>
+    <li>Chat: 基于自然语言理解与机器学习的聊天机器人</li>
       <li class="wy-breadcrumbs-aside">
         
           
@@ -143,48 +143,49 @@
            <div itemprop="articleBody">
             
   <div class="section" id="chat">
-<h1>Chat: 基于自然语言理解与机器学习的聊天机器人。<a class="headerlink" href="#chat" title="Permalink to this headline">¶</a></h1>
+<h1>Chat: 基于自然语言理解与机器学习的聊天机器人<a class="headerlink" href="#chat" title="Permalink to this headline">¶</a></h1>
 <a class="reference external image-reference" href="https://github.com/decalogue/chat"><img alt="_images/chat.png" class="align-center" src="_images/chat.png" style="width: 494.0px; height: 291.0px;" /></a>
 <div class="section" id="id1">
-<h2>这就是Chat<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
-<p>Chat是一个基于自然语言理解与机器学习的语义理解库。
-Chat提供丰富的语义分析工具与语义知识图的构建工具，非常适合从0开始迅速搭建自己的聊天机器人，也能够减少工程师在实际开发当中的重复工作。Chat非常易于修改和扩展，所以个性化定制也是非常方便的。如果你有如下需求，欢迎选择Chat：</p>
+<h2>这就是 Chat<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<p>Chat 是一个基于自然语言理解与机器学习的语义理解库。
+Chat 提供丰富的语义分析工具与语义知识图的构建工具，非常适合从0开始迅速搭建自己的聊天机器人，也能够减少工程师在实际开发当中的重复工作。Chat 非常易于修改和扩展，所以个性化定制也是非常方便的。如果你有如下需求，欢迎选择 Chat：</p>
 <ul class="simple">
 <li>想从0开始迅速搭建自己的聊天机器人</li>
 <li>想了解自然语言处理以及如何构建自己的知识图谱</li>
 <li>想智能化生活工作，提升效率</li>
 </ul>
-<p>Chat适用的Python版本是：Python 3.3-3.5</p>
-<p>Chat的设计原则</p>
+<p>Chat 适用的 Python 版本是：Python 3.3-3.6</p>
+<p>Chat 的设计原则</p>
 <ul class="simple">
-<li>用户友好：用户的使用体验始终是我们考虑的首要和中心内容。Chat遵循减少认知困难的最佳实践：Chat提供一致而简洁的API， 能够极大减少一般应用下用户的工作量，同时，Chat提供清晰和具有实践意义的bug反馈。</li>
+<li>用户友好：用户的使用体验始终是我们考虑的首要和中心内容。Chat 遵循减少认知困难的最佳实践：Chat 提供一致而简洁的 API， 能够极大减少一般应用下用户的工作量，同时，Chat 提供清晰和具有实践意义的 bug 反馈。</li>
 <li>模块性：完全独立可配置的模块可以用最少的代价自由组合在一起，你可以使用它们来构建自己的模块。</li>
-<li>易扩展性：添加新模块超级容易，只需要仿照现有的模块编写新的类或函数即可。创建新模块的便利性使得Chat更适合于快速开发。</li>
+<li>易扩展性：添加新模块超级容易，只需要仿照现有的模块编写新的类或函数即可。创建新模块的便利性使得 Chat 更适合于快速开发。</li>
 <li>知识图谱：基于图数据库的知识图表达提供了更快的搜索速度与智能。</li>
 </ul>
 </div>
 <div class="section" id="chat-cn">
-<h2>关于Chat-cn<a class="headerlink" href="#chat-cn" title="Permalink to this headline">¶</a></h2>
-<p>由于作者水平和研究方向所限，因此文档中不可避免会出现各种错误、疏漏和不足之处。如果您在使用过程中有任何意见、建议和疑问，欢迎发送邮件到1044908508&#64;qq.com与我取得联系。</p>
-<p>您对文档的任何贡献，包括文档的翻译、查缺补漏、概念解释、发现和修改问题、贡献示例程序等，均会被记录在致谢，十分感谢您对Chat中文文档的贡献！</p>
+<h2>关于 Chat-cn<a class="headerlink" href="#chat-cn" title="Permalink to this headline">¶</a></h2>
+<p>由于作者水平和研究方向所限，因此文档中不可避免会出现各种错误、疏漏和不足之处。如果您在使用过程中有任何意见、建议和疑问，欢迎发送邮件到 <a class="reference external" href="mailto:1044908508&#37;&#52;&#48;qq&#46;com">1044908508<span>&#64;</span>qq<span>&#46;</span>com</a> 与我取得联系。</p>
+<p>您对文档的任何贡献，包括文档的翻译、查缺补漏、概念解释、发现和修改问题、贡献示例程序等，均会被记录在致谢，十分感谢您对 Chat 中文文档的贡献！</p>
 </div>
 <div class="section" id="id2">
 <h2>当前版本与更新<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
 <p>如果你发现本文档提供的信息有误，有两种可能：</p>
 <ul class="simple">
-<li>你的Chat版本过低：Chat是一个发展迅速的语义理解库，请保持您的Chat与官方最新的release版本相符</li>
-<li>我们的中文文档没有及时更新：如果是这种情况，请发邮件给我，我会尽快更新</li>
+<li>你的Chat版本过低：Chat是一个发展迅速的语义理解库，请保持您的 Chat 与官方最新的 release 版本相符。</li>
+<li>我们的中文文档没有及时更新：如果是这种情况，请发邮件给我，我会尽快更新。</li>
 </ul>
-<p>目前文档的版本号是1.0.3，对应于官方的1.0.3 release 版本, 本次更新的主要内容是：</p>
+<p>目前文档的版本号是1.0.5，对应于官方的1.0.5 release 版本, 本次更新的主要内容是：</p>
 <ul class="simple">
-<li>文档全面升级，绝大多数API均得到更新</li>
+<li>文档全面升级，绝大多数 API 均得到更新</li>
 <li>补充了原文档中缺失，但源代码中确实可用的类和函数</li>
+<li>添加了项目细节图示说明，包括架构、部署、具体实现等</li>
 <li>重新整理了文档风格和栏目，使得文档更容易阅读</li>
 </ul>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p>我们建议你在 <a class="reference external" href="https://github.com/decalogue/chat">Github</a> 上star和watch <a class="reference external" href="https://github.com/decalogue/chat">官方项目</a> ，这样当官方有更新时，你会立即知道。</p>
-<p class="last">如果你阅读在线中文文档时有什么问题，你可以在github上下载这个项目，
+<p>我们欢迎你在 <a class="reference external" href="https://github.com/decalogue/chat">Github</a> 上 star 和 watch <a class="reference external" href="https://github.com/decalogue/chat">官方项目</a> ，这样当官方有更新时，你会立即知道。</p>
+<p class="last">如果你阅读在线中文文档时有什么问题，你可以在 github 上下载这个项目，
 然后去 <code class="docutils literal"><span class="pre">/docs/build/html/index.html</span></code> 阅读离线中文文档。
 或者在 <a class="reference external" href="http://chat-cn.readthedocs.io/zh_CN/latest/">Read the docs</a> 中阅读官方原文档。</p>
 </div>
@@ -194,14 +195,15 @@ Chat提供丰富的语义分析工具与语义知识图的构建工具，非常�
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="user/installation.html">安装 Installation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="user/installation.html#id2">一、图形数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user/installation.html#id2">部署流程</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user/installation.html#id3">一、图形数据库</a></li>
 <li class="toctree-l2"><a class="reference internal" href="user/installation.html#python3">二、Python3</a></li>
 <li class="toctree-l2"><a class="reference internal" href="user/installation.html#chat">三、Chat</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="user/tutorial.html">快速开始</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="user/tutorial.html#id2">对话</a></li>
-<li class="toctree-l2"><a class="reference internal" href="user/tutorial.html#id3">配置</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user/tutorial.html#qa">对话 QA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user/tutorial.html#config">配置 Config</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="user/custom.html">个性化定制您的聊天机器人</a><ul>
@@ -219,10 +221,10 @@ Chat提供丰富的语义分析工具与语义知识图的构建工具，非常�
 <li class="toctree-l2"><a class="reference internal" href="user/architecture.html#id4">知识库</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="user/tss.html">技术支持</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="user/tss.html#github">Github</a></li>
-<li class="toctree-l2"><a class="reference internal" href="user/tss.html#faq">FAQ</a></li>
-<li class="toctree-l2"><a class="reference internal" href="user/tss.html#id3">你的贡献</a></li>
+<li class="toctree-l1"><a class="reference internal" href="user/ts.html">技术支持</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="user/ts.html#github">Github</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user/ts.html#faq">FAQ</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user/ts.html#id3">你的贡献</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="user/thanks.html">致谢</a><ul>
@@ -234,7 +236,7 @@ Chat提供丰富的语义分析工具与语义知识图的构建工具，非常�
 </div>
 </div>
 <div class="section" id="api">
-<h2>API目录<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h2>
+<h2>API 目录<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h2>
 <p>如果你正在寻找某个特殊的函数，类或者方法，这一列文档就是为你准备的。</p>
 <div class="toctree-wrapper compound">
 <ul>
@@ -348,7 +350,7 @@ Chat提供丰富的语义分析工具与语义知识图的构建工具，非常�
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1.0.3',
+            VERSION:'1.0.5',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

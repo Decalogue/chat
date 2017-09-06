@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>chat.server &mdash; chat 1.0.3 documentation</title>
+  <title>chat.server &mdash; chat 1.0.5 documentation</title>
   
 
   
@@ -30,7 +30,7 @@
   
 
   
-    <link rel="top" title="chat 1.0.3 documentation" href="../../index.html"/>
+    <link rel="top" title="chat 1.0.5 documentation" href="../../index.html"/>
         <link rel="up" title="Module code" href="../index.html"/> 
 
   
@@ -59,7 +59,7 @@
             
             
               <div class="version">
-                1.0.3
+                1.0.5
               </div>
             
           
@@ -86,7 +86,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../user/custom.html">个性化定制您的聊天机器人</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../user/development.html">开发 Development</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../user/architecture.html">深入了解</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../user/tss.html">技术支持</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/ts.html">技术支持</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../user/thanks.html">致谢</a></li>
 </ul>
 <ul>
@@ -151,14 +151,33 @@
 
 <span class="sd">The socketserver module simplifies the task of writing network servers.</span>
 <span class="sd">&quot;&quot;&quot;</span>
-
+<span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">socketserver</span>
 <span class="c1"># import chardet</span>
 <span class="kn">from</span> <span class="nn">.qa</span> <span class="k">import</span> <span class="n">Robot</span>
+<span class="kn">from</span> <span class="nn">.database</span> <span class="k">import</span> <span class="n">Database</span>
+<span class="kn">from</span> <span class="nn">.mytools</span> <span class="k">import</span> <span class="n">Walk</span><span class="p">,</span> <span class="n">get_current_time</span>
 
-<span class="n">robot</span> <span class="o">=</span> <span class="n">Robot</span><span class="p">()</span>
+<span class="c1"># TODO: 提供用户注册和登录功能（目前机器人上userid都是&quot;A0001&quot;）</span>
+<span class="c1"># is_admin=False 表示非管理员身份，此模式下导入的知识库topic属性均为user_chat</span>
+<span class="n">database</span> <span class="o">=</span> <span class="n">Database</span><span class="p">(</span><span class="n">password</span><span class="o">=</span><span class="s2">&quot;train&quot;</span><span class="p">,</span> <span class="n">userid</span><span class="o">=</span><span class="s2">&quot;A0001&quot;</span><span class="p">,</span> <span class="n">is_admin</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
+<span class="k">class</span> <span class="nc">WalkUserData</span><span class="p">(</span><span class="n">Walk</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">handle_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filepath</span><span class="p">,</span> <span class="n">pattern</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">database</span><span class="o">.</span><span class="n">handle_excel</span><span class="p">(</span><span class="n">filepath</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">add_qa</span><span class="p">(</span><span class="n">path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">names</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Add subgraph from excel data.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">walker</span> <span class="o">=</span> <span class="n">WalkUserData</span><span class="p">()</span>
+    <span class="n">fnamelist</span> <span class="o">=</span> <span class="n">walker</span><span class="o">.</span><span class="n">dir_process</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s2">&quot;fnamelist&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;知识库更新内容:&quot;</span><span class="p">,</span> <span class="n">fnamelist</span><span class="p">)</span>
+
+<span class="c1"># 开机自动更新知识库</span>
+<span class="n">add_qa</span><span class="p">(</span><span class="s2">&quot;D:\新知识库&quot;</span><span class="p">)</span>
+<span class="c1"># 初始化语义服务器</span>
+<span class="n">robot</span> <span class="o">=</span> <span class="n">Robot</span><span class="p">(</span><span class="n">password</span><span class="o">=</span><span class="s2">&quot;train&quot;</span><span class="p">)</span>
 
 <div class="viewcode-block" id="MyTCPHandler"><a class="viewcode-back" href="../../modules/server.html#chat.server.MyTCPHandler">[docs]</a><span class="k">class</span> <span class="nc">MyTCPHandler</span><span class="p">(</span><span class="n">socketserver</span><span class="o">.</span><span class="n">BaseRequestHandler</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;The request handler class for nlu server.</span>
@@ -179,7 +198,7 @@
             <span class="c1"># print(&quot;Encoding: &quot; + encoding)</span>
             <span class="c1"># self.data = self.data.decode(encoding)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;UTF-8&quot;</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Data:</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Data:&quot;</span><span class="p">)</span>
             <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
             <span class="c1"># step 1.Bytes to json obj and extract question</span>
             <span class="n">json_data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
@@ -190,6 +209,13 @@
             <span class="k">elif</span> <span class="s2">&quot;config_content&quot;</span> <span class="ow">in</span> <span class="n">json_data</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
                 <span class="n">result</span> <span class="o">=</span> <span class="n">robot</span><span class="o">.</span><span class="n">configure</span><span class="p">(</span><span class="n">info</span><span class="o">=</span><span class="n">json_data</span><span class="p">[</span><span class="s2">&quot;config_content&quot;</span><span class="p">],</span> \
                 <span class="n">userid</span><span class="o">=</span><span class="n">json_data</span><span class="p">[</span><span class="s2">&quot;userid&quot;</span><span class="p">])</span>
+            <span class="c1"># print(result)</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;C:/nlu/bin/log.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;UTF-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+                <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">get_current_time</span><span class="p">(</span><span class="s2">&quot;%Y-%m-</span><span class="si">%d</span><span class="s2"> %H:%M:%S&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> \
+                    <span class="o">+</span> <span class="n">json_data</span><span class="p">[</span><span class="s2">&quot;ask_content&quot;</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;question&quot;</span><span class="p">,</span> <span class="s2">&quot;content&quot;</span><span class="p">,</span> <span class="s2">&quot;behavior&quot;</span><span class="p">,</span> <span class="s2">&quot;url&quot;</span><span class="p">,</span> <span class="s2">&quot;context&quot;</span><span class="p">,</span> <span class="s2">&quot;parameter&quot;</span><span class="p">]:</span>
+                    <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">key</span> <span class="o">+</span> <span class="s2">&quot;: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">result</span><span class="p">[</span><span class="n">key</span><span class="p">])</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+                <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="c1"># step 3.Send</span>
             <span class="c1"># self.request.sendall(json.dumps(result).encode(encoding))</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">request</span><span class="o">.</span><span class="n">sendall</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">result</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&quot;UTF-8&quot;</span><span class="p">))</span></div>
@@ -207,7 +233,7 @@
 <span class="sd">        port: server port. 服务器端口设置。</span>
 <span class="sd">            Defaults to 7000.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># 多线程处理多用户请求</span>
+    <span class="c1"># 多线程处理多用户并发请求</span>
     <span class="n">sock</span> <span class="o">=</span> <span class="n">socketserver</span><span class="o">.</span><span class="n">ThreadingTCPServer</span><span class="p">((</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">),</span> <span class="n">MyTCPHandler</span><span class="p">)</span>
     <span class="n">sock</span><span class="o">.</span><span class="n">serve_forever</span><span class="p">()</span></div>
 
@@ -247,7 +273,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'1.0.3',
+            VERSION:'1.0.5',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

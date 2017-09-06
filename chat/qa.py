@@ -412,7 +412,7 @@ class Robot():
                 # result["question"] = "办理粤卡通" # 重定义为标准问题
                 # self.is_scene = True # 在线场景标志
         # 退出在线场景
-        end_scene = ["退出业务场景", "退出", "返回", "结束", "发挥"]
+        end_scene = ["退出业务场景", "退出场景", "退出", "返回", "结束", "发挥"]
         for item in end_scene:
             if item == question: # if item in question: # 避免多个退出模式冲突
                 result["behavior"] = int("0x0020", 16) # 场景退出
@@ -429,10 +429,12 @@ class Robot():
                     # result["behavior"] = int("0x001E", 16) # 场景下一步
             if "上一步" in question or "上一部" in question or "上一页" in question or "上一个" in question:
                 result["behavior"] = int("0x001D", 16) # 场景上一步
+                return result
             elif "下一步" in question or "下一部" in question or "下一页" in question or "下一个" in question:
                 result["behavior"] = int("0x001E", 16) # 场景下一步
-            result["content"] = question
-            return result
+                return result
+            # result["content"] = question
+            # return result
 
         # 常用命令，交互，业务
         # 上下文——重复命令 TODO：确认返回的是正确的指令而不是例如唱歌时的结束语“可以了”

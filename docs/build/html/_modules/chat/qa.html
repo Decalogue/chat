@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>chat.qa &mdash; chat 1.0.3 documentation</title>
+  <title>chat.qa &mdash; chat 1.0.5 documentation</title>
   
 
   
@@ -30,7 +30,7 @@
   
 
   
-    <link rel="top" title="chat 1.0.3 documentation" href="../../index.html"/>
+    <link rel="top" title="chat 1.0.5 documentation" href="../../index.html"/>
         <link rel="up" title="Module code" href="../index.html"/> 
 
   
@@ -59,7 +59,7 @@
             
             
               <div class="version">
-                1.0.3
+                1.0.5
               </div>
             
           
@@ -86,7 +86,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../user/custom.html">个性化定制您的聊天机器人</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../user/development.html">开发 Development</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../user/architecture.html">深入了解</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../user/tss.html">技术支持</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/ts.html">技术支持</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../user/thanks.html">致谢</a></li>
 </ul>
 <ul>
@@ -154,11 +154,22 @@
 <span class="sd">Available functions:</span>
 <span class="sd">- All classes and functions: 所有类和函数</span>
 <span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">sqlite3</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">deque</span>
+<span class="kn">from</span> <span class="nn">concurrent.futures</span> <span class="k">import</span> <span class="n">ProcessPoolExecutor</span>
 <span class="kn">from</span> <span class="nn">py2neo</span> <span class="k">import</span> <span class="n">Graph</span><span class="p">,</span> <span class="n">Node</span><span class="p">,</span> <span class="n">Relationship</span>
-<span class="kn">from</span> <span class="nn">api</span> <span class="k">import</span> <span class="n">nlu_tuling</span><span class="p">,</span> <span class="n">get_location_by_ip</span>
-<span class="kn">from</span> <span class="nn">.semantic</span> <span class="k">import</span> <span class="n">synonym_cut</span><span class="p">,</span> <span class="n">get_tag</span><span class="p">,</span> <span class="n">similarity</span><span class="p">,</span> <span class="n">get_navigation_target</span>
+<span class="kn">from</span> <span class="nn">.api</span> <span class="k">import</span> <span class="n">nlu_tuling</span><span class="p">,</span> <span class="n">get_location_by_ip</span>
+<span class="kn">from</span> <span class="nn">.semantic</span> <span class="k">import</span> <span class="n">synonym_cut</span><span class="p">,</span> <span class="n">get_tag</span><span class="p">,</span> <span class="n">similarity</span><span class="p">,</span> <span class="n">check_swords</span><span class="p">,</span> <span class="n">get_location</span>
 <span class="kn">from</span> <span class="nn">.mytools</span> <span class="k">import</span> <span class="n">time_me</span><span class="p">,</span> <span class="n">get_current_time</span><span class="p">,</span> <span class="n">random_item</span>
+<span class="kn">from</span> <span class="nn">.word2pinyin</span> <span class="k">import</span> <span class="n">pinyin_cut</span><span class="p">,</span> <span class="n">jaccard_pinyin</span> <span class="c1"># Add in 2017-6-23</span>
 
+<span class="c1"># 获取导航地点——Development requirements from Mr Tang in 2017-5-11.</span>
+<span class="k">def</span> <span class="nf">get_navigation_location</span><span class="p">():</span>
+    <span class="n">db</span> <span class="o">=</span> <span class="n">sqlite3</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="s2">&quot;C:/docu/db/contentDB.db&quot;</span><span class="p">)</span>
+    <span class="n">cursor</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s2">&quot;SELECT name from goalvoice&quot;</span><span class="p">)</span>
+    <span class="c1"># 过滤0记录</span>
+    <span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">cursor</span> <span class="k">if</span> <span class="n">row</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+    <span class="k">return</span> <span class="n">names</span>
 
 <div class="viewcode-block" id="Robot"><a class="viewcode-back" href="../../modules/qa.html#chat.qa.Robot">[docs]</a><span class="k">class</span> <span class="nc">Robot</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;NLU Robot.</span>
@@ -169,16 +180,29 @@
 <span class="sd">    - pattern: The pattern for NLU tool: &#39;semantic&#39; or &#39;vec&#39;. 语义标签或词向量模式。</span>
 <span class="sd">    - memory: The context memory of robot. 机器人对话上下文记忆。</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">graph</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">(</span><span class="s2">&quot;http://localhost:7474/db/data/&quot;</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s2">&quot;train&quot;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s2">&quot;train&quot;</span><span class="p">):</span>
+        <span class="c1"># 连接图知识库</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">graph</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">(</span><span class="s2">&quot;http://localhost:7474/db/data/&quot;</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="n">password</span><span class="p">)</span>
+        <span class="c1"># 语义模式：&#39;semantic&#39; or &#39;vec&#39;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">pattern</span> <span class="o">=</span> <span class="s1">&#39;semantic&#39;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">is_scene</span> <span class="o">=</span> <span class="kc">False</span> <span class="c1"># 在线场景标志，默认为False</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">address</span> <span class="o">=</span> <span class="n">get_location_by_ip</span><span class="p">()[</span><span class="s2">&quot;content&quot;</span><span class="p">][</span><span class="s2">&quot;address&quot;</span><span class="p">]</span> <span class="c1"># 调用百度地图IP定位api</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">topic</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">qa_id</span> <span class="o">=</span> <span class="n">get_current_time</span><span class="p">()</span>
+        <span class="c1"># 获取导航地点数据库</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">locations</span> <span class="o">=</span> <span class="n">get_navigation_location</span><span class="p">()</span>
+        <span class="c1"># 在线场景标志，默认为False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_scene</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="c1"># 在线调用百度地图IP定位api，网络异常时返回默认地址：上海市</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">address</span> <span class="o">=</span> <span class="n">get_location_by_ip</span><span class="p">()</span>
+        <span class="c1"># 机器人配置信息</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">gconfig</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># 可用话题列表</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">usertopics</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="c1"># Pre loading concept</span>
+        <span class="c1"># 当前QA话题</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">topic</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="c1"># 当前QA id</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">qa_id</span> <span class="o">=</span> <span class="n">get_current_time</span><span class="p">()</span>
+		<span class="c1"># 短期记忆：最近问过的10个问题与10个答案</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">qmemory</span> <span class="o">=</span> <span class="n">deque</span><span class="p">(</span><span class="n">maxlen</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">amemory</span> <span class="o">=</span> <span class="n">deque</span><span class="p">(</span><span class="n">maxlen</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+        <span class="c1"># 匹配不到时随机回答 TODO：记录回答不上的所有问题，</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">do_not_know</span> <span class="o">=</span> <span class="p">[</span>
             <span class="s2">&quot;这个问题太难了，</span><span class="si">{robotname}</span><span class="s2">还在学习中&quot;</span><span class="p">,</span>
             <span class="s2">&quot;这个问题</span><span class="si">{robotname}</span><span class="s2">不会，要么我去问下&quot;</span><span class="p">,</span>
@@ -196,11 +220,9 @@
             <span class="s2">&quot;您问的问题好有深度呀&quot;</span><span class="p">,</span>
             <span class="s2">&quot;</span><span class="si">{robotname}</span><span class="s2">没有听明白，您能再说一遍吗&quot;</span>
         <span class="p">]</span>
-		<span class="c1"># Robot Memory</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">memory</span> <span class="o">=</span> <span class="p">[]</span>
 
     <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s2">&quot;Hello! I&#39;m </span><span class="si">{robotname}</span><span class="s2"> and I&#39;m </span><span class="si">{age}</span><span class="s2"> years old.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">gconfig</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s2">&quot;Hello! I&#39;m </span><span class="si">{robotname}</span><span class="s2"> and I&#39;m </span><span class="si">{robotage}</span><span class="s2"> years old.&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">gconfig</span><span class="p">)</span>
 
     <span class="nd">@time_me</span><span class="p">()</span>
     <span class="k">def</span> <span class="nf">configure</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">info</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">userid</span><span class="o">=</span><span class="s2">&quot;userid&quot;</span><span class="p">):</span>
@@ -208,6 +230,13 @@
 <span class="sd">        配置知识库。</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">assert</span> <span class="n">userid</span> <span class="ow">is</span> <span class="ow">not</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;The userid can not be empty!&quot;</span>
+        <span class="c1"># TO UPGRADE 对传入的userid参数分析，若不合适则报相应消息 2017-6-7</span>
+        <span class="k">if</span> <span class="n">userid</span> <span class="o">!=</span> <span class="s2">&quot;A0001&quot;</span><span class="p">:</span>
+            <span class="n">userid</span> <span class="o">=</span> <span class="s2">&quot;A0001&quot;</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;userid 不是标准A0001，已经更改为A0001&quot;</span><span class="p">)</span>
+        <span class="n">match_string</span> <span class="o">=</span> <span class="s2">&quot;MATCH (config:Config) RETURN config.name as name&quot;</span>
+        <span class="n">subgraphs</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">match_string</span><span class="p">)]</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;所有知识库：&quot;</span><span class="p">,</span> <span class="n">subgraphs</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">info</span><span class="p">:</span>
             <span class="n">config</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;databases&quot;</span><span class="p">:</span> <span class="p">[]}</span>
             <span class="n">match_string</span> <span class="o">=</span> <span class="s2">&quot;MATCH (user:User)-[r:has]-&gt;(config:Config)&quot;</span> <span class="o">+</span> \
@@ -218,11 +247,19 @@
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;可配置信息：&quot;</span><span class="p">,</span> <span class="n">config</span><span class="p">)</span>
             <span class="k">return</span> <span class="n">config</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">namelist</span> <span class="o">=</span> <span class="n">info</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;新配置信息：&quot;</span><span class="p">,</span> <span class="n">namelist</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">namelist</span><span class="p">:</span>
+            <span class="n">selected_names</span> <span class="o">=</span> <span class="n">info</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+        <span class="n">forbidden_names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">subgraphs</span><span class="p">)</span><span class="o">.</span><span class="n">difference</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">selected_names</span><span class="p">)))</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;选中知识库：&quot;</span><span class="p">,</span> <span class="n">selected_names</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;禁用知识库：&quot;</span><span class="p">,</span> <span class="n">forbidden_names</span><span class="p">)</span>
+        <span class="c1"># TODO：待合并精简</span>
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">selected_names</span><span class="p">:</span>
             <span class="n">match_string</span> <span class="o">=</span> <span class="s2">&quot;MATCH (user:User)-[r:has]-&gt;(config:Config) where user.userid=&#39;&quot;</span> \
                 <span class="o">+</span> <span class="n">userid</span> <span class="o">+</span> <span class="s2">&quot;&#39; AND config.name=&#39;&quot;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;&#39; SET r.bselected=1&quot;</span>
+            <span class="c1"># print(match_string)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">match_string</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">forbidden_names</span><span class="p">:</span>
+            <span class="n">match_string</span> <span class="o">=</span> <span class="s2">&quot;MATCH (user:User)-[r:has]-&gt;(config:Config) where user.userid=&#39;&quot;</span> \
+                <span class="o">+</span> <span class="n">userid</span> <span class="o">+</span> <span class="s2">&quot;&#39; AND config.name=&#39;&quot;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;&#39; SET r.bselected=0&quot;</span>
             <span class="c1"># print(match_string)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">match_string</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_usertopics</span><span class="p">(</span><span class="n">userid</span><span class="o">=</span><span class="n">userid</span><span class="p">)</span>
@@ -238,7 +275,8 @@
         <span class="n">match_string</span> <span class="o">=</span> <span class="s2">&quot;MATCH (user:User)-[r:has {bselected:1, available:1}]-&gt;(config:Config)&quot;</span> <span class="o">+</span> \
             <span class="s2">&quot;where user.userid=&#39;&quot;</span> <span class="o">+</span> <span class="n">userid</span> <span class="o">+</span> <span class="s2">&quot;&#39; RETURN config&quot;</span>
         <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">match_string</span><span class="p">)</span><span class="o">.</span><span class="n">data</span><span class="p">()</span>
-        <span class="n">usertopics</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span><span class="p">[</span><span class="s2">&quot;config&quot;</span><span class="p">][</span><span class="s2">&quot;topic&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">data</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+            <span class="n">usertopics</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="s2">&quot;config&quot;</span><span class="p">][</span><span class="s2">&quot;topic&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">))</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;用户：&quot;</span><span class="p">,</span> <span class="n">userid</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">已有知识库列表：&quot;</span><span class="p">,</span> <span class="n">usertopics</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">usertopics</span>
 
@@ -248,6 +286,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">sentence</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">gconfig</span><span class="p">)</span>
 
+    <span class="c1"># @time_me()</span>
     <span class="k">def</span> <span class="nf">add_to_memory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">question</span><span class="o">=</span><span class="s2">&quot;question&quot;</span><span class="p">,</span> <span class="n">userid</span><span class="o">=</span><span class="s2">&quot;userid&quot;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Add user question to memory.</span>
 <span class="sd">        将用户当前对话加入信息记忆。</span>
@@ -258,16 +297,86 @@
 <span class="sd">            userid: 用户唯一标识。</span>
 <span class="sd">                Defaults to &quot;userid&quot;.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">memory</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">question</span><span class="p">)</span>
         <span class="n">previous_node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">find_one</span><span class="p">(</span><span class="s2">&quot;Memory&quot;</span><span class="p">,</span> <span class="s2">&quot;qa_id&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">qa_id</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">qa_id</span> <span class="o">=</span> <span class="n">get_current_time</span><span class="p">()</span>
         <span class="n">node</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="s2">&quot;Memory&quot;</span><span class="p">,</span> <span class="n">question</span><span class="o">=</span><span class="n">question</span><span class="p">,</span> <span class="n">userid</span><span class="o">=</span><span class="n">userid</span><span class="p">,</span> <span class="n">qa_id</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">qa_id</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">previous_node</span><span class="p">:</span>
-            <span class="n">relation_previous</span> <span class="o">=</span> <span class="n">Relationship</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="s2">&quot;previous&quot;</span><span class="p">,</span> <span class="n">previous_node</span><span class="p">)</span>
-            <span class="n">relation_next</span> <span class="o">=</span> <span class="n">Relationship</span><span class="p">(</span><span class="n">previous_node</span><span class="p">,</span> <span class="s2">&quot;next&quot;</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">relation_previous</span> <span class="o">|</span> <span class="n">relation_next</span><span class="p">)</span>
+            <span class="n">relation</span> <span class="o">=</span> <span class="n">Relationship</span><span class="p">(</span><span class="n">previous_node</span><span class="p">,</span> <span class="s2">&quot;next&quot;</span><span class="p">,</span> <span class="n">node</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">relation</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+
+    <span class="c1"># Development requirements from Mr Tang in 2017-5-11.</span>
+    <span class="c1"># 由模糊匹配-&gt;全匹配 from Mr Tang in 2017-6-1.</span>
+    <span class="k">def</span> <span class="nf">extract_navigation</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">question</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Extract navigation。抽取导航地点。</span>
+<span class="sd">        QA匹配模式：从导航地点列表选取匹配度最高的地点。</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            question: User question. 用户问题。</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">question</span><span class="o">=</span><span class="n">question</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">iformat</span><span class="p">(</span><span class="n">random_item</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">do_not_know</span><span class="p">)),</span> \
+            <span class="n">context</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">behavior</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">parameter</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="c1"># temp_sim = 0</span>
+        <span class="c1"># sv1 = synonym_cut(question, &#39;wf&#39;)</span>
+        <span class="c1"># if not sv1:</span>
+            <span class="c1"># return result</span>
+        <span class="k">for</span> <span class="n">location</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">locations</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s2">&quot;去&quot;</span> <span class="ow">in</span> <span class="n">question</span> <span class="ow">and</span> <span class="n">location</span> <span class="ow">in</span> <span class="n">question</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Original navigation&quot;</span><span class="p">)</span>
+                <span class="n">result</span><span class="p">[</span><span class="s2">&quot;content&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">location</span>
+                <span class="n">result</span><span class="p">[</span><span class="s2">&quot;context&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;user_navigation&quot;</span>
+                <span class="n">result</span><span class="p">[</span><span class="s2">&quot;behavior&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="s2">&quot;0x001B&quot;</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">result</span>
+            <span class="c1"># sv2 = synonym_cut(location, &#39;wf&#39;)</span>
+            <span class="c1"># if sv2:</span>
+                <span class="c1"># temp_sim = similarity(sv1, sv2, &#39;j&#39;)</span>
+            <span class="c1"># 匹配加速，不必选取最高相似度，只要达到阈值就终止匹配</span>
+            <span class="c1"># if temp_sim &gt; 0.92:</span>
+                <span class="c1"># print(&quot;Navigation location: &quot; + location + &quot; Similarity Score: &quot; + str(temp_sim))</span>
+                <span class="c1"># result[&quot;content&quot;] = location</span>
+                <span class="c1"># result[&quot;context&quot;] = &quot;user_navigation&quot;</span>
+                <span class="c1"># result[&quot;behavior&quot;] = int(&quot;0x001B&quot;, 16)</span>
+                <span class="c1"># return result</span>
+        <span class="k">return</span> <span class="n">result</span>
+
+    <span class="k">def</span> <span class="nf">extract_pinyin</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">question</span><span class="p">,</span> <span class="n">subgraph</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Extract synonymous QA in NLU database。</span>
+<span class="sd">        QA匹配模式：从图形数据库选取匹配度最高的问答对。</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            question: User question. 用户问题。</span>
+<span class="sd">            subgraph: Sub graphs corresponding to the current dialogue. 当前对话领域对应的子图。</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">temp_sim</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">question</span><span class="o">=</span><span class="n">question</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">iformat</span><span class="p">(</span><span class="n">random_item</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">do_not_know</span><span class="p">)),</span> \
+            <span class="n">context</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">behavior</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">parameter</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">sv1</span> <span class="o">=</span> <span class="n">pinyin_cut</span><span class="p">(</span><span class="n">question</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">sv1</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">subgraph</span><span class="p">:</span>
+            <span class="n">iquestion</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">iformat</span><span class="p">(</span><span class="n">node</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
+            <span class="n">sv2</span> <span class="o">=</span> <span class="n">pinyin_cut</span><span class="p">(</span><span class="n">iquestion</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;  &quot;</span><span class="p">,</span> <span class="n">sv2</span><span class="p">)</span>
+            <span class="n">temp_sim</span> <span class="o">=</span> <span class="n">jaccard_pinyin</span><span class="p">(</span><span class="n">sv1</span><span class="p">,</span> <span class="n">sv2</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">temp_sim</span><span class="p">)</span>
+            <span class="c1"># 匹配加速，不必选取最高相似度，只要达到阈值就终止匹配</span>
+            <span class="k">if</span> <span class="n">temp_sim</span> <span class="o">&gt;</span> <span class="mf">0.75</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Q: &quot;</span> <span class="o">+</span> <span class="n">iquestion</span> <span class="o">+</span> <span class="s2">&quot; Similarity Score: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">temp_sim</span><span class="p">))</span>
+                <span class="n">result</span><span class="p">[</span><span class="s2">&quot;content&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">iformat</span><span class="p">(</span><span class="n">random_item</span><span class="p">(</span><span class="n">node</span><span class="p">[</span><span class="s2">&quot;content&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;|&quot;</span><span class="p">)))</span>
+                <span class="n">result</span><span class="p">[</span><span class="s2">&quot;context&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">node</span><span class="p">[</span><span class="s2">&quot;topic&quot;</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">node</span><span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">]:</span>
+                    <span class="c1"># result[&quot;url&quot;] = json.loads(random_item(node[&quot;url&quot;].split(&quot;|&quot;)))</span>
+                    <span class="n">result</span><span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">random_item</span><span class="p">(</span><span class="n">node</span><span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;|&quot;</span><span class="p">))</span>
+                <span class="k">if</span> <span class="n">node</span><span class="p">[</span><span class="s2">&quot;behavior&quot;</span><span class="p">]:</span>
+                    <span class="n">result</span><span class="p">[</span><span class="s2">&quot;behavior&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">node</span><span class="p">[</span><span class="s2">&quot;behavior&quot;</span><span class="p">],</span> <span class="mi">16</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">node</span><span class="p">[</span><span class="s2">&quot;parameter&quot;</span><span class="p">]:</span>
+                    <span class="n">result</span><span class="p">[</span><span class="s2">&quot;parameter&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">node</span><span class="p">[</span><span class="s2">&quot;parameter&quot;</span><span class="p">])</span>
+                <span class="n">func</span> <span class="o">=</span> <span class="n">node</span><span class="p">[</span><span class="s2">&quot;api&quot;</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">func</span><span class="p">:</span>
+                    <span class="n">exec</span><span class="p">(</span><span class="s2">&quot;result[&#39;content&#39;] = &quot;</span> <span class="o">+</span> <span class="n">func</span> <span class="o">+</span> <span class="s2">&quot;(&#39;&quot;</span> <span class="o">+</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;content&quot;</span><span class="p">]</span> <span class="o">+</span> \
+                        <span class="s2">&quot;&#39;, &quot;</span> <span class="o">+</span> <span class="s2">&quot;question)&quot;</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">result</span>
+        <span class="k">return</span> <span class="n">result</span>
 
     <span class="k">def</span> <span class="nf">extract_synonym</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">question</span><span class="p">,</span> <span class="n">subgraph</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Extract synonymous QA in NLU database。</span>
@@ -291,7 +400,6 @@
                 <span class="n">iquestion</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">iformat</span><span class="p">(</span><span class="n">node</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
                 <span class="k">if</span> <span class="n">question</span> <span class="o">==</span> <span class="n">iquestion</span><span class="p">:</span>
                     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Similarity Score: Original sentence&quot;</span><span class="p">)</span>
-                    <span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
                     <span class="n">result</span><span class="p">[</span><span class="s2">&quot;content&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">iformat</span><span class="p">(</span><span class="n">random_item</span><span class="p">(</span><span class="n">node</span><span class="p">[</span><span class="s2">&quot;content&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;|&quot;</span><span class="p">)))</span>
                     <span class="n">result</span><span class="p">[</span><span class="s2">&quot;context&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">node</span><span class="p">[</span><span class="s2">&quot;topic&quot;</span><span class="p">]</span>
                     <span class="k">if</span> <span class="n">node</span><span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">]:</span>
@@ -311,7 +419,7 @@
                 <span class="k">if</span> <span class="n">sv2</span><span class="p">:</span>
                     <span class="n">temp_sim</span> <span class="o">=</span> <span class="n">similarity</span><span class="p">(</span><span class="n">sv1</span><span class="p">,</span> <span class="n">sv2</span><span class="p">,</span> <span class="s1">&#39;j&#39;</span><span class="p">)</span>
 			    <span class="c1"># 匹配加速，不必选取最高相似度，只要达到阈值就终止匹配</span>
-                <span class="k">if</span> <span class="n">temp_sim</span> <span class="o">&gt;</span> <span class="mf">0.9</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">temp_sim</span> <span class="o">&gt;</span> <span class="mf">0.92</span><span class="p">:</span>
                     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Q: &quot;</span> <span class="o">+</span> <span class="n">iquestion</span> <span class="o">+</span> <span class="s2">&quot; Similarity Score: &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">temp_sim</span><span class="p">))</span>
                     <span class="n">result</span><span class="p">[</span><span class="s2">&quot;content&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">iformat</span><span class="p">(</span><span class="n">random_item</span><span class="p">(</span><span class="n">node</span><span class="p">[</span><span class="s2">&quot;content&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;|&quot;</span><span class="p">)))</span>
                     <span class="n">result</span><span class="p">[</span><span class="s2">&quot;context&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">node</span><span class="p">[</span><span class="s2">&quot;topic&quot;</span><span class="p">]</span>
@@ -329,6 +437,37 @@
                     <span class="k">return</span> <span class="n">result</span>
         <span class="k">return</span> <span class="n">result</span>
 
+    <span class="k">def</span> <span class="nf">extract_keysentence</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">question</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Extract keysentence QA in NLU database。</span>
+<span class="sd">        QA匹配模式：从图形数据库选取包含关键句的问答对。</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            question: User question. 用户问题。</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">question</span><span class="o">=</span><span class="n">question</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">iformat</span><span class="p">(</span><span class="n">random_item</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">do_not_know</span><span class="p">)),</span> \
+            <span class="n">context</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">behavior</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">parameter</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">match_string</span> <span class="o">=</span> <span class="s2">&quot;MATCH (n:NluCell) WHERE &#39;&quot;</span> <span class="o">+</span> <span class="n">question</span> <span class="o">+</span> <span class="s2">&quot;&#39; CONTAINS n.name RETURN n LIMIT 1&quot;</span>
+        <span class="n">subgraph</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">match_string</span><span class="p">)</span><span class="o">.</span><span class="n">data</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">subgraph</span><span class="p">:</span>
+            <span class="n">node</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">subgraph</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;n&#39;</span><span class="p">]</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Similarity Score: Key sentence&quot;</span><span class="p">)</span>
+            <span class="n">result</span><span class="p">[</span><span class="s2">&quot;content&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">iformat</span><span class="p">(</span><span class="n">random_item</span><span class="p">(</span><span class="n">node</span><span class="p">[</span><span class="s2">&quot;content&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;|&quot;</span><span class="p">)))</span>
+            <span class="n">result</span><span class="p">[</span><span class="s2">&quot;context&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">node</span><span class="p">[</span><span class="s2">&quot;topic&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">node</span><span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">]:</span>
+                <span class="c1"># result[&quot;url&quot;] = json.loads(random_item(node[&quot;url&quot;].split(&quot;|&quot;)))</span>
+                <span class="n">result</span><span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">random_item</span><span class="p">(</span><span class="n">node</span><span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;|&quot;</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">node</span><span class="p">[</span><span class="s2">&quot;behavior&quot;</span><span class="p">]:</span>
+                <span class="n">result</span><span class="p">[</span><span class="s2">&quot;behavior&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">node</span><span class="p">[</span><span class="s2">&quot;behavior&quot;</span><span class="p">],</span> <span class="mi">16</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">node</span><span class="p">[</span><span class="s2">&quot;parameter&quot;</span><span class="p">]:</span>
+                <span class="n">result</span><span class="p">[</span><span class="s2">&quot;parameter&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">node</span><span class="p">[</span><span class="s2">&quot;parameter&quot;</span><span class="p">])</span>
+            <span class="c1"># 知识实体节点api抽取原始问题中的关键信息，据此本地查询/在线调用第三方api/在线爬取</span>
+            <span class="n">func</span> <span class="o">=</span> <span class="n">node</span><span class="p">[</span><span class="s2">&quot;api&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">func</span><span class="p">:</span>
+                <span class="n">exec</span><span class="p">(</span><span class="s2">&quot;result[&#39;content&#39;] = &quot;</span> <span class="o">+</span> <span class="n">func</span> <span class="o">+</span> <span class="s2">&quot;(&#39;&quot;</span> <span class="o">+</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;content&quot;</span><span class="p">]</span> <span class="o">+</span> \
+                    <span class="s2">&quot;&#39;, &quot;</span> <span class="o">+</span> <span class="s2">&quot;question)&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">result</span>
+        <span class="k">return</span> <span class="n">result</span>
+
     <span class="nd">@time_me</span><span class="p">()</span>
     <span class="k">def</span> <span class="nf">search</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">question</span><span class="o">=</span><span class="s2">&quot;question&quot;</span><span class="p">,</span> <span class="n">userid</span><span class="o">=</span><span class="s2">&quot;userid&quot;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Nlu search. 语义搜索。</span>
@@ -343,26 +482,10 @@
 <span class="sd">            Dict contains answer, current topic, url, behavior and parameter.</span>
 <span class="sd">            返回包含答案，当前话题，资源包，行为指令及对应参数的字典。</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># 云端在线场景</span>
-        <span class="n">result</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">question</span><span class="o">=</span><span class="n">question</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="s2">&quot;ok&quot;</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="s2">&quot;basic_cmd&quot;</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> \
-        <span class="n">behavior</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="s2">&quot;0x0000&quot;</span><span class="p">,</span> <span class="mi">16</span><span class="p">),</span> <span class="n">parameter</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-        <span class="k">if</span> <span class="s2">&quot;理财产品&quot;</span> <span class="ow">in</span> <span class="n">question</span> <span class="ow">or</span> <span class="s2">&quot;理财&quot;</span> <span class="ow">in</span> <span class="n">question</span><span class="p">:</span>
-            <span class="n">result</span><span class="p">[</span><span class="s2">&quot;behavior&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="s2">&quot;0x1002&quot;</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span> <span class="c1"># 进入在线场景</span>
-            <span class="n">result</span><span class="p">[</span><span class="s2">&quot;question&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;理财产品&quot;</span> <span class="c1"># 重定义为标准问题</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">is_scene</span> <span class="o">=</span> <span class="kc">True</span> <span class="c1"># 在线场景标志</span>
-        <span class="k">if</span> <span class="s2">&quot;退出业务场景&quot;</span> <span class="ow">in</span> <span class="n">question</span> <span class="ow">or</span> <span class="s2">&quot;退出&quot;</span> <span class="ow">in</span> <span class="n">question</span> <span class="ow">or</span> <span class="s2">&quot;返回&quot;</span> <span class="ow">in</span> <span class="n">question</span><span class="p">:</span>
-            <span class="n">result</span><span class="p">[</span><span class="s2">&quot;behavior&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="s2">&quot;0x0020&quot;</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span> <span class="c1"># 场景退出</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">is_scene</span> <span class="o">=</span> <span class="kc">False</span>
-            <span class="k">return</span> <span class="n">result</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_scene</span><span class="p">:</span>
-            <span class="k">if</span> <span class="s2">&quot;上一步&quot;</span> <span class="ow">in</span> <span class="n">question</span> <span class="ow">or</span> <span class="s2">&quot;上一部&quot;</span> <span class="ow">in</span> <span class="n">question</span><span class="p">:</span>
-                <span class="n">result</span><span class="p">[</span><span class="s2">&quot;behavior&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="s2">&quot;0x001D&quot;</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span> <span class="c1"># 场景上一步</span>
-            <span class="k">elif</span> <span class="s2">&quot;下一步&quot;</span> <span class="ow">in</span> <span class="n">question</span> <span class="ow">or</span> <span class="s2">&quot;下一部&quot;</span> <span class="ow">in</span> <span class="n">question</span><span class="p">:</span>
-                <span class="n">result</span><span class="p">[</span><span class="s2">&quot;behavior&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="s2">&quot;0x001E&quot;</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span> <span class="c1"># 场景下一步</span>
-            <span class="n">result</span><span class="p">[</span><span class="s2">&quot;content&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">question</span>
-            <span class="k">return</span> <span class="n">result</span>
-
+        <span class="c1"># 添加到问题记忆</span>
+        <span class="c1"># self.qmemory.append(question)</span>
         <span class="c1"># self.add_to_memory(question, userid)</span>
+
         <span class="c1"># 本地语义：全图模式</span>
         <span class="c1">#tag = get_tag(question)</span>
         <span class="c1">#subgraph = self.graph.find(&quot;NluCell&quot;, &quot;tag&quot;, tag)</span>
@@ -373,24 +496,134 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">gconfig</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">find_one</span><span class="p">(</span><span class="s2">&quot;User&quot;</span><span class="p">,</span> <span class="s2">&quot;userid&quot;</span><span class="p">,</span> <span class="n">userid</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">usertopics</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_usertopics</span><span class="p">(</span><span class="n">userid</span><span class="o">=</span><span class="n">userid</span><span class="p">)</span>
 
+        <span class="c1"># 一、预处理=====================================================</span>
+        <span class="c1"># 问题过滤器(添加敏感词过滤 2017-5-25)</span>
+        <span class="k">if</span> <span class="n">check_swords</span><span class="p">(</span><span class="n">question</span><span class="p">):</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;问题包含敏感词！&quot;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span><span class="n">question</span><span class="o">=</span><span class="n">question</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">iformat</span><span class="p">(</span><span class="n">random_item</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">do_not_know</span><span class="p">)),</span> \
+            <span class="n">context</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">behavior</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">parameter</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="c1"># 姓氏引起误匹配重定义</span>
+        <span class="k">if</span> <span class="n">question</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;小&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">question</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">question</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gconfig</span><span class="p">[</span><span class="s1">&#39;robotname&#39;</span><span class="p">]</span>
+        <span class="c1"># 称呼过滤 Add in 2017-7-5</span>
+        <span class="k">for</span> <span class="n">robotname</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;小民&quot;</span><span class="p">,</span> <span class="s2">&quot;小明&quot;</span><span class="p">,</span> <span class="s2">&quot;小名&quot;</span><span class="p">,</span> <span class="s2">&quot;晓明&quot;</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="n">question</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">robotname</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">question</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">4</span> <span class="ow">and</span> <span class="s2">&quot;在线&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">question</span><span class="p">:</span>
+                <span class="n">question</span> <span class="o">=</span> <span class="n">question</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="n">robotname</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">question</span><span class="p">:</span>
+            <span class="n">question</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gconfig</span><span class="p">[</span><span class="s1">&#39;robotname&#39;</span><span class="p">]</span>
+        <span class="c1"># 二、导航=======================================================</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">extract_navigation</span><span class="p">(</span><span class="n">question</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;context&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;user_navigation&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">result</span>
+
+        <span class="c1"># 三、云端在线场景================================================</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">question</span><span class="o">=</span><span class="n">question</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="s2">&quot;basic_cmd&quot;</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> \
+        <span class="n">behavior</span><span class="o">=</span><span class="nb">int</span><span class="p">(</span><span class="s2">&quot;0x0000&quot;</span><span class="p">,</span> <span class="mi">16</span><span class="p">),</span> <span class="n">parameter</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="c1"># TODO: 简化为统一模式</span>
+        <span class="c1"># TODO {&#39;behavior&#39;: 0, &#39;content&#39;: &#39;理财产品取号&#39;, &#39;context&#39;: &#39;basic_cmd&#39;, &#39;parameter&#39;: 0, &#39;question&#39;: &#39;理财产品取号&#39;, &#39;url&#39;: &#39;&#39;}</span>
+        <span class="k">if</span> <span class="s2">&quot;理财产品&quot;</span> <span class="ow">in</span> <span class="n">question</span> <span class="ow">and</span> <span class="s2">&quot;取号&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">question</span><span class="p">:</span>
+            <span class="n">result</span><span class="p">[</span><span class="s2">&quot;behavior&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="s2">&quot;0x1002&quot;</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span> <span class="c1"># 进入在线场景</span>
+            <span class="n">result</span><span class="p">[</span><span class="s2">&quot;question&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;理财产品&quot;</span> <span class="c1"># 重定义为标准问题</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">is_scene</span> <span class="o">=</span> <span class="kc">True</span> <span class="c1"># 在线场景标志</span>
+        <span class="k">if</span> <span class="s2">&quot;免费wifi&quot;</span> <span class="ow">in</span> <span class="n">question</span> <span class="ow">or</span> <span class="s2">&quot;wifi&quot;</span> <span class="ow">in</span> <span class="n">question</span><span class="p">:</span>
+            <span class="n">result</span><span class="p">[</span><span class="s2">&quot;behavior&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="s2">&quot;0x1002&quot;</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span> <span class="c1"># 进入在线场景</span>
+            <span class="n">result</span><span class="p">[</span><span class="s2">&quot;question&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;有没有免费的wifi&quot;</span> <span class="c1"># 重定义为标准问题</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">is_scene</span> <span class="o">=</span> <span class="kc">True</span> <span class="c1"># 在线场景标志</span>
+        <span class="k">if</span> <span class="s2">&quot;存款利率&quot;</span> <span class="ow">in</span> <span class="n">question</span><span class="p">:</span>
+            <span class="n">result</span><span class="p">[</span><span class="s2">&quot;behavior&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="s2">&quot;0x1002&quot;</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span> <span class="c1"># 进入在线场景</span>
+            <span class="n">result</span><span class="p">[</span><span class="s2">&quot;question&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;存款利率&quot;</span> <span class="c1"># 重定义为标准问题</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">is_scene</span> <span class="o">=</span> <span class="kc">True</span> <span class="c1"># 在线场景标志</span>
+        <span class="k">if</span> <span class="s2">&quot;我要取钱&quot;</span> <span class="ow">in</span> <span class="n">question</span> <span class="ow">or</span> <span class="s2">&quot;取钱&quot;</span> <span class="ow">in</span> <span class="n">question</span><span class="p">:</span>
+            <span class="n">result</span><span class="p">[</span><span class="s2">&quot;behavior&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="s2">&quot;0x1002&quot;</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span> <span class="c1"># 进入在线场景</span>
+            <span class="n">result</span><span class="p">[</span><span class="s2">&quot;question&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;我要取钱&quot;</span> <span class="c1"># 重定义为标准问题</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">is_scene</span> <span class="o">=</span> <span class="kc">True</span> <span class="c1"># 在线场景标志</span>
+        <span class="k">if</span> <span class="s2">&quot;信用卡挂失&quot;</span> <span class="ow">in</span> <span class="n">question</span><span class="p">:</span>
+            <span class="n">result</span><span class="p">[</span><span class="s2">&quot;behavior&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="s2">&quot;0x1002&quot;</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span> <span class="c1"># 进入在线场景</span>
+            <span class="n">result</span><span class="p">[</span><span class="s2">&quot;question&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;信用卡挂失&quot;</span> <span class="c1"># 重定义为标准问题</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">is_scene</span> <span class="o">=</span> <span class="kc">True</span> <span class="c1"># 在线场景标志</span>
+        <span class="k">if</span> <span class="s2">&quot;开通云闪付&quot;</span> <span class="ow">in</span> <span class="n">question</span><span class="p">:</span>
+            <span class="n">result</span><span class="p">[</span><span class="s2">&quot;behavior&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="s2">&quot;0x1002&quot;</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span> <span class="c1"># 进入在线场景</span>
+            <span class="n">result</span><span class="p">[</span><span class="s2">&quot;question&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;开通云闪付&quot;</span> <span class="c1"># 重定义为标准问题</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">is_scene</span> <span class="o">=</span> <span class="kc">True</span> <span class="c1"># 在线场景标志</span>
+        <span class="k">if</span> <span class="s2">&quot;办理粤卡通&quot;</span> <span class="ow">in</span> <span class="n">question</span> <span class="ow">or</span> <span class="s2">&quot;办理粤通卡&quot;</span> <span class="ow">in</span> <span class="n">question</span><span class="p">:</span>
+            <span class="n">result</span><span class="p">[</span><span class="s2">&quot;behavior&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="s2">&quot;0x1002&quot;</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span> <span class="c1"># 进入在线场景</span>
+            <span class="n">result</span><span class="p">[</span><span class="s2">&quot;question&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;办理粤通卡&quot;</span> <span class="c1"># 重定义为标准问题 修正：2017-7-3</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">is_scene</span> <span class="o">=</span> <span class="kc">True</span> <span class="c1"># 在线场景标志</span>
+        <span class="c1"># 进入在线场景</span>
+        <span class="c1"># start_scene = [&quot;理财产品&quot;, &quot;wifi&quot;, &quot;存款利率&quot;, &quot;取钱&quot;, &quot;信用卡挂失&quot;, &quot;开通云闪付&quot;, &quot;办理粤卡通&quot;]</span>
+        <span class="c1"># for item in start_scene:</span>
+            <span class="c1"># if item in question:</span>
+                <span class="c1"># result[&quot;behavior&quot;] = int(&quot;0x1002&quot;, 16) # 进入在线场景</span>
+                <span class="c1"># result[&quot;question&quot;] = &quot;办理粤卡通&quot; # 重定义为标准问题</span>
+                <span class="c1"># self.is_scene = True # 在线场景标志</span>
+        <span class="c1"># 退出在线场景</span>
+        <span class="n">end_scene</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;退出业务场景&quot;</span><span class="p">,</span> <span class="s2">&quot;退出&quot;</span><span class="p">,</span> <span class="s2">&quot;返回&quot;</span><span class="p">,</span> <span class="s2">&quot;结束&quot;</span><span class="p">,</span> <span class="s2">&quot;发挥&quot;</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">end_scene</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">item</span> <span class="o">==</span> <span class="n">question</span><span class="p">:</span> <span class="c1"># if item in question: # 避免多个退出模式冲突</span>
+                <span class="n">result</span><span class="p">[</span><span class="s2">&quot;behavior&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="s2">&quot;0x0020&quot;</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span> <span class="c1"># 场景退出</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">is_scene</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="k">return</span> <span class="n">result</span>
+        <span class="n">previous_step</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;上一步&quot;</span><span class="p">,</span> <span class="s2">&quot;上一部&quot;</span><span class="p">,</span> <span class="s2">&quot;上一页&quot;</span><span class="p">,</span> <span class="s2">&quot;上一个&quot;</span><span class="p">]</span>
+        <span class="n">next_step</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;下一步&quot;</span><span class="p">,</span> <span class="s2">&quot;下一部&quot;</span><span class="p">,</span> <span class="s2">&quot;下一页&quot;</span><span class="p">,</span> <span class="s2">&quot;下一个&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_scene</span><span class="p">:</span>
+            <span class="c1"># for item in previous_step:</span>
+                <span class="c1"># if item in question:</span>
+                    <span class="c1"># result[&quot;behavior&quot;] = int(&quot;0x001D&quot;, 16) # 场景上一步</span>
+            <span class="c1"># for item in next_step:</span>
+                <span class="c1"># if item in question:</span>
+                    <span class="c1"># result[&quot;behavior&quot;] = int(&quot;0x001E&quot;, 16) # 场景下一步</span>
+            <span class="k">if</span> <span class="s2">&quot;上一步&quot;</span> <span class="ow">in</span> <span class="n">question</span> <span class="ow">or</span> <span class="s2">&quot;上一部&quot;</span> <span class="ow">in</span> <span class="n">question</span> <span class="ow">or</span> <span class="s2">&quot;上一页&quot;</span> <span class="ow">in</span> <span class="n">question</span> <span class="ow">or</span> <span class="s2">&quot;上一个&quot;</span> <span class="ow">in</span> <span class="n">question</span><span class="p">:</span>
+                <span class="n">result</span><span class="p">[</span><span class="s2">&quot;behavior&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="s2">&quot;0x001D&quot;</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span> <span class="c1"># 场景上一步</span>
+            <span class="k">elif</span> <span class="s2">&quot;下一步&quot;</span> <span class="ow">in</span> <span class="n">question</span> <span class="ow">or</span> <span class="s2">&quot;下一部&quot;</span> <span class="ow">in</span> <span class="n">question</span> <span class="ow">or</span> <span class="s2">&quot;下一页&quot;</span> <span class="ow">in</span> <span class="n">question</span> <span class="ow">or</span> <span class="s2">&quot;下一个&quot;</span> <span class="ow">in</span> <span class="n">question</span><span class="p">:</span>
+                <span class="n">result</span><span class="p">[</span><span class="s2">&quot;behavior&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="s2">&quot;0x001E&quot;</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span> <span class="c1"># 场景下一步</span>
+            <span class="n">result</span><span class="p">[</span><span class="s2">&quot;content&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">question</span>
+            <span class="k">return</span> <span class="n">result</span>
+
+        <span class="c1"># 常用命令，交互，业务</span>
+        <span class="c1"># 上下文——重复命令 TODO：确认返回的是正确的指令而不是例如唱歌时的结束语“可以了”</span>
+        <span class="k">if</span> <span class="s2">&quot;再来一个&quot;</span> <span class="ow">in</span> <span class="n">question</span><span class="p">:</span>
+            <span class="c1"># TODO：从记忆里选取最近的有意义行为作为重复的内容</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">amemory</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="c1"># 四、本地标准语义================================================</span>
+        <span class="c1"># 模式1：选取语义得分大于阈值</span>
         <span class="n">tag</span> <span class="o">=</span> <span class="n">get_tag</span><span class="p">(</span><span class="n">question</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gconfig</span><span class="p">)</span>
+        <span class="c1"># TODO：添加语义标签和关键词综合匹配的情况</span>
         <span class="n">subgraph_all</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;NluCell&quot;</span><span class="p">,</span> <span class="s2">&quot;tag&quot;</span><span class="p">,</span> <span class="n">tag</span><span class="p">))</span>
         <span class="c1"># subgraph_scene = [node for node in subgraph_all if node[&quot;topic&quot;]==self.topic]</span>
+        <span class="c1"># TODO：usergraph_all 包含正常问答和用户自定义问答，可优先匹配用户自定义问答</span>
         <span class="n">usergraph_all</span> <span class="o">=</span> <span class="p">[</span><span class="n">node</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">subgraph_all</span> <span class="k">if</span> <span class="n">node</span><span class="p">[</span><span class="s2">&quot;topic&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">usertopics</span><span class="p">]</span>
         <span class="n">usergraph_scene</span> <span class="o">=</span> <span class="p">[</span><span class="n">node</span> <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">usergraph_all</span> <span class="k">if</span> <span class="n">node</span><span class="p">[</span><span class="s2">&quot;topic&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">topic</span><span class="p">]</span>
+
+        <span class="c1"># 查看根据语义标签初步确定的子图</span>
+        <span class="c1"># for node in usergraph_all:</span>
+            <span class="c1"># print(node[&quot;name&quot;])</span>
+
         <span class="c1"># if subgraph_scene:</span>
         <span class="k">if</span> <span class="n">usergraph_scene</span><span class="p">:</span>
             <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">extract_synonym</span><span class="p">(</span><span class="n">question</span><span class="p">,</span> <span class="n">usergraph_scene</span><span class="p">)</span>
+            <span class="c1"># result = self.extract_pinyin(question, usergraph_scene)</span>
             <span class="k">if</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;context&quot;</span><span class="p">]:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">topic</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;context&quot;</span><span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">amemory</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="c1"># 添加到答案记忆</span>
                 <span class="k">return</span> <span class="n">result</span>
         <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">extract_synonym</span><span class="p">(</span><span class="n">question</span><span class="p">,</span> <span class="n">usergraph_all</span><span class="p">)</span>
+        <span class="c1"># result = self.extract_pinyin(question, usergraph_all)</span>
         <span class="c1"># result  = self.extract_synonym(question, subgraph_all)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">topic</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;context&quot;</span><span class="p">]</span>
-        <span class="c1"># 在线语义</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">amemory</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="c1"># 添加到答案记忆</span>
+
+        <span class="c1"># 模式2：包含关键句就匹配</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">topic</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">extract_keysentence</span><span class="p">(</span><span class="n">question</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;context&quot;</span><span class="p">]:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">topic</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;context&quot;</span><span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">amemory</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="c1"># 添加到答案记忆</span>
+                <span class="k">return</span> <span class="n">result</span>
+
+        <span class="c1"># 五、在线语义====================================================</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">topic</span><span class="p">:</span>
             <span class="c1"># 1.音乐(唱一首xxx的xxx)</span>
-            <span class="k">if</span> <span class="s2">&quot;唱一首&quot;</span> <span class="ow">in</span> <span class="n">question</span> <span class="ow">or</span> <span class="s2">&quot;我想听&quot;</span> <span class="ow">in</span> <span class="n">question</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s2">&quot;唱一首&quot;</span> <span class="ow">in</span> <span class="n">question</span> <span class="ow">or</span> <span class="s2">&quot;唱首&quot;</span> <span class="ow">in</span> <span class="n">question</span> <span class="ow">or</span> <span class="s2">&quot;我想听&quot;</span> <span class="ow">in</span> <span class="n">question</span><span class="p">:</span>
                 <span class="n">result</span><span class="p">[</span><span class="s2">&quot;behavior&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="s2">&quot;0x0001&quot;</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span>
                 <span class="n">result</span><span class="p">[</span><span class="s2">&quot;content&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;好的，正在准备哦&quot;</span>
             <span class="c1"># 2.附近有什么好吃的</span>
@@ -399,14 +632,33 @@
                 <span class="n">result</span><span class="p">[</span><span class="s2">&quot;content&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">address</span>
             <span class="c1"># 3.nlu_tuling(天气)</span>
             <span class="k">elif</span> <span class="s2">&quot;天气&quot;</span> <span class="ow">in</span> <span class="n">question</span><span class="p">:</span>
-                <span class="n">weather</span> <span class="o">=</span> <span class="n">nlu_tuling</span><span class="p">(</span><span class="n">question</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">address</span><span class="p">)</span>
+                <span class="c1"># 图灵API变更之后 Add in 2017-8-4</span>
+                <span class="n">location</span> <span class="o">=</span> <span class="n">get_location</span><span class="p">(</span><span class="n">question</span><span class="p">)</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">location</span><span class="p">:</span>
+                    <span class="c1"># 问句中不包含地址</span>
+                    <span class="n">weather</span> <span class="o">=</span> <span class="n">nlu_tuling</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">address</span> <span class="o">+</span> <span class="n">question</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c1"># 问句中包含地址</span>
+                    <span class="n">weather</span> <span class="o">=</span> <span class="n">nlu_tuling</span><span class="p">(</span><span class="n">question</span><span class="p">)</span>
+                <span class="c1"># 图灵API变更之前    </span>
+                <span class="c1"># weather = nlu_tuling(question, loc=self.address)</span>
                 <span class="n">result</span><span class="p">[</span><span class="s2">&quot;behavior&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="s2">&quot;0x0000&quot;</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span>
-                <span class="n">result</span><span class="p">[</span><span class="s2">&quot;content&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">weather</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;;&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="c1"># 图灵API变更之前</span>
+                    <span class="c1"># temp = weather.split(&quot;;&quot;)[0].split(&quot;,&quot;)[1].split()</span>
+                    <span class="c1"># myweather = temp[0] + temp[2] + temp[3]</span>
+
+                    <span class="c1"># 图灵API变更之后 Add in 2017-8-3</span>
+                    <span class="n">temp</span> <span class="o">=</span> <span class="n">weather</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
+                    <span class="n">myweather</span> <span class="o">=</span> <span class="n">temp</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">temp</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+                <span class="k">except</span><span class="p">:</span>
+                    <span class="n">myweather</span> <span class="o">=</span> <span class="n">weather</span>
+                <span class="n">result</span><span class="p">[</span><span class="s2">&quot;content&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">myweather</span>
                 <span class="n">result</span><span class="p">[</span><span class="s2">&quot;context&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;nlu_tuling&quot;</span>
-            <span class="c1"># 4.导航</span>
-            <span class="k">elif</span> <span class="s2">&quot;带我去&quot;</span> <span class="ow">in</span> <span class="n">question</span> <span class="ow">or</span> <span class="s2">&quot;去&quot;</span> <span class="ow">in</span> <span class="n">question</span><span class="p">:</span>
-                <span class="n">result</span><span class="p">[</span><span class="s2">&quot;behavior&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="s2">&quot;0x001B&quot;</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span>
-                <span class="n">result</span><span class="p">[</span><span class="s2">&quot;content&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">get_navigation_target</span><span class="p">(</span><span class="n">info</span><span class="o">=</span><span class="n">question</span><span class="p">)</span>
+            <span class="c1"># 4.追加记录回答不上的所有问题</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;C:/nlu/bin/do_not_know.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;UTF-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+                    <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">question</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
             <span class="c1"># 5.nlu_tuling</span>
             <span class="c1"># else:</span>
                 <span class="c1"># result[&quot;content&quot;] = nlu_tuling(question, loc=self.address)</span>
@@ -445,7 +697,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'1.0.3',
+            VERSION:'1.0.5',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

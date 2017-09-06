@@ -9,9 +9,9 @@
 代码贡献
 ==================
 
-* Decalogue
+* `Decalogue <https://github.com/decalogue/chat>`_
 
 文档贡献
 ==================
 
-* Decalogue
+* `Decalogue <https://github.com/decalogue/chat>`_

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>chat.database &mdash; chat 1.0.3 documentation</title>
+  <title>chat.database &mdash; chat 1.0.5 documentation</title>
   
 
   
@@ -30,7 +30,7 @@
   
 
   
-    <link rel="top" title="chat 1.0.3 documentation" href="../../index.html"/>
+    <link rel="top" title="chat 1.0.5 documentation" href="../../index.html"/>
         <link rel="up" title="Module code" href="../index.html"/> 
 
   
@@ -59,7 +59,7 @@
             
             
               <div class="version">
-                1.0.3
+                1.0.5
               </div>
             
           
@@ -86,7 +86,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../user/custom.html">个性化定制您的聊天机器人</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../user/development.html">开发 Development</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../user/architecture.html">深入了解</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../user/tss.html">技术支持</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../user/ts.html">技术支持</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../user/thanks.html">致谢</a></li>
 </ul>
 <ul>
@@ -164,11 +164,15 @@
 <span class="sd">Available functions:</span>
 <span class="sd">- All classes and functions: 所有类和函数</span>
 <span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">string</span>
 <span class="kn">from</span> <span class="nn">optparse</span> <span class="k">import</span> <span class="n">OptionParser</span>
 <span class="kn">from</span> <span class="nn">py2neo</span> <span class="k">import</span> <span class="n">Graph</span><span class="p">,</span> <span class="n">Node</span><span class="p">,</span> <span class="n">Relationship</span><span class="p">,</span> <span class="n">NodeSelector</span>
 <span class="kn">from</span> <span class="nn">.mytools</span> <span class="k">import</span> <span class="n">read_excel</span>
 <span class="kn">from</span> <span class="nn">.semantic</span> <span class="k">import</span> <span class="n">get_tag</span>
+
+<span class="c1"># Add in 2017-5-12 知识库excel文件路径</span>
+<span class="n">datapath</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="n">__file__</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
 
 
 <div class="viewcode-block" id="Database"><a class="viewcode-back" href="../../modules/database.html#chat.database.Database">[docs]</a><span class="k">class</span> <span class="nc">Database</span><span class="p">():</span>
@@ -185,11 +189,16 @@
 <span class="sd">    - rdb: Relational database. 关系数据库。</span>
 <span class="sd">    - graph: Graph database. 图数据库。</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">userid</span><span class="o">=</span><span class="s2">&quot;userid&quot;</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s2">&quot;train&quot;</span><span class="p">,</span> <span class="n">userid</span><span class="o">=</span><span class="s2">&quot;userid&quot;</span><span class="p">,</span> <span class="n">is_admin</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_admin</span> <span class="o">=</span> <span class="n">is_admin</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">rdb</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">graph</span> <span class="o">=</span> <span class="n">Graph</span><span class="p">(</span><span class="s2">&quot;http://localhost:7474/db/data&quot;</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="n">password</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">gconfig</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">find_one</span><span class="p">(</span><span class="s2">&quot;User&quot;</span><span class="p">,</span> <span class="s2">&quot;userid&quot;</span><span class="p">,</span> <span class="n">userid</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">selector</span> <span class="o">=</span> <span class="n">NodeSelector</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="p">)</span>
+        <span class="c1"># DeprecationWarning: Graph.find_one is deprecated, use NodeSelector instead. 2017-5-18</span>
+        <span class="c1"># self.gconfig = self.graph.find_one(&quot;User&quot;, &quot;userid&quot;, userid)</span>
+        <span class="c1"># 用法1：subgraph = selector.select(&quot;Label&quot;, property=value)</span>
+        <span class="c1"># 用法2：subgraph = selector.select(&quot;Person&quot;).where(&quot;_.name =~ &#39;J.*&#39;&quot;, &quot;1960 &lt;= _.born &lt; 1970&quot;)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gconfig</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">selector</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;User&quot;</span><span class="p">,</span> <span class="n">userid</span><span class="o">=</span><span class="n">userid</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">usage</span> <span class="o">=</span> <span class="s2">&quot;usage: python %prog [options] arg&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">version</span> <span class="o">=</span> <span class="s2">&quot;%prog 1.0&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">parser</span> <span class="o">=</span> <span class="n">OptionParser</span><span class="p">(</span><span class="n">usage</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">usage</span><span class="p">,</span> <span class="n">version</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">version</span><span class="p">)</span>
@@ -215,31 +224,65 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;reading </span><span class="si">%s</span><span class="s2">...&quot;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">filename</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">delete</span><span class="p">:</span>
-            <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">pattern</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">delete</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">args</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">pattern</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">delete</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pattern</span><span class="o">=</span><span class="s2">&quot;n&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pattern</span><span class="o">=</span><span class="s2">&quot;n&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Batch delete data or subgraph in database.</span>
 <span class="sd">        在数据库中批量删除数据或者子图。</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            pattern: Type of subgraph. 子图类型。</span>
-<span class="sd">            name: Name of subgraph. 子图名称。</span>
+<span class="sd">            label: Label of subgraph. 子图标签。</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">pattern</span> <span class="o">==</span> <span class="s2">&quot;all&quot;</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">delete_all</span><span class="p">()</span>
         <span class="k">elif</span> <span class="n">pattern</span> <span class="o">==</span> <span class="s2">&quot;n&quot;</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">&quot;MATCH(n:&quot;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;) DETACH DELETE n&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">&quot;MATCH(n:&quot;</span> <span class="o">+</span> <span class="n">label</span> <span class="o">+</span> <span class="s2">&quot;) DETACH DELETE n&quot;</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">pattern</span> <span class="o">==</span> <span class="s2">&quot;r&quot;</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">&quot;MATCH (n)-[r:&quot;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;]-(m) DETACH DELETE r&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">&quot;MATCH (n)-[r:&quot;</span> <span class="o">+</span> <span class="n">label</span> <span class="o">+</span> <span class="s2">&quot;]-(m) DETACH DELETE r&quot;</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">pattern</span> <span class="o">==</span> <span class="s2">&quot;nr&quot;</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">&quot;MATCH (n)&lt;-[r:&quot;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;]-(m) DETACH DELETE r DELETE n&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">&quot;MATCH (n)&lt;-[r:&quot;</span> <span class="o">+</span> <span class="n">label</span> <span class="o">+</span> <span class="s2">&quot;]-(m) DETACH DELETE r DELETE n&quot;</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">pattern</span> <span class="o">==</span> <span class="s2">&quot;rm&quot;</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">&quot;MATCH (n)-[r:&quot;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;]-&gt;(m) DETACH DELETE r DELETE m&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">&quot;MATCH (n)-[r:&quot;</span> <span class="o">+</span> <span class="n">label</span> <span class="o">+</span> <span class="s2">&quot;]-&gt;(m) DETACH DELETE r DELETE m&quot;</span><span class="p">)</span>
         <span class="k">elif</span> <span class="n">pattern</span> <span class="o">==</span> <span class="s2">&quot;nrm&quot;</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">&quot;MATCH (n)-[r:&quot;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;]-(m) DETACH DELETE r DELETE n DELETE m&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">&quot;MATCH (n)-[r:&quot;</span> <span class="o">+</span> <span class="n">label</span> <span class="o">+</span> <span class="s2">&quot;]-(m) DETACH DELETE r DELETE n DELETE m&quot;</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">add_qa</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nodeclass</span><span class="o">=</span><span class="s2">&quot;NluCell&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">topic</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> \
+    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pattern</span><span class="o">=</span><span class="s2">&quot;n&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Reset data of label in database.</span>
+<span class="sd">        重置数据库子图。</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            pattern: Type of subgraph. 子图类型。</span>
+<span class="sd">            label: Label of subgraph. 子图标签。</span>
+<span class="sd">        &quot;&quot;&quot;</span> 
+        <span class="k">assert</span> <span class="n">filename</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;filename can not be None.&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">pattern</span><span class="o">=</span><span class="s2">&quot;n&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;NluCell&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Delete successfully!&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">handle_excel</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;You can set &#39;filename=&lt;filepath&gt;&#39; when you call &#39;Database.reset.&#39;&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Reset successfully!&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">reset_ts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pattern</span><span class="o">=</span><span class="s2">&quot;n&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;TestStandard&quot;</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Reset data of label in database.</span>
+<span class="sd">        重置数据库子图。</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            pattern: Type of subgraph. 子图类型。</span>
+<span class="sd">            label: Label of subgraph. 子图标签。</span>
+<span class="sd">        &quot;&quot;&quot;</span> 
+        <span class="k">assert</span> <span class="n">filename</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;filename can not be None.&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">pattern</span><span class="o">=</span><span class="s2">&quot;n&quot;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Delete test standard successfully!&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">handle_ts</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;You can set &#39;filename=&lt;filepath&gt;&#39; when you call &#39;Database.reset.&#39;&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Reset test standard successfully!&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">add_qa</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;NluCell&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">topic</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> \
     <span class="n">behavior</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">parameter</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">keywords</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">api</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">txt</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> \
     <span class="n">img</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">chart</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -249,11 +292,66 @@
         <span class="k">assert</span> <span class="n">content</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;content must be string.&quot;</span>
         <span class="n">questions</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">delimiter</span><span class="p">)</span>
         <span class="k">for</span> <span class="n">question</span> <span class="ow">in</span> <span class="n">questions</span><span class="p">:</span>
-            <span class="n">tag</span> <span class="o">=</span> <span class="n">get_tag</span><span class="p">(</span><span class="n">question</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gconfig</span><span class="p">)</span>
-            <span class="n">node</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="n">nodeclass</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">question</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="n">content</span><span class="p">,</span> <span class="n">topic</span><span class="o">=</span><span class="n">topic</span><span class="p">,</span> \
-            <span class="n">behavior</span><span class="o">=</span><span class="n">behavior</span><span class="p">,</span> <span class="n">parameter</span><span class="o">=</span><span class="n">parameter</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="n">tag</span><span class="p">,</span> \
-            <span class="n">keywords</span><span class="o">=</span><span class="n">keywords</span><span class="p">,</span> <span class="n">api</span><span class="o">=</span><span class="n">api</span><span class="p">,</span> <span class="n">txt</span><span class="o">=</span><span class="n">txt</span><span class="p">,</span> <span class="n">img</span><span class="o">=</span><span class="n">img</span><span class="p">,</span> <span class="n">chart</span><span class="o">=</span><span class="n">chart</span><span class="p">,</span> <span class="n">hot</span><span class="o">=</span><span class="s2">&quot;0&quot;</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">question</span><span class="p">:</span> <span class="c1"># 问题不能为空，避免因知识库表格填写格式不对而导致存入空问答对</span>
+                <span class="n">tag</span> <span class="o">=</span> <span class="n">get_tag</span><span class="p">(</span><span class="n">question</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gconfig</span><span class="p">)</span>
+                <span class="n">node</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">question</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="n">content</span><span class="p">,</span> <span class="n">topic</span><span class="o">=</span><span class="n">topic</span><span class="p">,</span> \
+                <span class="n">behavior</span><span class="o">=</span><span class="n">behavior</span><span class="p">,</span> <span class="n">parameter</span><span class="o">=</span><span class="n">parameter</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="n">tag</span><span class="p">,</span> \
+                <span class="n">keywords</span><span class="o">=</span><span class="n">keywords</span><span class="p">,</span> <span class="n">api</span><span class="o">=</span><span class="n">api</span><span class="p">,</span> <span class="n">txt</span><span class="o">=</span><span class="n">txt</span><span class="p">,</span> <span class="n">img</span><span class="o">=</span><span class="n">img</span><span class="p">,</span> <span class="n">chart</span><span class="o">=</span><span class="n">chart</span><span class="p">,</span> <span class="n">hot</span><span class="o">=</span><span class="s2">&quot;0&quot;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">add_ts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;TestStandard&quot;</span><span class="p">,</span> <span class="n">question</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> \
+    <span class="n">behavior</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">parameter</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add test standard node in graph.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="n">question</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;question must be string.&quot;</span>
+        <span class="k">assert</span> <span class="n">content</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;content must be string.&quot;</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">question</span><span class="o">.</span><span class="n">split</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">item</span><span class="p">:</span> <span class="c1"># 问题不能为空，避免因知识库表格填写格式不对而导致存入空问答对</span>
+                <span class="n">node</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">question</span><span class="o">=</span><span class="n">item</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="n">content</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="n">context</span><span class="p">,</span> \
+                <span class="n">behavior</span><span class="o">=</span><span class="n">behavior</span><span class="p">,</span> <span class="n">parameter</span><span class="o">=</span><span class="n">parameter</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">handle_ts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">custom_sheets</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Processing data of test standard.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="n">filename</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;filename can not be None.&quot;</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">read_excel</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="n">data_sheets</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">sheet_names</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">custom_sheets</span><span class="p">:</span>
+            <span class="n">sheet_names</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">data_sheets</span><span class="p">)</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">custom_sheets</span><span class="p">)))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">sheet_names</span> <span class="o">=</span> <span class="n">data_sheets</span>
+        <span class="k">for</span> <span class="n">sheet_name</span> <span class="ow">in</span> <span class="n">sheet_names</span><span class="p">:</span> <span class="c1"># 可自定义要导入的子表格</span>
+            <span class="n">table</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">sheet_by_name</span><span class="p">(</span><span class="n">sheet_name</span><span class="p">)</span>
+            <span class="c1"># 1.Select specified table</span>
+            <span class="c1"># table = data.sheet_by_index(0)</span>
+            <span class="k">if</span> <span class="n">data</span><span class="p">:</span>
+                <span class="c1"># 2.Select specified column</span>
+                <span class="n">col_format</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">,</span> <span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="s1">&#39;D&#39;</span><span class="p">,</span> <span class="s1">&#39;E&#39;</span><span class="p">,</span> <span class="s1">&#39;F&#39;</span><span class="p">]</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">nrows</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">nrows</span>
+                    <span class="c1"># ncols = table.ncols</span>
+                    <span class="n">str_upcase</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">string</span><span class="o">.</span><span class="n">ascii_uppercase</span><span class="p">]</span>
+                    <span class="n">i_upcase</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">str_upcase</span><span class="p">))</span>
+                    <span class="n">ncols_dir</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">str_upcase</span><span class="p">,</span> <span class="n">i_upcase</span><span class="p">))</span>
+                    <span class="n">col_index</span> <span class="o">=</span> <span class="p">[</span><span class="n">ncols_dir</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">col_format</span><span class="p">]</span>
+                    <span class="c1"># 前两行为表头</span>
+                    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">nrows</span><span class="p">):</span>
+                        <span class="n">question</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">cell</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">col_index</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">value</span>
+                        <span class="n">content</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">cell</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">col_index</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">value</span>
+                        <span class="n">context</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">cell</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">col_index</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span><span class="o">.</span><span class="n">value</span>
+                        <span class="n">behavior</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">cell</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">col_index</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span><span class="o">.</span><span class="n">value</span>
+                        <span class="n">parameter</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">cell</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">col_index</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span><span class="o">.</span><span class="n">value</span>
+                        <span class="n">url</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">cell</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">col_index</span><span class="p">[</span><span class="mi">5</span><span class="p">])</span><span class="o">.</span><span class="n">value</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">add_ts</span><span class="p">(</span><span class="n">question</span><span class="o">=</span><span class="n">question</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="n">content</span><span class="p">,</span> <span class="n">context</span><span class="o">=</span><span class="n">context</span><span class="p">,</span> \
+                        <span class="n">behavior</span><span class="o">=</span><span class="n">behavior</span><span class="p">,</span> <span class="n">parameter</span><span class="o">=</span><span class="n">parameter</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span><span class="n">error</span><span class="p">)</span>
+                    <span class="k">return</span> <span class="kc">None</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error! Data of </span><span class="si">%s</span><span class="s1"> is empty!&#39;</span> <span class="o">%</span><span class="n">sheet_name</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="nf">handle_excel</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">custom_sheets</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Processing data of excel.</span>
@@ -267,6 +365,7 @@
             <span class="n">sheet_names</span> <span class="o">=</span> <span class="n">data_sheets</span>
         <span class="k">for</span> <span class="n">sheet_name</span> <span class="ow">in</span> <span class="n">sheet_names</span><span class="p">:</span> <span class="c1"># 可自定义要导入的子表格</span>
             <span class="n">table</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">sheet_by_name</span><span class="p">(</span><span class="n">sheet_name</span><span class="p">)</span>
+            <span class="n">topics</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="c1"># 1.Select specified table</span>
             <span class="c1"># table = data.sheet_by_index(0)</span>
             <span class="k">if</span> <span class="n">data</span><span class="p">:</span>
@@ -283,7 +382,8 @@
                     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">nrows</span><span class="p">):</span>
                         <span class="n">name</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">cell</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">col_index</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">value</span>
                         <span class="n">content</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">cell</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">col_index</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">value</span>
-                        <span class="n">topic</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">cell</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">col_index</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span><span class="o">.</span><span class="n">value</span>
+                        <span class="c1"># TODO 确定用户可以自定义哪些内容</span>
+                        <span class="n">topic</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">cell</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">col_index</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span><span class="o">.</span><span class="n">value</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_admin</span> <span class="k">else</span> <span class="s2">&quot;user_chat&quot;</span>
                         <span class="n">behavior</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">cell</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">col_index</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span><span class="o">.</span><span class="n">value</span>
                         <span class="n">parameter</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">cell</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">col_index</span><span class="p">[</span><span class="mi">4</span><span class="p">])</span><span class="o">.</span><span class="n">value</span>
                         <span class="n">url</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">cell</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">col_index</span><span class="p">[</span><span class="mi">5</span><span class="p">])</span><span class="o">.</span><span class="n">value</span>
@@ -299,18 +399,34 @@
                         <span class="n">behavior</span><span class="o">=</span><span class="n">behavior</span><span class="p">,</span> <span class="n">parameter</span><span class="o">=</span><span class="n">parameter</span><span class="p">,</span> <span class="n">url</span><span class="o">=</span><span class="n">url</span><span class="p">,</span> <span class="n">tag</span><span class="o">=</span><span class="n">tag</span><span class="p">,</span> \
                         <span class="n">keywords</span><span class="o">=</span><span class="n">keywords</span><span class="p">,</span> <span class="n">api</span><span class="o">=</span><span class="n">api</span><span class="p">,</span> <span class="n">txt</span><span class="o">=</span><span class="n">txt</span><span class="p">,</span> <span class="n">img</span><span class="o">=</span><span class="n">img</span><span class="p">,</span> <span class="n">chart</span><span class="o">=</span><span class="n">chart</span><span class="p">,</span> \
                         <span class="n">delimiter</span><span class="o">=</span><span class="s2">&quot;|&quot;</span><span class="p">)</span>
+                        <span class="c1"># 添加到场景标签列表</span>
+                        <span class="n">topics</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">topic</span><span class="p">)</span>
                 <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">error</span><span class="p">:</span>
                     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span><span class="n">error</span><span class="p">)</span>
                     <span class="k">return</span> <span class="kc">None</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Error! Data of </span><span class="si">%s</span><span class="s1"> is empty!&#39;</span> <span class="o">%</span><span class="n">sheet_name</span><span class="p">)</span>
                 <span class="k">return</span> <span class="kc">None</span>
+            <span class="c1"># Modify in 2017.4.28</span>
+            <span class="c1"># 若子表格名字不存在，新建配置子图，否则只修改topic属性</span>
+            <span class="c1"># DeprecationWarning: Graph.find_one is deprecated, use NodeSelector instead. 2017-5-18</span>
+            <span class="c1"># config_node = self.graph.find_one(&quot;Config&quot;, &quot;name&quot;, sheet_name)</span>
+            <span class="n">config_node</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">selector</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;Config&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">sheet_name</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">config_node</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s1">&#39;MATCH (user:User {userid: &quot;&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">gconfig</span><span class="p">[</span><span class="s2">&quot;userid&quot;</span><span class="p">]</span> <span class="o">+</span> \
+                <span class="s1">&#39;&quot;})</span><span class="se">\n</span><span class="s1">CREATE (config:Config {name: &quot;&#39;</span> <span class="o">+</span> <span class="n">sheet_name</span> <span class="o">+</span> <span class="s1">&#39;&quot;, topic: &quot;&#39;</span> <span class="o">+</span> \
+                <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">topics</span><span class="p">))</span> <span class="o">+</span> <span class="s1">&#39;&quot;})</span><span class="se">\n</span><span class="s1">CREATE (user)-[:has {bselected: 1, available: 1}]-&gt;(config)&#39;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">alltopics</span> <span class="o">=</span> <span class="n">config_node</span><span class="p">[</span><span class="s2">&quot;topic&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
+                <span class="n">alltopics</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">topics</span><span class="p">)</span>
+                <span class="n">config_node</span><span class="p">[</span><span class="s2">&quot;topic&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">alltopics</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">push</span><span class="p">(</span><span class="n">config_node</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">handle_txt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Processing text file to generate subgraph.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">assert</span> <span class="n">filename</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;filename can not be None&quot;</span>
+        <span class="k">assert</span> <span class="n">filename</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;filename can not be None!&quot;</span>
         <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;UTF-8&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
             <span class="n">question</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span>
             <span class="k">while</span> <span class="n">question</span><span class="p">:</span>
@@ -318,7 +434,92 @@
                 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;question: &quot;</span> <span class="o">+</span> <span class="n">question</span><span class="p">)</span>
                 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;answer: &quot;</span> <span class="o">+</span> <span class="n">answer</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">add_qa</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">question</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="n">answer</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s2">&quot;|&quot;</span><span class="p">)</span>
-                <span class="n">question</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span></div>
+                <span class="n">question</span> <span class="o">=</span> <span class="n">file</span><span class="o">.</span><span class="n">readline</span><span class="p">()</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">register_subgraph</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Config&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">topic</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;注册子知识库</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="n">name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;Subgraph name can not be None!&quot;</span>
+        <span class="k">assert</span> <span class="n">topic</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;Subgraph topic can not be None!&quot;</span>
+        <span class="n">subgraph</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">selector</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">subgraph</span><span class="p">:</span>
+            <span class="n">topics</span> <span class="o">=</span> <span class="n">subgraph</span><span class="p">[</span><span class="s2">&quot;topic&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)</span>
+            <span class="n">topics</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">topic</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">))</span>
+            <span class="n">subgraph</span><span class="p">[</span><span class="s2">&quot;topic&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">topics</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">push</span><span class="p">(</span><span class="n">subgraph</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">node</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">topic</span><span class="o">=</span><span class="n">topic</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">register_user</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;User&quot;</span><span class="p">,</span> <span class="n">profile</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;注册用户</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">userid</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">欢迎注册！请输入userid: &quot;</span><span class="p">)</span>
+        <span class="k">while</span> <span class="ow">not</span> <span class="n">userid</span><span class="p">:</span>
+            <span class="n">userid</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;userid不能为空！请输入userid: &quot;</span><span class="p">)</span>
+        <span class="k">while</span> <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">&quot;MATCH (user:User {userid: &#39;&quot;</span> <span class="o">+</span> <span class="n">userid</span> <span class="o">+</span> <span class="s2">&quot;&#39;}) RETURN user&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">data</span><span class="p">():</span>
+            <span class="n">userid</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;用户已存在！请输入新的userid: &quot;</span><span class="p">)</span>
+        <span class="n">username</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;username: &quot;</span><span class="p">)</span>
+        <span class="n">robotname</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;robotname: &quot;</span><span class="p">)</span>
+        <span class="n">robotage</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;robotage: &quot;</span><span class="p">)</span>
+        <span class="n">robotgender</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;robotgender: &quot;</span><span class="p">)</span>
+        <span class="n">mother</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;mother: &quot;</span><span class="p">)</span>
+        <span class="n">father</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;father: &quot;</span><span class="p">)</span>
+        <span class="n">companyname</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;companyname: &quot;</span><span class="p">)</span>
+        <span class="n">companytype</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;companytype: &quot;</span><span class="p">)</span>
+        <span class="n">servicename</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;servicename: &quot;</span><span class="p">)</span>
+        <span class="n">director</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;director: &quot;</span><span class="p">)</span>
+        <span class="n">address</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;address: &quot;</span><span class="p">)</span>
+        <span class="n">province</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;province: &quot;</span><span class="p">)</span>
+        <span class="n">city</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;city: &quot;</span><span class="p">)</span>
+        <span class="n">node</span> <span class="o">=</span> <span class="n">Node</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">userid</span><span class="o">=</span><span class="n">userid</span><span class="p">,</span> <span class="n">username</span><span class="o">=</span><span class="n">username</span><span class="p">,</span> <span class="n">robotname</span><span class="o">=</span><span class="n">robotname</span><span class="p">,</span> \
+        <span class="n">robotage</span><span class="o">=</span><span class="n">robotage</span><span class="p">,</span> <span class="n">robotgender</span><span class="o">=</span><span class="n">robotgender</span><span class="p">,</span> <span class="n">mother</span><span class="o">=</span><span class="n">mother</span><span class="p">,</span> <span class="n">father</span><span class="o">=</span><span class="n">father</span><span class="p">,</span> \
+        <span class="n">companyname</span><span class="o">=</span><span class="n">companyname</span><span class="p">,</span> <span class="n">companytype</span><span class="o">=</span><span class="n">companytype</span><span class="p">,</span> <span class="n">servicename</span><span class="o">=</span><span class="n">servicename</span><span class="p">,</span> \
+        <span class="n">director</span><span class="o">=</span><span class="n">director</span><span class="p">,</span> <span class="n">address</span><span class="o">=</span><span class="n">address</span><span class="p">,</span> <span class="n">province</span><span class="o">=</span><span class="n">province</span><span class="p">,</span> <span class="n">city</span><span class="o">=</span><span class="n">city</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">node</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;注册成功！&quot;</span><span class="p">)</span>
+        <span class="c1"># 设置知识库权限</span>
+        <span class="n">subgraph_names</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">selector</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;Config&quot;</span><span class="p">)]</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;可配置知识库列表：&quot;</span><span class="p">,</span> <span class="n">subgraph_names</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">subgraph_names</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">manage_user</span><span class="p">(</span><span class="n">userid</span><span class="o">=</span><span class="n">userid</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">manage_user</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">userid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;管理用户</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="n">userid</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;Userid can not be None!&quot;</span>
+        <span class="k">assert</span> <span class="n">name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;Subgraph name can not be None!&quot;</span>
+        <span class="n">user</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">selector</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;User&quot;</span><span class="p">,</span> <span class="n">userid</span><span class="o">=</span><span class="n">userid</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">user</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;用户不存在，建议您先注册！&quot;</span><span class="p">)</span>
+            <span class="k">return</span>
+        <span class="n">subgraph</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">selector</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="s2">&quot;Config&quot;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">subgraph</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;知识库不存在，建议您先注册！&quot;</span><span class="p">)</span>
+            <span class="k">return</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">待配置知识库：&quot;</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="n">bselected</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;是否选择 [1/0]: &quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">bselected</span><span class="p">:</span> <span class="n">bselected</span> <span class="o">=</span> <span class="s2">&quot;1&quot;</span>
+        <span class="n">available</span> <span class="o">=</span> <span class="nb">input</span><span class="p">(</span><span class="s2">&quot;是否可用 [1/0]: &quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">available</span><span class="p">:</span> <span class="n">available</span> <span class="o">=</span> <span class="s2">&quot;1&quot;</span>
+        <span class="n">set_string</span> <span class="o">=</span> <span class="s2">&quot;MATCH (user:User {userid: &#39;&quot;</span> <span class="o">+</span> <span class="n">userid</span> <span class="o">+</span> <span class="s2">&quot;&#39;}), (subgraph:Config {name: &#39;&quot;</span> \
+        <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;&#39;}) CREATE UNIQUE (user)-[r:has]-&gt;(subgraph) SET r.bselected=&quot;</span> \
+        <span class="o">+</span> <span class="n">bselected</span> <span class="o">+</span> <span class="s2">&quot;, r.available=&quot;</span> <span class="o">+</span> <span class="n">available</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">graph</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">set_string</span><span class="p">)</span></div>
+        <span class="c1"># match_string = &quot;MATCH (user:User {userid: &#39;&quot; + userid + \</span>
+        <span class="c1"># &quot;&#39;})-[r:has]-&gt;(subgraph:Config {name: &#39;&quot; + name +&quot;&#39;}) RETURN r&quot;</span>
+        <span class="c1"># relation = self.graph.run(match_string).data()</span>
+        <span class="c1"># if relation: # set</span>
+            <span class="c1"># set_string = &quot;MATCH (user:User {userid: &#39;&quot; + userid + \</span>
+        <span class="c1"># &quot;&#39;})-[r:has]-&gt;(subgraph:Config {name: &#39;&quot; + name +&quot;&#39;}) SET r.bselected=&quot; + bselected +&quot;, r.available=&quot; + available</span>
+            <span class="c1"># self.graph.run(set_string)</span>
+        <span class="c1"># else: # create</span>
+            <span class="c1"># create_string = &quot;MATCH (user:User {userid: &#39;&quot; + userid + \</span>
+            <span class="c1"># &quot;&#39;}), (subgraph:Config {name: &#39;&quot; + name +&quot;&#39;})&quot; + \</span>
+            <span class="c1"># &quot; CREATE UNIQUE (user)-[:has {bselected: &quot; + bselected + \</span>
+            <span class="c1"># &quot;, available: &quot; + available + &quot;}]-&gt;(subgraph)&quot;</span>
+            <span class="c1"># self.graph.run(create_string)</span>
 </pre></div>
 
            </div>
@@ -352,7 +553,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'1.0.3',
+            VERSION:'1.0.5',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
