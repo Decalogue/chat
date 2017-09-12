@@ -15,7 +15,7 @@ from concurrent.futures import ProcessPoolExecutor
 from py2neo import Graph, Node, Relationship
 from .api import nlu_tuling, get_location_by_ip
 from .semantic import synonym_cut, get_tag, similarity, check_swords, get_location
-from .mytools import time_me, get_current_time, random_item
+from .mytools import time_me, get_current_time, random_item, get_age
 from .word2pinyin import pinyin_cut, jaccard_pinyin # Add in 2017-6-23
 
 # 获取导航地点——Development requirements from Mr Tang in 2017-5-11.
@@ -228,8 +228,7 @@ class Robot():
                     result["parameter"] = int(node["parameter"])
                 func = node["api"]
                 if func:
-                    exec("result['content'] = " + func + "('" + result["content"] + \
-                        "', " + "question)")
+                    exec("result['content'] = " + func + "('" + result["content"] + "')")
                 return result
         return result
 
@@ -267,8 +266,7 @@ class Robot():
                     # 知识实体节点api抽取原始问题中的关键信息，据此本地查询/在线调用第三方api/在线爬取
                     func = node["api"]
                     if func:
-                        exec("result['content'] = " + func + "('" + result["content"] + \
-                            "', " + "question)")
+                        exec("result['content'] = " + func + "('" + result["content"] + "')")
                     return result
                 sv2 = synonym_cut(iquestion, 'wf')
                 if sv2:
@@ -287,8 +285,7 @@ class Robot():
                         result["parameter"] = int(node["parameter"])
                     func = node["api"]
                     if func:
-                        exec("result['content'] = " + func + "('" + result["content"] + \
-                            "', " + "question)")
+                        exec("result['content'] = " + func + "('" + result["content"] + "')")
                     return result
         return result
 
@@ -318,8 +315,7 @@ class Robot():
             # 知识实体节点api抽取原始问题中的关键信息，据此本地查询/在线调用第三方api/在线爬取
             func = node["api"]
             if func:
-                exec("result['content'] = " + func + "('" + result["content"] + \
-                    "', " + "question)")
+                exec("result['content'] = " + func + "('" + result["content"] + "')")
             return result
         return result
 

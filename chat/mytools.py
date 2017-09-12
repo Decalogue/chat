@@ -246,6 +246,32 @@ def get_current_time(format_string="%Y-%m-%d-%H-%M-%S", info=None):
         current_time = result.encode().decode('unicode-escape')
     return current_time
 
+def get_age(format_string="%s年%s个月%s天", birthday="2016-7-25"):
+    """Get age with specific format_string.
+    获取指定日期表示方式的年龄。
+
+    Args:
+        format_string: Specifies the format of time. 指定日期表示方式。
+            Defaults to '{y}年{m}个月{d}天'.
+    """
+    assert isinstance(format_string, str), "The format_string must be a string."
+    assert isinstance(birthday, str), "The birthday must be a string."
+    
+    current_time = get_current_time(format_string="%Y-%m-%d")
+    start_time= datetime.datetime.strptime(birthday, "%Y-%m-%d")
+    end_time= datetime.datetime.strptime(current_time, "%Y-%m-%d")
+
+    # seconds = (end_time - start_time).seconds  
+    # hours = (end_time - start_time).hours
+    days = (end_time - start_time).days
+    year = int(days / 365)
+    month = int(days % 365 / 30)
+    day = int(days % 365 % 30)
+
+    age = format_string % (str(year), str(month), str(day))
+
+    return age
+
 # TODO：根据《流畅的Python》123页5.5节修改完善
 def random_item(mylist):
     """Get random item of data.
