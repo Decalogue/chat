@@ -177,6 +177,7 @@ class Robot():
         # if not sv1:
             # return result
         for location in self.locations:
+            # TODO：判断“去”和地址关键词是否是就近的动词短语情况
             if "去" in question and location in question:
                 print("Original navigation")
                 result["content"] = location

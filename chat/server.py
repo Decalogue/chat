@@ -65,15 +65,21 @@ class MyTCPHandler(socketserver.BaseRequestHandler):
                 result = robot.configure(info=json_data["config_content"], \
                 userid=json_data["userid"])
             # print(result)
-            # with open("C:/nlu/bin/log.txt", "a", encoding="UTF-8") as file:
-                # file.write(get_current_time("%Y-%m-%d %H:%M:%S") + "\n" \
-                    # + json_data["ask_content"] + "\n")
-                # for key in ["question", "content", "behavior", "url", "context", "parameter"]:
-                    # file.write(key + ": " + str(result[key]) + "\n")
-                # file.write("\n")
             # step 3.Send
             # self.request.sendall(json.dumps(result).encode(encoding))
-            self.request.sendall(json.dumps(result).encode("UTF-8"))
+            try:
+                self.request.sendall(json.dumps(result).encode("UTF-8"))
+            except:
+                with open("C:/nlu/bin/log.txt", "a", encoding="UTF-8") as file:
+                    file.write(get_current_time("%Y-%m-%d %H:%M:%S") + "\n" \
+                    + "发送失败\n")
+            # 追加日志
+            with open("C:/nlu/bin/log.txt", "a", encoding="UTF-8") as file:
+                file.write(get_current_time("%Y-%m-%d %H:%M:%S") + "\n" \
+                    + json_data["ask_content"] + "\n")
+                for key in ["question", "content", "behavior", "url", "context", "parameter"]:
+                    file.write(key + ": " + str(result[key]) + "\n")
+                file.write("\n")
 
 
 def start(host="localhost", port=7000):
