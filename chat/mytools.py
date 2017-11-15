@@ -236,8 +236,8 @@ def get_current_time(format_string="%Y-%m-%d-%H-%M-%S", info=None):
             Defaults to '%Y-%m-%d-%H-%M-%S'.
     """
     assert isinstance(format_string, str), "The format_string must be a string."
-	# Python3
-	# On Windows, time.strftime() and Unicode characters will raise UnicodeEncodeError.
+    # Python3
+    # On Windows, time.strftime() and Unicode characters will raise UnicodeEncodeError.
     # http://bugs.python.org/issue8304
     try:
         current_time = time.strftime(format_string, time.localtime())

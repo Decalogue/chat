@@ -16,12 +16,20 @@ from py2neo import Graph, Node, Relationship
 from .api import nlu_tuling, get_location_by_ip
 from .semantic import synonym_cut, get_tag, similarity, check_swords, get_location
 from .mytools import time_me, get_current_time, random_item, get_age
-from .word2pinyin import pinyin_cut, jaccard_pinyin # Add in 2017-6-23
+from .word2pinyin import pinyin_cut, jaccard_pinyin
 
-# 获取导航地点——Development requirements from Mr Tang in 2017-5-11.
-def get_navigation_location():
-    db = sqlite3.connect("C:/docu/db/contentDB.db")
-    cursor = db.execute("SELECT name from goalvoice")
+# 获取导航地点
+def get_navigation_location(path="C:/docu/db/contentDB.db", key="goalvoice"):
+    try:
+        db = sqlite3.connect(path)
+    except:
+        print("导航数据库连接失败！请检查是否存在文件：" + path)
+        return []
+    try:
+        cursor = db.execute("SELECT name from " + key)
+    except:
+        print("导航数据库没有找到键值：" + key)
+        return []
     # 过滤0记录
     names = [row[0] for row in cursor if row[0]]
     return names
@@ -120,12 +128,12 @@ class Robot():
         return self.get_usertopics(userid=userid)
 
     # @time_me()
-    def get_usertopics(self, userid="userid"):
+    def get_usertopics(self, userid="A0001"):
         """Get usertopics list.
         """
         usertopics = []
         if not userid:
-            userid = "userid"
+            userid = "A0001"
         # 从知识库获取用户拥有权限的子知识库列表
         match_string = "MATCH (user:User)-[r:has {bselected:1, available:1}]->(config:Config)" + \
             "where user.userid='" + userid + "' RETURN config"
@@ -301,8 +309,14 @@ class Robot():
             context="", url="", behavior=0, parameter=0)
         match_string = "MATCH (n:NluCell) WHERE '" + question + "' CONTAINS n.name RETURN n LIMIT 1"
         subgraph = self.graph.run(match_string).data()
-        if subgraph:
-            node = list(subgraph)[0]['n']
+        # 只回答目前挂接的知识库内容
+        usergraph = [item for item in subgraph if item['n']['topic'] in self.usertopics]
+        # if subgraph:
+        if usergraph:
+            # node = list(subgraph)[0]['n']
+            node = usergraph[0]['n']
+            if node["topic"] not in self.usertopics:
+                return 
             print("Similarity Score: Key sentence")
             result["content"] = self.iformat(random_item(node["content"].split("|")))
             result["context"] = node["topic"]
@@ -472,7 +486,6 @@ class Robot():
         # result  = self.extract_synonym(question, subgraph_all)
         self.topic = result["context"]
         self.amemory.append(result) # 添加到答案记忆
-
         # 模式2：包含关键句就匹配
         if not self.topic:
             result = self.extract_keysentence(question)
@@ -506,12 +519,12 @@ class Robot():
                 result["behavior"] = int("0x0000", 16)
                 try:
                     # 图灵API变更之前
-                    # temp = weather.split(";")[0].split(",")[1].split()
-                    # myweather = temp[0] + temp[2] + temp[3]
+                    temp = weather.split(";")[0].split(",")[1].split()
+                    myweather = temp[0] + temp[2] + temp[3]
 
                     # 图灵API变更之后 Add in 2017-8-3
-                    temp = weather.split(",")
-                    myweather = temp[1] + temp[2]
+                    # temp = weather.split(",")
+                    # myweather = temp[1] + temp[2]
                 except:
                     myweather = weather
                 result["content"] = myweather

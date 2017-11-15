@@ -61,9 +61,11 @@ class MyTCPHandler(socketserver.BaseRequestHandler):
             if "ask_content" in json_data.keys():
                 result = robot.search(question=json_data["ask_content"], \
                 userid=json_data["userid"])
+                info = json_data["ask_content"]
             elif "config_content" in json_data.keys():
                 result = robot.configure(info=json_data["config_content"], \
                 userid=json_data["userid"])
+                info = json_data["config_content"]
             # print(result)
             # step 3.Send
             # self.request.sendall(json.dumps(result).encode(encoding))
@@ -75,10 +77,16 @@ class MyTCPHandler(socketserver.BaseRequestHandler):
                     + "发送失败\n")
             # 追加日志
             with open("C:/nlu/bin/log.txt", "a", encoding="UTF-8") as file:
+                # 写入接收数据中的内容字段
                 file.write(get_current_time("%Y-%m-%d %H:%M:%S") + "\n" \
-                    + json_data["ask_content"] + "\n")
-                for key in ["question", "content", "behavior", "url", "context", "parameter"]:
-                    file.write(key + ": " + str(result[key]) + "\n")
+                    + info + "\n")
+                # 写入正常问答
+                if "ask_content" in json_data.keys():
+                    for key in ["question", "content", "behavior", "url", "context", "parameter"]:
+                        file.write(key + ": " + str(result[key]) + "\n")
+                # 写入配置信息
+                elif "config_content" in json_data.keys():
+                    file.write("Config: " + " ".join(result) + "\n")
                 file.write("\n")
 
 

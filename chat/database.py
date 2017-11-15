@@ -181,7 +181,7 @@ class Database():
             table = data.sheet_by_name(sheet_name)
             # 1.Select specified table
             # table = data.sheet_by_index(0)
-            if data:
+            if table:
                 # 2.Select specified column
                 col_format = ['A', 'B', 'C', 'D', 'E', 'F']
                 try:
