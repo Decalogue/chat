@@ -148,6 +148,8 @@ class Database():
         questions = name.split(delimiter)
         for question in questions:
             if question: # 问题不能为空，避免因知识库表格填写格式不对而导致存入空问答对
+                # TODO：当问题已经存在时，跳过 or 创建 or 覆盖？
+                # 默认模式：覆盖
                 tag = get_tag(question, self.gconfig)
                 node = Node(label, name=question, content=content, topic=topic, \
                 behavior=behavior, parameter=parameter, url=url, tag=tag, \

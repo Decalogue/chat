@@ -17,6 +17,7 @@ from .api import nlu_tuling, get_location_by_ip
 from .semantic import synonym_cut, get_tag, similarity, check_swords, get_location
 from .mytools import time_me, get_current_time, random_item, get_age
 from .word2pinyin import pinyin_cut, jaccard_pinyin
+from .kg import *
 
 # 获取导航地点
 def get_navigation_location(path="C:/docu/db/contentDB.db", key="goalvoice"):
@@ -52,8 +53,8 @@ class Robot():
         self.locations = get_navigation_location()
         # 在线场景标志，默认为False
         self.is_scene = False
-        # 在线调用百度地图IP定位api，网络异常时返回默认地址：上海市
-        self.address = get_location_by_ip()
+        # 在线调用百度地图IP定位api，网络异常时返回默认地址：上海市/从配置信息获取
+        self.address = get_location_by_ip(self.graph.find_one("User", "userid", "A0001")['city'])
         # 机器人配置信息
         self.gconfig = None
         # 可用话题列表
@@ -257,6 +258,9 @@ class Robot():
         if self.pattern == 'semantic':
         # elif self.pattern == 'vec':
             sv1 = synonym_cut(question, 'wf')
+            # 抽取核心关键词
+            keyword = synonym_cut(question, 'k')[0]
+            print(keyword)
             if not sv1:
                 return result
             for node in subgraph:
@@ -275,7 +279,7 @@ class Robot():
                     # 知识实体节点api抽取原始问题中的关键信息，据此本地查询/在线调用第三方api/在线爬取
                     func = node["api"]
                     if func:
-                        exec("result['content'] = " + func + "('" + result["content"] + "')")
+                        exec("result['content'] = " + func + "('" + result["content"] + "', '" + keyword + "')")
                     return result
                 sv2 = synonym_cut(iquestion, 'wf')
                 if sv2:
@@ -294,7 +298,7 @@ class Robot():
                         result["parameter"] = int(node["parameter"])
                     func = node["api"]
                     if func:
-                        exec("result['content'] = " + func + "('" + result["content"] + "')")
+                        exec("result['content'] = " + func + "('" + result["content"] + "', '" + keyword + "')")
                     return result
         return result
 
@@ -451,8 +455,8 @@ class Robot():
             elif "下一步" in question or "下一部" in question or "下一页" in question or "下一个" in question:
                 result["behavior"] = int("0x001E", 16) # 场景下一步
                 return result
-            # result["content"] = question
-            # return result
+            result["content"] = question
+            return result
 
         # 常用命令，交互，业务
         # 上下文——重复命令 TODO：确认返回的是正确的指令而不是例如唱歌时的结束语“可以了”

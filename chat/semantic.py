@@ -62,13 +62,15 @@ def synonym_cut(sentence, pattern="wf"):
     如果同义词词典中没有则标注为切词工具默认的词性。
 
     Args:
-        pattern: 'w'-分词, 't'-关键词, 'wf'-分词标签, 'tf-关键词标签'。
+        pattern: 'w'-分词, 'k'-唯一关键词，'t'-关键词列表, 'wf'-分词标签, 'tf-关键词标签'。
     """
     sentence = sentence.rstrip(tone_words)
     synonym_vector = []
     if pattern == "w":
         result = list(jieba.cut(sentence))
         synonym_vector = [item for item in result if item not in punctuation_all]
+    elif pattern == "k":
+        synonym_vector = analyse.extract_tags(sentence, topK=1)
     elif pattern == "t":
         synonym_vector = analyse.extract_tags(sentence, topK=10)
     elif pattern == "wf":

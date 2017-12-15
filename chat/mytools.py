@@ -22,6 +22,20 @@ import xlrd
 import xlwt
 from functools import wraps
 
+class Error(Exception):
+    """Base class for exceptions in this module."""
+    def __init__(self, value):
+        self.value = value
+        
+    def __str__(self):
+        return repr(self.value)
+
+
+class StringPatternError(Error):
+    """Exception raised for errors in the pattern of string args."""
+    pass
+
+
 class MyEncoder(json.JSONEncoder):
     """MyEncoder
     解决json.dumps不能序列化datetime类型的问题：使用Python自带的json.dumps方法
@@ -226,6 +240,24 @@ def time_me(info="used", format_string="ms"):
         return _wrapper
     return _time_me
 
+def get_timestamp(s=None, style='%Y-%m-%d %H:%M:%S', pattern='s'):
+    """Get timestamp. 获取指定日期表示方式的时间戳或者当前时间戳。
+    
+    Args:
+        style: Specifies the format of time. 指定日期表示方式。
+            Defaults to '%Y-%m-%d %H:%M:%S'.
+        pattern: Specifies the timestamp unit. 指定时间戳单位，'s': 秒，'ms': 毫秒。
+            Defaults to 's'.
+    """
+    w = {'s': 1, 'ms': 1000}
+    if isinstance(s, str):
+        try:
+            return int(time.mktime(time.strptime(s, style)) * w[pattern])
+        except:
+            raise StringPatternError(" The style must be '%Y-%m-%d %H:%M:%S'\
+            or coincide with your custom format.")
+    else:
+        return int(time.time() * w[pattern])
 
 def get_current_time(format_string="%Y-%m-%d-%H-%M-%S", info=None):
     """Get current time with specific format_string.
@@ -246,7 +278,7 @@ def get_current_time(format_string="%Y-%m-%d-%H-%M-%S", info=None):
         current_time = result.encode().decode('unicode-escape')
     return current_time
 
-def get_age(format_string="%s年%s个月%s天", birthday="2016-7-25"):
+def get_age(format_string="%s年%s个月%s天", info="2016-7-25"):
     """Get age with specific format_string.
     获取指定日期表示方式的年龄。
 
@@ -255,10 +287,10 @@ def get_age(format_string="%s年%s个月%s天", birthday="2016-7-25"):
             Defaults to '{y}年{m}个月{d}天'.
     """
     assert isinstance(format_string, str), "The format_string must be a string."
-    assert isinstance(birthday, str), "The birthday must be a string."
+    assert isinstance(info, str), "The birthday must be a string."
     
     current_time = get_current_time(format_string="%Y-%m-%d")
-    start_time= datetime.datetime.strptime(birthday, "%Y-%m-%d")
+    start_time= datetime.datetime.strptime(info, "%Y-%m-%d")
     end_time= datetime.datetime.strptime(current_time, "%Y-%m-%d")
 
     # seconds = (end_time - start_time).seconds  
