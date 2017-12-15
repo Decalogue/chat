@@ -258,9 +258,9 @@ class Robot():
         if self.pattern == 'semantic':
         # elif self.pattern == 'vec':
             sv1 = synonym_cut(question, 'wf')
-            # 抽取核心关键词
-            keyword = synonym_cut(question, 'k')[0]
-            print(keyword)
+            # 抽取核心关键词（测试-用于知识图谱）
+            # keyword = synonym_cut(question, 'k')[0]
+            # print(keyword)
             if not sv1:
                 return result
             for node in subgraph:
@@ -279,7 +279,7 @@ class Robot():
                     # 知识实体节点api抽取原始问题中的关键信息，据此本地查询/在线调用第三方api/在线爬取
                     func = node["api"]
                     if func:
-                        exec("result['content'] = " + func + "('" + result["content"] + "', '" + keyword + "')")
+                        exec("result['content'] = " + func + "('" + result["content"] + "')")
                     return result
                 sv2 = synonym_cut(iquestion, 'wf')
                 if sv2:
@@ -298,7 +298,7 @@ class Robot():
                         result["parameter"] = int(node["parameter"])
                     func = node["api"]
                     if func:
-                        exec("result['content'] = " + func + "('" + result["content"] + "', '" + keyword + "')")
+                        exec("result['content'] = " + func + "('" + result["content"] + "')")
                     return result
         return result
 
