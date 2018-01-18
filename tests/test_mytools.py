@@ -26,5 +26,6 @@ class TestMe(TestCase):
         print(get_timestamp(s='2018-1-4 11:23:45', pattern='ms'))
         print(get_timestamp(s='2018-1-4-11-23-45', style='%Y-%m-%d-%H-%M-%S', pattern='ms'))
 
+
 if __name__ == '__main__':
     main()

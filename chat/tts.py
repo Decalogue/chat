@@ -13,7 +13,6 @@ import uuid
 import requests
 import pygame.mixer as mixer
 import win32com.client
-from .mytools import get_current_time
 
 
 class RequestError(Exception):
@@ -84,7 +83,7 @@ class TTS():
         headers = {"Content-Type": "audio/mp3"}
         try:
             response = requests.get(url=self.url_get_base, params=data, headers=headers)
-            filename = self.tempdir + "/" + get_current_time() + ".mp3"
+            filename = self.tempdir + "/temp.mp3"
             with open(filename, "wb") as file:
                 file.write(response.content)
             self.audioplayer.music.load(filename)

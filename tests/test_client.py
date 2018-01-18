@@ -1,11 +1,10 @@
-#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 import os
 import sys
 sys.path.append("../")
 import json
 from unittest import TestCase, main
-from chat.client import match
+from chat.client import match, config, batch_test
 from chat.mytools import get_current_time
 
 class TestMe(TestCase):
@@ -13,25 +12,31 @@ class TestMe(TestCase):
         self.userid = "A0001"
 
     def test_match(self):
-        filename = os.path.split(os.path.realpath(__file__))[0] + "\\log\\QA_" + get_current_time() + ".md"
-        file = open(filename, "w")
-        file.write("标签：测试文档\n#QA测试：\n>Enter the QA mode...\n")
-        sentence = ""
-        result = ""
-        while True:
-            try:
-                sentence = input("\n>>")
-                if sentence == "":
-                    break
-                result = match(question=sentence, userid=self.userid)
-                print(result)
-                answer = json.loads(result)["content"]
-                print(answer)
-                file.write("`>>" + sentence + "`\n")
-                file.write("`" + "A: " + answer + "`\n")
-            except KeyboardInterrupt:
-                file.close()
-
+        sentences = ['理财产品', '你好', '理财产品取号', '退出', '你好']
+        for sentence in sentences:
+            result = match(question=sentence, userid=self.userid)
+            print(sentence, ':\n', result)
+    
+    def test_config(self):
+        result = json.loads(config(info="", userid="A0001"))
+        databases = result.setdefault('databases', [])
+        akbs = [item['name'] for item in databases if item['available']==1 ]
+        print('akbs: ', akbs)
+        skbs = [item['name'] for item in databases if item['bselected']==1 ]
+        print('skbs: ', skbs)
+        
+        # usertopics = config(info=' '.join(skbs[:-1]), userid="A0001")
+        usertopics = config(info=' '.join(akbs), userid="A0001")
+        print('usertopics: ', usertopics)
+        result = json.loads(config(info="", userid="A0001"))
+        databases = result.setdefault('databases', [])
+        akbs = [item['name'] for item in databases if item['available']==1 ]
+        print('akbs: ', akbs)
+        skbs = [item['name'] for item in databases if item['bselected']==1 ]
+        print('skbs: ', skbs)
+        
+    def test_batch_test(self):
+        batch_test("testcase.txt")
 
 if __name__ == '__main__':
     main()

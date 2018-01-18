@@ -88,7 +88,7 @@ class Walk():
     - dirlist: All dirnames with full path in directory.
     - dnamelist: All dirnames in directory.
     """
-    def __init__(self):
+    def __init__(self, db=None):
         self.filenum = 0
         self.filelist = []
         self.fnamelist = []
@@ -96,6 +96,7 @@ class Walk():
         self.dnamelist = []
         self.dirstr = '+'
         self.filestr = '-'
+        self.db = db
 
     def dir_print(self, level, path):
         """Walk and print all dirs and files in a directory.

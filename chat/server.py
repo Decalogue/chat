@@ -41,21 +41,17 @@ class MyTCPHandler(socketserver.BaseRequestHandler):
                 answer = robot.search(question=json_data["ask_content"], \
                 userid=json_data["userid"])
                 info = json_data["ask_content"]
+                # 其中 result['picurl'] 为 xml 格式
+                result = answer2xml(answer)
             elif "config_content" in json_data.keys():
                 answer = robot.configure(info=json_data["config_content"], \
                 userid=json_data["userid"])
                 info = json_data["config_content"]
+                result = answer
             print(answer)
-            result = answer2xml(answer)
             print(result)
             # step 3.Send
             try:
-                # json 格式接口
-                # if json_data['return_type'] == 'json':
-                    # self.request.sendall(json.dumps(answer).encode("UTF-8"))
-                # xml 格式接口
-                # elif json_data['return_type'] == 'xml':
-                    # self.request.sendall(answer2xml(answer).encode("UTF-8"))
                 self.request.sendall(json.dumps(result).encode("UTF-8"))
             except:
                 with open(logpath, "a", encoding="UTF-8") as file:

@@ -1,20 +1,34 @@
-#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 import sys
 sys.path.append("../")
 from unittest import TestCase, main
 from chat.database import Database
-from chat.mytools import time_me
+from chat.mytools import Walk, time_me
+
+
+class WalkUserData(Walk):
+    def handle_file(self, filepath, pattern=None):
+        self.db.handle_excel(filepath)
+
 
 class TestMe(TestCase):
     def setUp(self):
         self.database = Database(password="train", userid="A0001")
+        
+    def test_add_userdata(self):
+        """Add userdata from usb.
+        """
+        # path = "D:/新知识库"
+        # walker = WalkUserData(db=self.database)
+        # fnamelist = walker.dir_process(1, path, style="fnamelist")
+        pass
 
     def test_delete(self):
         pass
 
     def test_reset(self):
-        self.database.reset(pattern="n", label="NluCell", filename="C:/nlu/new/data/chat.xls")
+        # self.database.reset(pattern="n", label="NluCell", filename="C:/nlu/new/data/chat.xls")
+        pass
  
     def test_reset_ts(self):
         """Reset data of label 'TestStandard' in database.
@@ -34,18 +48,18 @@ class TestMe(TestCase):
 	    # 2.Add qa with txt
         # self.database.handle_txt("C:/nlu/data/bank.txt")
     
-    def test_register_subgraph(self):
-        pass
-        # print(self.database.gconfig)
-        # self.database.register_subgraph(name="新命令", topic="new_chat")
+    def test_download(self):
+        akbs = self.database.get_available_kb()
+        self.database.download(filename="全部.xls", names=akbs)
+        self.database.download(filename="银行业务.xls", names=["银行业务"])
+        self.database.download_scene(filename="理财产品.xls", topic="理财产品")
 
-    def test_register_user(self):
-        pass
-        # self.database.register_user()
-
-    def test_manage_user(self):
-        pass
-        # self.database.manage_user(userid="test", name="基础问答")
+    def test_generate_test_cases(self):
+        self.database.generate_test_cases(
+            filename="chat.xls",
+            custom_sheets=["银行业务"],
+            savedir="."
+        )
 
 
 if __name__ == '__main__':

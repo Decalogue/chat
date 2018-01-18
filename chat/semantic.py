@@ -23,7 +23,7 @@ from string import punctuation
 
 # The 'punctuation_all' is the combination set of Chinese and English punctuation.
 punctuation_zh = " 、，。°？！：；“”’‘～…【】（）《》｛｝×―－·→℃"
-punctuation_all = set(punctuation) + set(punctuation_zh)
+punctuation_all = set(punctuation) | set(punctuation_zh)
 # 句尾语气词过滤
 tone_words = "。？！的了呢吧吗啊啦呀"
 # 敏感词库 Modified in 2017-5-25
