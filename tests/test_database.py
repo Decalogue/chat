@@ -8,13 +8,13 @@ from chat.mytools import time_me
 
 class TestMe(TestCase):
     def setUp(self):
-        self.database = Database(password="train")
+        self.database = Database(password="train", userid="A0001")
 
     def test_delete(self):
         pass
 
     def test_reset(self):
-        self.database.reset(pattern="n", label="NluCell", filename="C:/nlu/data/chat.xls")
+        self.database.reset(pattern="n", label="NluCell", filename="C:/nlu/new/data/chat.xls")
  
     def test_reset_ts(self):
         """Reset data of label 'TestStandard' in database.

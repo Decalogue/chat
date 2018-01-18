@@ -1,30 +1,41 @@
-#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 # PEP 8 check with Pylint
 """qa
 
-NLU based on Natural Language Processing and Graph Database.
-基于自然语言处理与图形数据库的自然语言理解。
+QA based on NLU and Dialogue scene.
+基于自然语言理解和对话场景的问答。
 
 Available functions:
 - All classes and functions: 所有类和函数
 """
 import sqlite3
+import copy
+import json
 from collections import deque
-from concurrent.futures import ProcessPoolExecutor
 from py2neo import Graph, Node, Relationship
+from .config import getConfig
 from .api import nlu_tuling, get_location_by_ip
 from .semantic import synonym_cut, get_tag, similarity, check_swords, get_location
 from .mytools import time_me, get_current_time, random_item, get_age
 from .word2pinyin import pinyin_cut, jaccard_pinyin
-from .kg import *
 
-# 获取导航地点
-def get_navigation_location(path="C:/docu/db/contentDB.db", key="goalvoice"):
+log_do_not_know = getConfig("path", "do_not_know")
+cmd_end_scene = ["退出业务场景", "退出场景", "退出", "返回", "结束", "发挥"]
+# 上一步功能为通用模式
+cmd_previous_step = ["上一步", "上一部", "上一页", "上一个"]
+# 下一步功能通过界面按钮实现
+cmd_next_step = ["下一步", "下一部", "下一页", "下一个"]
+cmd_repeat = ['重复', '再来一个', '再来一遍', '你刚说什么', '再说一遍', '重来']
+
+def get_navigation_location():
+    """获取导航地点 
+    """
     try:
-        db = sqlite3.connect(path)
+        nav_db = getConfig("nav", "db")
+        key = getConfig("nav", "key")
+        db = sqlite3.connect(nav_db)
     except:
-        print("导航数据库连接失败！请检查是否存在文件：" + path)
+        print("导航数据库连接失败！请检查是否存在文件：" + nav_db)
         return []
     try:
         cursor = db.execute("SELECT name from " + key)
@@ -34,6 +45,7 @@ def get_navigation_location(path="C:/docu/db/contentDB.db", key="goalvoice"):
     # 过滤0记录
     names = [row[0] for row in cursor if row[0]]
     return names
+
 
 class Robot():
     """NLU Robot.
@@ -64,8 +76,9 @@ class Robot():
         # 当前QA id
         self.qa_id = get_current_time()
 		# 短期记忆：最近问过的10个问题与10个答案
-        self.qmemory = deque(maxlen=10)
-        self.amemory = deque(maxlen=10)
+        self.qmemory = deque(maxlen=10) # 问题
+        self.amemory = deque(maxlen=10) # 答案
+        self.pmemory = deque(maxlen=10) # 上一步
         # 匹配不到时随机回答 TODO：记录回答不上的所有问题，
         self.do_not_know = [
             "这个问题太难了，{robotname}还在学习中",
@@ -179,16 +192,18 @@ class Robot():
         Args:
             question: User question. 用户问题。
         """
-        result = dict(question=question, content=self.iformat(random_item(self.do_not_know)), \
-            context="", url="", behavior=0, parameter=0)
+        result = dict(question=question, name='', content=self.iformat(random_item(self.do_not_know)), \
+            context="", tid="", url="", behavior=0, parameter="", txt="", img="", button="", valid=1)
         # temp_sim = 0
         # sv1 = synonym_cut(question, 'wf')
         # if not sv1:
             # return result
         for location in self.locations:
-            # TODO：判断“去”和地址关键词是否是就近的动词短语情况
-            if "去" in question and location in question:
+            # 判断“去”和地址关键词是就近的动词短语情况
+            keyword = "去" + location
+            if keyword in question:
                 print("Original navigation")
+                result["name"] = keyword
                 result["content"] = location
                 result["context"] = "user_navigation"
                 result["behavior"] = int("0x001B", 16)
@@ -214,8 +229,8 @@ class Robot():
             subgraph: Sub graphs corresponding to the current dialogue. 当前对话领域对应的子图。
         """
         temp_sim = 0
-        result = dict(question=question, content=self.iformat(random_item(self.do_not_know)), \
-            context="", url="", behavior=0, parameter=0)
+        result = dict(question=question, name='', content=self.iformat(random_item(self.do_not_know)), \
+            context="", tid="", url="", behavior=0, parameter="", txt="", img="", button="", valid=1)
         sv1 = pinyin_cut(question)
         print(sv1)
         for node in subgraph:
@@ -227,15 +242,19 @@ class Robot():
             # 匹配加速，不必选取最高相似度，只要达到阈值就终止匹配
             if temp_sim > 0.75:
                 print("Q: " + iquestion + " Similarity Score: " + str(temp_sim))
+                result['name'] = iquestion
                 result["content"] = self.iformat(random_item(node["content"].split("|")))
                 result["context"] = node["topic"]
+                result["tid"] = node["tid"]
+                result["txt"] = node["txt"]
+                result["img"] = node["img"]
+                result["button"] = node["button"]
                 if node["url"]:
-                    # result["url"] = json.loads(random_item(node["url"].split("|")))
                     result["url"] = random_item(node["url"].split("|"))
                 if node["behavior"]:
                     result["behavior"] = int(node["behavior"], 16)
                 if node["parameter"]:
-                    result["parameter"] = int(node["parameter"])
+                    result["parameter"] = node["parameter"]
                 func = node["api"]
                 if func:
                     exec("result['content'] = " + func + "('" + result["content"] + "')")
@@ -244,38 +263,39 @@ class Robot():
 
     def extract_synonym(self, question, subgraph):
         """Extract synonymous QA in NLU database。
-        QA匹配模式：从图形数据库选取匹配度最高的问答对。
+        QA匹配模式：从知识库选取匹配度最高的问答对。
 
         Args:
             question: User question. 用户问题。
             subgraph: Sub graphs corresponding to the current dialogue. 当前对话领域对应的子图。
         """
         temp_sim = 0
-        result = dict(question=question, content=self.iformat(random_item(self.do_not_know)), \
-            context="", url="", behavior=0, parameter=0)
-	    # semantic: 切分为同义词标签向量，根据标签相似性计算相似度矩阵，由相似性矩阵计算句子相似度
-	    # vec: 切分为词向量，根据word2vec计算相似度矩阵，由相似性矩阵计算句子相似度
+        result = dict(question=question, name='', content=self.iformat(random_item(self.do_not_know)), \
+            context="", tid="", url="", behavior=0, parameter="", txt="", img="", button="", valid=1)
+	    # semantic: 切分为同义词标签向量，根据标签相似性计算相似度矩阵，再由相似性矩阵计算句子相似度
+	    # vec: 切分为词向量，根据词向量计算相似度矩阵，再由相似性矩阵计算句子相似度
         if self.pattern == 'semantic':
         # elif self.pattern == 'vec':
             sv1 = synonym_cut(question, 'wf')
-            # 抽取核心关键词（测试-用于知识图谱）
-            # keyword = synonym_cut(question, 'k')[0]
-            # print(keyword)
             if not sv1:
                 return result
             for node in subgraph:
                 iquestion = self.iformat(node["name"])
                 if question == iquestion:
                     print("Similarity Score: Original sentence")
+                    result['name'] = iquestion
                     result["content"] = self.iformat(random_item(node["content"].split("|")))
                     result["context"] = node["topic"]
+                    result["tid"] = node["tid"]
+                    result["txt"] = node["txt"]
+                    result["img"] = node["img"]
+                    result["button"] = node["button"]
                     if node["url"]:
-                        # result["url"] = json.loads(random_item(node["url"].split("|")))
                         result["url"] = random_item(node["url"].split("|"))
                     if node["behavior"]:
                         result["behavior"] = int(node["behavior"], 16)
                     if node["parameter"]:
-                        result["parameter"] = int(node["parameter"])
+                        result["parameter"] = node["parameter"]
                     # 知识实体节点api抽取原始问题中的关键信息，据此本地查询/在线调用第三方api/在线爬取
                     func = node["api"]
                     if func:
@@ -287,50 +307,61 @@ class Robot():
 			    # 匹配加速，不必选取最高相似度，只要达到阈值就终止匹配
                 if temp_sim > 0.92:
                     print("Q: " + iquestion + " Similarity Score: " + str(temp_sim))
+                    result['name'] = iquestion
                     result["content"] = self.iformat(random_item(node["content"].split("|")))
                     result["context"] = node["topic"]
+                    result["tid"] = node["tid"]
+                    result["txt"] = node["txt"]
+                    result["img"] = node["img"]
+                    result["button"] = node["button"]
                     if node["url"]:
-                        # result["url"] = json.loads(random_item(node["url"].split("|")))
                         result["url"] = random_item(node["url"].split("|"))
                     if node["behavior"]:
                         result["behavior"] = int(node["behavior"], 16)
                     if node["parameter"]:
-                        result["parameter"] = int(node["parameter"])
+                        result["parameter"] = node["parameter"]
                     func = node["api"]
                     if func:
                         exec("result['content'] = " + func + "('" + result["content"] + "')")
                     return result
         return result
 
-    def extract_keysentence(self, question):
+    def extract_keysentence(self, question, data=None):
         """Extract keysentence QA in NLU database。
-        QA匹配模式：从图形数据库选取包含关键句的问答对。
+        QA匹配模式：从知识库选取包含关键句的问答对。
 
         Args:
             question: User question. 用户问题。
         """
-        result = dict(question=question, content=self.iformat(random_item(self.do_not_know)), \
-            context="", url="", behavior=0, parameter=0)
-        match_string = "MATCH (n:NluCell) WHERE '" + question + "' CONTAINS n.name RETURN n LIMIT 1"
+        result = dict(question=question, name="", content=self.iformat(random_item(self.do_not_know)), \
+            context="", tid="", url="", behavior=0, parameter="", txt="", img="", button="", valid=1)
+        # if data:
+            # subgraph = [node for node in data if node["name"] in question]
+            # TODO：从包含关键句的问答对中选取和当前问答的跳转链接最接近的
+            # node = 和当前问答的跳转链接最接近的 in subgraph
+        usertopics = ' '.join(self.usertopics)
+        # 只从目前挂接的知识库中匹配
+        match_string = "MATCH (n:NluCell) WHERE '" + question + \
+            "' CONTAINS n.name and '" + usertopics +  \
+            "' CONTAINS n.topic RETURN n LIMIT 1"
         subgraph = self.graph.run(match_string).data()
-        # 只回答目前挂接的知识库内容
-        usergraph = [item for item in subgraph if item['n']['topic'] in self.usertopics]
-        # if subgraph:
-        if usergraph:
-            # node = list(subgraph)[0]['n']
-            node = usergraph[0]['n']
-            if node["topic"] not in self.usertopics:
-                return 
+        if subgraph:
+            # TODO：判断 subgraph 中是否包含场景根节点
+            node = list(subgraph)[0]['n']
             print("Similarity Score: Key sentence")
+            result['name'] = node['name']
             result["content"] = self.iformat(random_item(node["content"].split("|")))
             result["context"] = node["topic"]
+            result["tid"] = node["tid"]
+            result["txt"] = node["txt"]
+            result["img"] = node["img"]
+            result["button"] = node["button"]
             if node["url"]:
-                # result["url"] = json.loads(random_item(node["url"].split("|")))
                 result["url"] = random_item(node["url"].split("|"))
             if node["behavior"]:
                 result["behavior"] = int(node["behavior"], 16)
             if node["parameter"]:
-                result["parameter"] = int(node["parameter"])
+                result["parameter"] = node["parameter"]
             # 知识实体节点api抽取原始问题中的关键信息，据此本地查询/在线调用第三方api/在线爬取
             func = node["api"]
             if func:
@@ -338,8 +369,20 @@ class Robot():
             return result
         return result
 
+    def remove_name(self, question):
+        # 姓氏误匹配重定义
+        if question.startswith("小") and len(question) == 2:
+            question = self.gconfig['robotname']
+        # 称呼过滤
+        for robotname in ["小民", "小明", "小名", "晓明"]:
+            if question.startswith(robotname) and len(question) >= 4 and "在线" not in question:
+                question = question.lstrip(robotname)
+        if not question:
+            question = self.gconfig['robotname']
+        return question
+
     @time_me()
-    def search(self, question="question", userid="userid"):
+    def search(self, question="question", tid="", userid="userid"):
         """Nlu search. 语义搜索。
 
         Args:
@@ -349,156 +392,213 @@ class Robot():
                 Defaults to "userid"
 
         Returns:
-            Dict contains answer, current topic, url, behavior and parameter.
-            返回包含答案，当前话题，资源包，行为指令及对应参数的字典。
+            Dict contains:
+            question, answer, topic, tid, url, behavior, parameter, txt, img, button.
+            返回包含问题，答案，话题，资源，行为，动作，文本，图片及按钮的字典。
         """
         # 添加到问题记忆
         # self.qmemory.append(question)
         # self.add_to_memory(question, userid)
 
-        # 本地语义：全图模式
-        #tag = get_tag(question)
-        #subgraph = self.graph.find("NluCell", "tag", tag)
-        #result = self.extract_synonym(question, subgraph)
-
-        # 本地语义：场景+全图+用户配置模式
-        # 多用户根据userid动态获取对应的配置信息
+        # 语义：场景+全图+用户配置模式（用户根据 userid 动态获取其配置信息）
+        # ========================初始化配置信息==========================
         self.gconfig = self.graph.find_one("User", "userid", userid)
         self.usertopics = self.get_usertopics(userid=userid)
+        do_not_know = dict(
+            question=question,
+            name="",
+            # content=self.iformat(random_item(self.do_not_know)),
+            content="",
+            context="",
+            tid="",
+            url="",
+            behavior=0,
+            parameter="",
+            txt="",
+            img="",
+            button="",
+            valid=1)
+        error_page = dict(
+            question=question,
+            name="",
+            content=self.gconfig['error_page'],
+            context="",
+            tid="",
+            url="",
+            behavior=int("0x1500", 16), # Modify：场景内 behavior 统一为 0x1500。(2018-1-8)
+            parameter="",
+            txt="",
+            img="",
+            button="",
+            valid=0)
 
-        # 一、预处理=====================================================
-        # 问题过滤器(添加敏感词过滤 2017-5-25)
+        # ========================一、预处理=============================
+        # 问题过滤(添加敏感词过滤 2017-5-25)
         if check_swords(question):
             print("问题包含敏感词！")
-            return dict(question=question, content=self.iformat(random_item(self.do_not_know)), \
-            context="", url="", behavior=0, parameter=0)
-        # 姓氏引起误匹配重定义
-        if question.startswith("小") and len(question) == 2:
-            question = self.gconfig['robotname']
-        # 称呼过滤 Add in 2017-7-5
-        for robotname in ["小民", "小明", "小名", "晓明"]:
-            if question.startswith(robotname) and len(question) >= 4 and "在线" not in question:
-                question = question.lstrip(robotname)
-        if not question:
-            question = self.gconfig['robotname']
-        # 二、导航=======================================================
+            return do_not_know
+        # 移除称呼
+        question = self.remove_name(question)
+
+        # ========================二、导航===============================
         result = self.extract_navigation(question)
         if result["context"] == "user_navigation":
+            self.amemory.append(result) # 添加到普通记忆
+            self.pmemory.append(result)
             return result
-
-        # 三、云端在线场景================================================
-        result = dict(question=question, content="", context="basic_cmd", url="", \
-        behavior=int("0x0000", 16), parameter=0)
-        # TODO: 简化为统一模式
-        # TODO {'behavior': 0, 'content': '理财产品取号', 'context': 'basic_cmd', 'parameter': 0, 'question': '理财产品取号', 'url': ''}
-        if "理财产品" in question and "取号" not in question:
-            result["behavior"] = int("0x1002", 16) # 进入在线场景
-            result["question"] = "理财产品" # 重定义为标准问题
-            self.is_scene = True # 在线场景标志
-            return result
-        if "免费wifi" in question or "wifi" in question:
-            result["behavior"] = int("0x1002", 16) # 进入在线场景
-            result["question"] = "有没有免费的wifi" # 重定义为标准问题
-            self.is_scene = True # 在线场景标志
-            return result
-        if "存款利率" in question:
-            result["behavior"] = int("0x1002", 16) # 进入在线场景
-            result["question"] = "存款利率" # 重定义为标准问题
-            self.is_scene = True # 在线场景标志
-            return result
-        if "我要取钱" in question or "取钱" in question:
-            result["behavior"] = int("0x1002", 16) # 进入在线场景
-            result["question"] = "我要取钱" # 重定义为标准问题
-            self.is_scene = True # 在线场景标志
-            return result
-        if "信用卡挂失" in question:
-            result["behavior"] = int("0x1002", 16) # 进入在线场景
-            result["question"] = "信用卡挂失" # 重定义为标准问题
-            self.is_scene = True # 在线场景标志
-            return result
-        if "开通云闪付" in question:
-            result["behavior"] = int("0x1002", 16) # 进入在线场景
-            result["question"] = "开通云闪付" # 重定义为标准问题
-            self.is_scene = True # 在线场景标志
-            return result
-        if "办理粤卡通" in question or "办理粤通卡" in question:
-            result["behavior"] = int("0x1002", 16) # 进入在线场景
-            result["question"] = "办理粤通卡" # 重定义为标准问题 修正：2017-7-3
-            self.is_scene = True # 在线场景标志
-            return result
-        # 进入在线场景
-        # start_scene = ["理财产品", "wifi", "存款利率", "取钱", "信用卡挂失", "开通云闪付", "办理粤卡通"]
-        # for item in start_scene:
-            # if item in question:
-                # result["behavior"] = int("0x1002", 16) # 进入在线场景
-                # result["question"] = "办理粤卡通" # 重定义为标准问题
-                # self.is_scene = True # 在线场景标志
-        # 退出在线场景
-        end_scene = ["退出业务场景", "退出场景", "退出", "返回", "结束", "发挥"]
-        for item in end_scene:
-            if item == question: # if item in question: # 避免多个退出模式冲突
-                result["behavior"] = int("0x0020", 16) # 场景退出
-                self.is_scene = False
-                return result
-        previous_step = ["上一步", "上一部", "上一页", "上一个"]
-        next_step = ["下一步", "下一部", "下一页", "下一个"]
-        if self.is_scene:
-            # for item in previous_step:
-                # if item in question:
-                    # result["behavior"] = int("0x001D", 16) # 场景上一步
-            # for item in next_step:
-                # if item in question:
-                    # result["behavior"] = int("0x001E", 16) # 场景下一步
-            if "上一步" in question or "上一部" in question or "上一页" in question or "上一个" in question:
-                result["behavior"] = int("0x001D", 16) # 场景上一步
-                return result
-            elif "下一步" in question or "下一部" in question or "下一页" in question or "下一个" in question:
-                result["behavior"] = int("0x001E", 16) # 场景下一步
-                return result
-            result["content"] = question
-            return result
-
-        # 常用命令，交互，业务
-        # 上下文——重复命令 TODO：确认返回的是正确的指令而不是例如唱歌时的结束语“可以了”
-        if "再来一个" in question:
+        
+        # ========================三、语义场景===========================
+        result = copy.deepcopy(do_not_know)
+        
+        # 全局上下文——重复
+        for item in cmd_repeat:
+            # TODO：确认返回的是正确的指令而不是例如唱歌时的结束语“可以了”
             # TODO：从记忆里选取最近的有意义行为作为重复的内容
-            return self.amemory[-1]
-        # 四、本地标准语义================================================
-        # 模式1：选取语义得分大于阈值
+            if item == question:
+                if self.amemory:
+                    return self.amemory[-1]
+                else:
+                    return do_not_know
+
+        # 场景——退出
+        for item in cmd_end_scene:
+            if item == question: # 完全匹配退出模式
+                # result['behavior'] = int("0x0020", 16)
+                result['behavior'] = 0
+                result['name'] = '退出'
+                # result['content'] = "好的，退出"
+                result['content'] = ""
+                self.is_scene = False
+                self.topic = ""
+                self.amemory.clear() # 清空场景记忆
+                self.pmemory.clear() # 清空场景上一步记忆
+                return result
+
+        # 场景——上一步：使用双向队列实现
+        if self.is_scene:
+            for item in cmd_previous_step:
+                if item in question:
+                    # 添加了链接跳转判断（采用该方案 2017-12-22）
+                    if len(self.pmemory) > 1:
+                        self.amemory.pop()
+                        return self.pmemory.pop()
+                    elif len(self.pmemory) == 1:
+                        return self.pmemory[-1]
+                    else:
+                        # Modify：返回 error_page 2017-12-22
+                        return error_page
+                        # return do_not_know
+                    # 未添加链接跳转判断（不用该方案 2017-12-22）
+                    # if len(self.pmemory) > 1:
+                        # return self.amemory.pop()
+                    # elif len(self.amemory) == 1:
+                        # return self.amemory[-1]
+                    # else:
+                        # return do_not_know
+            # 场景——下一步：使用双向队列实现
+            for item in cmd_next_step:
+                if item in question:
+                    if len(self.amemory) >= 1:
+                        cur_button = json.loads(self.amemory[-1]['button']) if self.amemory[-1]['button'] else {}
+                        next = cur_button.get('next', {})
+                        if next:
+                            next_tid = next['url']
+                            next_question = next['content']
+                            match_string = "MATCH (n:NluCell {name:'" + \
+                                next_question + "', topic:'" + self.topic + \
+                                "', tid:" + next_tid + "}) RETURN n"
+                            match_data = list(self.graph.run(match_string).data())
+                            if match_data:
+                                node = match_data[0]['n']
+                                result['name'] = self.iformat(node["name"])
+                                result["content"] = self.iformat(random_item(node["content"].split("|")))
+                                result["context"] = node["topic"]
+                                result["tid"] = node["tid"]
+                                result["txt"] = node["txt"]
+                                result["img"] = node["img"]
+                                result["button"] = node["button"]
+                                if node["url"]:
+                                    result["url"] = random_item(node["url"].split("|"))
+                                if node["behavior"]:
+                                    result["behavior"] = int(node["behavior"], 16)
+                                if node["parameter"]:
+                                    result["parameter"] = node["parameter"]
+                                func = node["api"]
+                                if func:
+                                    exec("result['content'] = " + func + "('" + result["content"] + "')")
+                                # 添加到场景记忆
+                                self.pmemory.append(self.amemory[-1])
+                                self.amemory.append(result)
+                                return result
+                    return error_page
+          
+        # ==========================场景匹配=============================
         tag = get_tag(question, self.gconfig)
-        # TODO：添加语义标签和关键词综合匹配的情况
-        subgraph_all = list(self.graph.find("NluCell", "tag", tag))
-        # subgraph_scene = [node for node in subgraph_all if node["topic"]==self.topic]
-        # TODO：usergraph_all 包含正常问答和用户自定义问答，可优先匹配用户自定义问答
+        # subgraph_all = list(self.graph.find("NluCell", "tag", tag)) # 列表
+        subgraph_all = self.graph.find("NluCell", "tag", tag) # 迭代器
         usergraph_all = [node for node in subgraph_all if node["topic"] in self.usertopics]
         usergraph_scene = [node for node in usergraph_all if node["topic"] == self.topic]
+       
+        if self.is_scene: # 在场景中：语义模式+关键句模式
+            if usergraph_scene:
+                result = self.extract_synonym(question, usergraph_scene)
+                if not result["context"]:
+                    result = self.extract_keysentence(question, usergraph_scene)
+                # result = self.extract_pinyin(question, usergraph_scene)
+                if result["context"]:
+                    print("在场景中，匹配到场景问答对")
+                    # 检测结果的 tid 是否是当前场景的子场景跳转链接
+                    # 实现：在 self.amemory[-1] 的跳转链接集合中查找匹配的 tid
+                    # ===================================================
+                    data_img = json.loads(self.amemory[-1]['img']) if self.amemory[-1]['img'] else {}
+                    data_button = json.loads(self.amemory[-1]['button']) if self.amemory[-1]['button'] else {}
+                    def get_tids(data):
+                        tids = set()
+                        for key in data.keys():
+                            tid = data[key]['url']
+                            if tid:
+                                tids.add(int(tid))
+                        return tids
+                    pre_tids = get_tids(data_img).union(get_tids(data_button.setdefault('area', {})))
+                    if int(result["tid"]) in pre_tids:
+                        print("正确匹配到当前场景的子场景")
+                        self.pmemory.append(self.amemory[-1])
+                        self.amemory.append(result) # 添加到场景记忆
+                        return result
+                    # ===================================================
+            # 场景中若找不到子图或者匹配不到就重复当前问题->返回自定义错误提示
+            # Modify：返回 error_page (2017-12-22)
+            # if self.amemory:              
+                # return self.amemory[-1]
+            # else:
+                # return error_page
+            return error_page
 
-        # 查看根据语义标签初步确定的子图
-        # for node in usergraph_all:
-            # print(node["name"])
-
-        # if subgraph_scene:
-        if usergraph_scene:
-            result = self.extract_synonym(question, usergraph_scene)
-            # result = self.extract_pinyin(question, usergraph_scene)
-            if result["context"]:
+        else: # 不在场景中：语义模式+关键句模式
+            result = self.extract_synonym(question, usergraph_all)
+            if not result["context"]:
+                result = self.extract_keysentence(question)
+            # result = self.extract_pinyin(question, usergraph_all)         
+            if result["tid"] != '': # 匹配到场景节点
+                if int(result["tid"]) == 0:
+                    print("不在场景中，匹配到场景根节点")
+                    self.is_scene = True # 进入场景
+                    self.topic = result["context"]
+                    self.amemory.clear() # 进入场景前清空普通记忆
+                    self.pmemory.clear()
+                    self.amemory.append(result) # 添加到场景记忆
+                    self.pmemory.append(result)
+                    return result
+                else:
+                    print("不在场景中，匹配到场景子节点")
+                    return do_not_know
+            elif result["context"]: # 匹配到普通节点
                 self.topic = result["context"]
-                self.amemory.append(result) # 添加到答案记忆
-                return result
-        result = self.extract_synonym(question, usergraph_all)
-        # result = self.extract_pinyin(question, usergraph_all)
-        # result  = self.extract_synonym(question, subgraph_all)
-        self.topic = result["context"]
-        self.amemory.append(result) # 添加到答案记忆
-        # 模式2：包含关键句就匹配
-        if not self.topic:
-            result = self.extract_keysentence(question)
-            if result["context"]:
-                self.topic = result["context"]
-                self.amemory.append(result) # 添加到答案记忆
+                self.amemory.append(result) # 添加到普通记忆
+                self.pmemory.append(result)
                 return result
 
-        # 五、在线语义====================================================
+        # ========================五、在线语义===========================
         if not self.topic:
             # 1.音乐(唱一首xxx的xxx)
             if "唱一首" in question or "唱首" in question or "我想听" in question:
@@ -535,10 +635,14 @@ class Robot():
                 result["context"] = "nlu_tuling"
             # 4.追加记录回答不上的所有问题
             else:
-                with open("C:/nlu/bin/do_not_know.txt", "a", encoding="UTF-8") as file:
+                with open(log_do_not_know, "a", encoding="UTF-8") as file:
                     file.write(question + "\n")
             # 5.nlu_tuling
             # else:
                 # result["content"] = nlu_tuling(question, loc=self.address)
                 # result["context"] = "nlu_tuling"
+        if result["context"]: # 匹配到在线语义
+            self.amemory.append(result) # 添加到普通记忆
+        # ==============================================================
+
         return result

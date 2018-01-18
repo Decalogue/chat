@@ -10,7 +10,7 @@ from chat.mytools import get_current_time
 
 class TestMe(TestCase):
     def setUp(self):
-        self.userid = "userid"
+        self.userid = "A0001"
 
     def test_match(self):
         filename = os.path.split(os.path.realpath(__file__))[0] + "\\log\\QA_" + get_current_time() + ".md"
@@ -24,6 +24,7 @@ class TestMe(TestCase):
                 if sentence == "":
                     break
                 result = match(question=sentence, userid=self.userid)
+                print(result)
                 answer = json.loads(result)["content"]
                 print(answer)
                 file.write("`>>" + sentence + "`\n")

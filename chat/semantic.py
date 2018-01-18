@@ -12,30 +12,30 @@ Available functions:
 """
 import os
 import codecs
-from string import punctuation
+import numpy as np
 import jieba
-dictpath = os.path.split(os.path.realpath(__file__))[0]
-jieba.set_dictionary(dictpath + "\\dict\\jieba\\synonymdict.txt")
-jieba.load_userdict(dictpath + "\\dict\\jieba\\userdict.txt")
+thispath = os.path.split(os.path.realpath(__file__))[0]
+jieba.set_dictionary(thispath + "\\dict\\synonymdict.txt")
+jieba.load_userdict(thispath + "\\dict\\userdict.txt")
 import jieba.posseg as posseg
 import jieba.analyse as analyse
-from numpy import mat, zeros, where
+from string import punctuation
 
-# The 'punctuation_all' is the combination of Chinese and English punctuation.
+# The 'punctuation_all' is the combination set of Chinese and English punctuation.
 punctuation_zh = " 、，。°？！：；“”’‘～…【】（）《》｛｝×―－·→℃"
-punctuation_all = list(punctuation) + list(punctuation_zh)
+punctuation_all = set(punctuation) + set(punctuation_zh)
 # 句尾语气词过滤
 tone_words = "。？！的了呢吧吗啊啦呀"
 # 敏感词库 Modified in 2017-5-25
 try:
-    with codecs.open(dictpath + "\\dict\\swords.txt", "r", "UTF-8") as file:
+    with codecs.open(thispath + "\\dict\\swords.txt", "r", "UTF-8") as file:
         sensitive_words = set(file.read().split())
 except:
     sensitive_words = []
 
 def generate_swords():
-    with codecs.open(dictpath + "\\dict\\sensitive_words.txt", "r", "UTF-8") as file:
-        with codecs.open(dictpath + "\\dict\\swords.txt", "w", "UTF-8") as newfile:
+    with codecs.open(thispath + "\\dict\\sensitive_words.txt", "r", "UTF-8") as file:
+        with codecs.open(thispath + "\\dict\\swords.txt", "w", "UTF-8") as newfile:
             sensitive_words = sorted(list(set(file.read().split())))
             newfile.write("\n".join(sensitive_words))
 
@@ -132,13 +132,13 @@ def sum_cosine(matrix, threshold):
     count = 0
     row = matrix.shape[0]
     col = matrix.shape[1]
-    zero_row = zeros([1, col])
-    zero_col = zeros([row, 1])
+    zero_row = np.zeros([1, col])
+    zero_col = np.zeros([row, 1])
     max_score = matrix.max()
     while max_score > threshold:
         total += max_score
         count += 1
-        pos = where(matrix == max_score)
+        pos = np.where(matrix == max_score)
         i = pos[0][0]
         j = pos[1][0]
         matrix[i, :] = zero_row
@@ -201,7 +201,7 @@ def jaccard(synonym_vector1, synonym_vector2):
             sv_rows.append(score)
         sv_matrix.append(sv_rows)
         sv_rows = []
-    matrix = mat(sv_matrix)
+    matrix = np.mat(sv_matrix)
     result = sum_cosine(matrix, 0.8)
     # result = sum_cosine(matrix, 0.85) # 区分“电脑”和“打印机”：标签前5位相同
     total = result["total"]

@@ -80,7 +80,7 @@ def match(question="question", userid="userid"):
     """
     send = question_pack(question, userid)
     mysock.sendall(send.encode("UTF-8"))
-    received = mysock.recv(2048)
+    received = mysock.recv(4096) # 2048->4096(2018-1-5 添加了 xml 后扩充)
     received = received.decode("UTF-8")
     return received
 
@@ -99,7 +99,7 @@ def config(info="", userid="userid"):
     """
     send = config_pack(info, userid)
     mysock.sendall(send.encode("UTF-8"))
-    received = mysock.recv(2048)
+    received = mysock.recv(4096) # 2048->4096(2018-1-5 添加了 xml 后扩充)
     received = received.decode("UTF-8")
     return received
 

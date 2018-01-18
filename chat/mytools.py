@@ -378,14 +378,24 @@ def write_excel(filename="demo.xlsx", sheets=None):
     file = xlwt.Workbook() # 创建工作簿
     for sheet in sheets:
         new_sheet = file.add_sheet(sheet["name"], cell_overwrite_ok=True) # 创建sheet
+        info = sheet["info"]
+        # 原始方案：键值没有固定顺序导出 excel
         # 生成表头
-        new_sheet.write(0, 0, "version=1.0.0", set_excel_style('Arial Black', 220, True))
-        for col, key in enumerate(sheet["keys"]):
-            new_sheet.write(1, col, key, set_excel_style('Arial Black', 220, True))
+        # for col, key in enumerate(info.keys()):
+            # new_sheet.write(0, col, info[key], set_excel_style('Arial Black', 220, True))
+            # new_sheet.write(1, col, key, set_excel_style('Arial Black', 220, True))
         # 生成内容
+        # for index, item in enumerate(sheet["items"]):
+            # for col, key in enumerate(info.keys()):
+                # new_sheet.write(index+2, col, item['n'][key])
+
+        # Modify：使键值按照指定顺序导出 excel (2018-1-8)
+        for col, key in enumerate(info):
+            new_sheet.write(0, col, key[1], set_excel_style('Arial Black', 220, True))
+            new_sheet.write(1, col, key[0], set_excel_style('Arial Black', 220, True))
         for index, item in enumerate(sheet["items"]):
-            for col, key in enumerate(sheet["keys"]):
-                new_sheet.write(index+2, col, item['n'][key])
+            for col, key in enumerate(info):
+                new_sheet.write(index+2, col, item['n'][key[0]])
     file.save(filename) # 保存文件
 
 def generate_dict(dictpath, sourcepath):

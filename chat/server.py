@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # -*- coding:utf8 -*-
 # PEP 8 check with Pylint
 """Create and start NLU TCPServer with socketserver.
@@ -9,30 +8,15 @@ The socketserver module simplifies the task of writing network servers.
 import os
 import json
 import socketserver
-# import chardet
+from .config import getConfig
 from .qa import Robot
-from .database import Database
-from .mytools import Walk, get_current_time
+from .mytools import get_current_time
+from .ianswer import answer2xml
 
-# TODO: 提供用户注册和登录功能（目前机器人上userid都是"A0001"）
-# is_admin=False 表示非管理员身份，此模式下导入的知识库topic属性均为user_chat
-database = Database(password="train", userid="A0001", is_admin=False)
-
-class WalkUserData(Walk):
-    def handle_file(self, filepath, pattern=None):
-        database.handle_excel(filepath)
-
-def add_qa(path=None, names=None):
-    """Add subgraph from excel data.
-    """
-    walker = WalkUserData()
-    fnamelist = walker.dir_process(1, path, style="fnamelist")
-    print("知识库更新内容:", fnamelist)
-
-# 开机自动更新知识库
-add_qa("D:\新知识库")
 # 初始化语义服务器
-robot = Robot(password="train")
+logpath = getConfig("path", "log")
+robot = Robot(password=getConfig("neo4j", "password"))
+
 
 class MyTCPHandler(socketserver.BaseRequestHandler):
     """The request handler class for nlu server.
@@ -48,41 +32,43 @@ class MyTCPHandler(socketserver.BaseRequestHandler):
             if not self.data:
                 break
             print("\n{} wrote:".format(self.client_address[0]))
-            # Detect encoding of received data
-            # encoding = chardet.detect(self.data)["encoding"]
-            # print("Encoding: " + encoding)
-            # self.data = self.data.decode(encoding)
             self.data = self.data.decode("UTF-8")
-            print("Data:")
-            print(self.data)
+            print("Data:\n", self.data)
             # step 1.Bytes to json obj and extract question
             json_data = json.loads(self.data)
             # step 2.Get answer
             if "ask_content" in json_data.keys():
-                result = robot.search(question=json_data["ask_content"], \
+                answer = robot.search(question=json_data["ask_content"], \
                 userid=json_data["userid"])
                 info = json_data["ask_content"]
             elif "config_content" in json_data.keys():
-                result = robot.configure(info=json_data["config_content"], \
+                answer = robot.configure(info=json_data["config_content"], \
                 userid=json_data["userid"])
                 info = json_data["config_content"]
-            # print(result)
+            print(answer)
+            result = answer2xml(answer)
+            print(result)
             # step 3.Send
-            # self.request.sendall(json.dumps(result).encode(encoding))
             try:
+                # json 格式接口
+                # if json_data['return_type'] == 'json':
+                    # self.request.sendall(json.dumps(answer).encode("UTF-8"))
+                # xml 格式接口
+                # elif json_data['return_type'] == 'xml':
+                    # self.request.sendall(answer2xml(answer).encode("UTF-8"))
                 self.request.sendall(json.dumps(result).encode("UTF-8"))
             except:
-                with open("C:/nlu/bin/log.txt", "a", encoding="UTF-8") as file:
+                with open(logpath, "a", encoding="UTF-8") as file:
                     file.write(get_current_time("%Y-%m-%d %H:%M:%S") + "\n" \
                     + "发送失败\n")
             # 追加日志
-            with open("C:/nlu/bin/log.txt", "a", encoding="UTF-8") as file:
+            with open(logpath, "a", encoding="UTF-8") as file:
                 # 写入接收数据中的内容字段
                 file.write(get_current_time("%Y-%m-%d %H:%M:%S") + "\n" \
                     + info + "\n")
                 # 写入正常问答
                 if "ask_content" in json_data.keys():
-                    for key in ["question", "content", "behavior", "url", "context", "parameter"]:
+                    for key in ["question", "content", "behavior", "url", "context", "parameter", "picurl"]:
                         file.write(key + ": " + str(result[key]) + "\n")
                 # 写入配置信息
                 elif "config_content" in json_data.keys():
@@ -102,7 +88,7 @@ def start(host="localhost", port=7000):
         port: server port. 服务器端口设置。
             Defaults to 7000.
     """
-    # 多线程处理多用户并发请求
+    # 多线程处理并发请求
     sock = socketserver.ThreadingTCPServer((host, port), MyTCPHandler)
     sock.serve_forever()
 

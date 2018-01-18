@@ -50,10 +50,10 @@ def get_location_by_ip(city="上海市"):
     try:
         result = requests.post(url, data, timeout=20).text
         location = json.loads(result)["content"]["address"]
-        print("网络正常，当前所在城市：", location)
+        print("当前所在城市：", location)
     except:
         location = city
-        print("网络异常，采用默认城市：", location)
+        print("采用默认城市：", location)
     return location
 
 def get_ll_by_address(address="", city="北京市"): 
