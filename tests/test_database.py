@@ -27,26 +27,26 @@ class TestMe(TestCase):
         pass
 
     def test_reset(self):
-        # self.database.reset(pattern="n", label="NluCell", filename="C:/nlu/new/data/chat.xls")
+        # self.database.reset(pattern="n", label="NluCell", filename="C:/nlu/data/kb/chat.xls")
         pass
  
     def test_reset_ts(self):
         """Reset data of label 'TestStandard' in database.
         """
-        # self.database.reset_ts(pattern="n", label="TestStandard", filename="C:/nlu/data/ts.xls")
+        # self.database.reset_ts(pattern="n", label="TestStandard", filename="C:/nlu/data/kb/ts.xls")
         pass
 
     def test_add_ts(self):
         pass
-        # self.database.handle_ts("C:/nlu/data/ts.xls")
+        # self.database.handle_ts("C:/nlu/data/kb/ts.xls")
 
     # @time_me(format_string="ms")
     def test_add_qa(self):
         pass
         # 1.Add qa with excel
-        # self.database.handle_excel("C:/nlu/data/chat.xls")
+        # self.database.handle_excel("C:/nlu/data/kb/chat.xls")
 	    # 2.Add qa with txt
-        # self.database.handle_txt("C:/nlu/data/bank.txt")
+        # self.database.handle_txt("C:/nlu/data/kb/bank.txt")
     
     def test_download(self):
         akbs = self.database.get_available_kb()
