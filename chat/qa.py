@@ -68,7 +68,7 @@ class Robot():
         # 在线调用百度地图IP定位api，网络异常时返回默认地址：上海市/从配置信息获取
         self.address = get_location_by_ip(self.graph.find_one("User", "userid", "A0001")['city'])
         # 机器人配置信息
-        self.gconfig = None
+        self.user = None
         # 可用话题列表
         self.usertopics = []
         # 当前QA话题
@@ -99,7 +99,7 @@ class Robot():
         ]
 
     def __str__(self):
-        return "Hello! I'm {robotname} and I'm {robotage} years old.".format(**self.gconfig)
+        return "Hello! I'm {robotname} and I'm {robotage} years old.".format(**self.user)
 
     @time_me()
     def configure(self, info="", userid="userid"):
@@ -161,7 +161,7 @@ class Robot():
         """Individualization of robot answer.
         个性化机器人回答。
         """
-        return sentence.format(**self.gconfig)
+        return sentence.format(**self.user)
 
     # @time_me()
     def add_to_memory(self, question="question", userid="userid"):
@@ -372,13 +372,13 @@ class Robot():
     def remove_name(self, question):
         # 姓氏误匹配重定义
         if question.startswith("小") and len(question) == 2:
-            question = self.gconfig['robotname']
+            question = self.user['robotname']
         # 称呼过滤
         for robotname in ["小民", "小明", "小名", "晓明"]:
             if question.startswith(robotname) and len(question) >= 4 and "在线" not in question:
                 question = question.lstrip(robotname)
         if not question:
-            question = self.gconfig['robotname']
+            question = self.user['robotname']
         return question
 
     @time_me()
@@ -402,7 +402,7 @@ class Robot():
 
         # 语义：场景+全图+用户配置模式（用户根据 userid 动态获取其配置信息）
         # ========================初始化配置信息==========================
-        self.gconfig = self.graph.find_one("User", "userid", userid)
+        self.user = self.graph.find_one("User", "userid", userid)
         self.usertopics = self.get_usertopics(userid=userid)
         do_not_know = dict(
             question=question,
@@ -421,7 +421,7 @@ class Robot():
         error_page = dict(
             question=question,
             name="",
-            content=self.gconfig['error_page'],
+            content=self.user['error_page'],
             context="",
             tid="",
             url="",
@@ -533,7 +533,7 @@ class Robot():
                     return error_page
           
         # ==========================场景匹配=============================
-        tag = get_tag(question, self.gconfig)
+        tag = get_tag(question, self.user)
         # subgraph_all = list(self.graph.find("NluCell", "tag", tag)) # 列表
         subgraph_all = self.graph.find("NluCell", "tag", tag) # 迭代器
         usergraph_all = [node for node in subgraph_all if node["topic"] in self.usertopics]
