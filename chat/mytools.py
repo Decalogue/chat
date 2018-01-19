@@ -290,19 +290,40 @@ def get_age(format_string="%s年%s个月%s天", info="2016-7-25"):
     assert isinstance(format_string, str), "The format_string must be a string."
     assert isinstance(info, str), "The birthday must be a string."
     
-    current_time = get_current_time(format_string="%Y-%m-%d")
-    start_time= datetime.datetime.strptime(info, "%Y-%m-%d")
-    end_time= datetime.datetime.strptime(current_time, "%Y-%m-%d")
+    # 方案1：根据日期字面差计算具体时长
+    mdays = [31, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30] # 从12（0）月到11月
+    ct = get_current_time(format_string="%Y-%m-%d")
+    st = [int(i) for i in info.split('-')]
+    et = [int(i) for i in ct.split('-')]
+    if st[1] < et[1]:
+        year = et[0] - st[0]
+        if st[2] < et[2]:
+            month = et[1] - st[1]
+            day = et[2] - st[2]
+        else:
+            month = et[1] - st[1] - 1
+            day = et[2] + mdays[(et[1] - 1) % 12] - st[2]
+    else:
+        year = et[0] - st[0] - 1
+        if st[2] < et[2]:
+            month = et[1] + 12 - st[1]
+            day = et[2] - st[2]
+        else:
+            month = et[1] + 12 - st[1] - 1
+            day = et[2] + mdays[(et[1] - 1) % 12] - st[2]
+
+    # 方案2：根据日期天数差计算具体时长
+    # start_time= datetime.datetime.strptime(info, "%Y-%m-%d")
+    # end_time= datetime.datetime.strptime(ct, "%Y-%m-%d")
 
     # seconds = (end_time - start_time).seconds  
     # hours = (end_time - start_time).hours
-    days = (end_time - start_time).days
-    year = int(days / 365)
-    month = int(days % 365 / 30)
-    day = int(days % 365 % 30)
+    # days = (end_time - start_time).days
+    # year = int(days / 365)
+    # month = int(days % 365 / 30)
+    # day = int(days % 365 % 30)
 
     age = format_string % (str(year), str(month), str(day))
-
     return age
 
 # TODO：根据《流畅的Python》123页5.5节修改完善
