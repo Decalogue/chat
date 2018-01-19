@@ -160,7 +160,7 @@ def jaccard_basic(synonym_vector1, synonym_vector2):
     sim = len(count_intersection)/len(count_union)
     return sim
 
-def jaccard(synonym_vector1, synonym_vector2):
+def jaccard(synonym_vector1, synonym_vector2, threshold=0.8):
     """Similarity score between two vectors with jaccard.
     两个向量的语义jaccard相似度得分。
 
@@ -202,7 +202,7 @@ def jaccard(synonym_vector1, synonym_vector2):
         sv_matrix.append(sv_rows)
         sv_rows = []
     matrix = np.mat(sv_matrix)
-    result = sum_cosine(matrix, 0.8)
+    result = sum_cosine(matrix, threshold)
     # result = sum_cosine(matrix, 0.85) # 区分“电脑”和“打印机”：标签前5位相同
     total = result["total"]
     total_dif = result["total_dif"]

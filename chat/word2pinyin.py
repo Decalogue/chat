@@ -67,7 +67,7 @@ def match_pinyin(pinyin1, pinyin2):
     score = pv_match/len_long
     return score
     
-def jaccard_pinyin(pv1, pv2):
+def jaccard_pinyin(pv1, pv2, threshold=0.7):
     """Similarity score between two pinyin vectors with jaccard.
     两个拼音向量的语义jaccard相似度得分。
 
@@ -84,7 +84,7 @@ def jaccard_pinyin(pv1, pv2):
         sv_matrix.append(sv_rows)
         sv_rows = []
     matrix = mat(sv_matrix)
-    result = sum_cosine(matrix, 0.7)
+    result = sum_cosine(matrix, threshold)
     total = result["total"]
     total_dif = result["total_dif"]
     num = result["num_not_match"]
