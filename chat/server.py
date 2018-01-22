@@ -9,13 +9,14 @@ import os
 import json
 import socketserver
 from .config import getConfig
-from .qa import Robot
+from .qa_sql import Robot
+# from .qa_graph import Robot
 from .mytools import get_current_time
 from .ianswer import answer2xml
 
 # 初始化语义服务器
 logpath = getConfig("path", "log")
-robot = Robot(password=getConfig("neo4j", "password"))
+robot = Robot(path=getConfig("path", "db"), password=getConfig("neo4j", "password"))
 
 
 class MyTCPHandler(socketserver.BaseRequestHandler):

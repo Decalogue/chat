@@ -2,7 +2,7 @@
 import sys
 sys.path.append("../")
 from unittest import TestCase, main
-from chat.database import Database
+from chat.graphdb import Database
 from chat.mytools import Walk, time_me
 
 

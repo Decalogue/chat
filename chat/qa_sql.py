@@ -8,13 +8,13 @@ QA based on NLU and Dialogue scene.
 Available functions:
 - All classes and functions: 所有类和函数
 """
-import sqlite3
 import copy
 import json
+import sqlite3
 from collections import deque
-from py2neo import Graph, Node, Relationship, NodeSelector
 from .config import getConfig
 from .api import nlu_tuling, get_location_by_ip
+from .sqldb import Database
 from .semantic import synonym_cut, get_tag, similarity, check_swords, get_location
 from .mytools import time_me, get_current_time, random_item, get_age
 from .word2pinyin import pinyin_cut, jaccard_pinyin
@@ -32,18 +32,18 @@ def get_navigation_location():
     """
     try:
         nav_db = getConfig("nav", "db")
-        key = getConfig("nav", "key")
-        db = sqlite3.connect(nav_db)
+        tabel = getConfig("nav", "tabel")
+        conn = sqlite3.connect(nav_db)
     except:
         print("导航数据库连接失败！请检查是否存在文件：" + nav_db)
         return []
     try:
-        cursor = db.execute("SELECT name from " + key)
+        result = conn.execute("SELECT name from " + tabel)
     except:
-        print("导航数据库没有找到键值：" + key)
+        print("导航数据库没有找到表：" + tabel)
         return []
     # 过滤0记录
-    names = [row[0] for row in cursor if row[0]]
+    names = [row[0] for row in result if row[0]]
     return names
 
 
@@ -56,18 +56,17 @@ class Robot():
     - pattern: The pattern for NLU tool: 'semantic' or 'vec'. 语义标签或词向量模式。
     - memory: The context memory of robot. 机器人对话上下文记忆。
     """
-    def __init__(self, password="train"):
-        # 连接图知识库
-        self.graph = Graph("http://localhost:7474/db/data/", password=password)
-        self.selector = NodeSelector(self.graph)
+    def __init__(self, path=None, sql=sqlite3, password=None, userid="A0001"):
+        # 连接知识库
+        self.db = Database(path=path, sql=sql, userid=userid)
         # 语义模式：'semantic' or 'vec'
         self.pattern = 'semantic'
         # 获取导航地点数据库
-        self.locations = get_navigation_location()
+        self.locations = [] # get_navigation_location()
         # 在线场景标志，默认为False
         self.is_scene = False
         # 在线调用百度地图IP定位api，网络异常时返回默认地址：上海市/从配置信息获取
-        self.address = get_location_by_ip(self.graph.find_one("User", "userid", "A0001")['city'])
+        self.address = get_location_by_ip(self.db.user['city'])
         # 机器人配置信息
         self.user = None
         # 可用话题列表
@@ -102,6 +101,7 @@ class Robot():
     def __str__(self):
         return "Hello! I'm {robotname} and I'm {robotage} years old.".format(**self.user)
 
+    # TODO：改写为 SQL 版本
     @time_me()
     def configure(self, info="", userid="userid"):
         """Configure knowledge base.
@@ -150,11 +150,9 @@ class Robot():
         if not userid:
             userid = "A0001"
         # 从知识库获取用户拥有权限的子知识库列表
-        match_string = "MATCH (user:User)-[r:has {bselected:1, available:1}]->(config:Config)" + \
-            "where user.userid='" + userid + "' RETURN config"
-        data = self.graph.run(match_string).data()
-        for item in data:
-            usertopics.extend(item["config"]["topic"].split(","))
+        config = self.db.get_config(userid=userid)
+        for item in config:
+            usertopics.extend(item[3].split(","))
         print("用户：", userid, "\n已有知识库列表：", usertopics)
         return usertopics
 
@@ -163,26 +161,6 @@ class Robot():
         个性化机器人回答。
         """
         return sentence.format(**self.user)
-
-    # @time_me()
-    def add_to_memory(self, question="question", userid="userid"):
-        """Add user question to memory.
-        将用户当前对话加入信息记忆。
-
-        Args:
-            question: 用户问题。
-                Defaults to "question".
-            userid: 用户唯一标识。
-                Defaults to "userid".
-        """
-        previous_node = self.graph.find_one("Memory", "qa_id", self.qa_id)
-        self.qa_id = get_current_time()
-        node = Node("Memory", question=question, userid=userid, qa_id=self.qa_id)
-        if previous_node:
-            relation = Relationship(previous_node, "next", node)
-            self.graph.create(relation)
-        else:
-            self.graph.create(node)
 
     # Development requirements from Mr Tang in 2017-5-11.
     # 由模糊匹配->全匹配 from Mr Tang in 2017-6-1.
@@ -194,7 +172,7 @@ class Robot():
             question: User question. 用户问题。
         """
         result = dict(question=question, name='', content=self.iformat(random_item(self.do_not_know)), \
-            context="", tid="", url="", behavior=0, parameter="", txt="", img="", button="", valid=1)
+            context="", tid="", ftid="", url="", behavior=0, parameter="", txt="", img="", button="", valid=1)
         # temp_sim = 0
         # sv1 = synonym_cut(question, 'wf')
         # if not sv1:
@@ -223,23 +201,24 @@ class Robot():
 
     def update_result(self, question='', node=None):
         result = dict(question=question, name='', content=self.iformat(random_item(self.do_not_know)), \
-            context="", tid="", url="", behavior=0, parameter="", txt="", img="", button="", valid=1)
+            context="", tid="", ftid="", url="", behavior=0, parameter="", txt="", img="", button="", valid=1)
         if not node:
             return result
-        result['name'] = self.iformat(node["name"])
-        result["content"] = self.iformat(random_item(node["content"].split("|")))
-        result["context"] = node["topic"]
-        result["tid"] = node["tid"]
-        result["txt"] = node["txt"]
-        result["img"] = node["img"]
-        result["button"] = node["button"]
-        if node["url"]:
-            result["url"] = random_item(node["url"].split("|"))
-        if node["behavior"]:
-            result["behavior"] = int(node["behavior"], 16)
-        if node["parameter"]:
-            result["parameter"] = node["parameter"]
-        func = node["api"]
+        result['name'] = self.iformat(node[1])
+        result["content"] = self.iformat(random_item(node[2].split("|")))
+        result["context"] = node[3]
+        result["tid"] = node[4]
+        result["ftid"] = node[5]
+        result["txt"] = node[12]
+        result["img"] = node[13]
+        result["button"] = node[14]
+        if node[8]:
+            result["url"] = random_item(node[8].split("|"))
+        if node[6]:
+            result["behavior"] = int(node[6], 16)
+        if node[7]:
+            result["parameter"] = node[7]
+        func = node[11]
         if func:
             exec("result['content'] = " + func + "('" + result["content"] + "')")
         return result
@@ -258,7 +237,7 @@ class Robot():
         sv1 = pinyin_cut(question)
         print(sv1)
         for node in subgraph:
-            iquestion = self.iformat(node["name"])
+            iquestion = self.iformat(node[1])
             sv2 = pinyin_cut(iquestion)
             print("  ", sv2)
             temp_sim = jaccard_pinyin(sv1, sv2)
@@ -272,7 +251,7 @@ class Robot():
         max_score = max(ss)
         if max_score > threshold:
             node = subgraph[ss.index(max_score)]
-            iquestion = self.iformat(node["name"])
+            iquestion = self.iformat(node[1])
             print("Q: " + iquestion + " Similarity Score: " + str(temp_sim))
             return self.update_result(question, node)
         # ===========================================================
@@ -293,7 +272,7 @@ class Robot():
         if not sv1:
             return self.update_result(question)
         for node in subgraph:
-            iquestion = self.iformat(node["name"])
+            iquestion = self.iformat(node[1])
             if question == iquestion:
                 print("Similarity Score: Original sentence")
                 return self.update_result(question, node)
@@ -309,7 +288,7 @@ class Robot():
         max_score = max(ss)
         if max_score > threshold:
             node = subgraph[ss.index(max_score)]
-            iquestion = self.iformat(node["name"])
+            iquestion = self.iformat(node[1])
             print("Q: " + iquestion + " Similarity Score: " + str(temp_sim))
             return self.update_result(question, node)
         # ===========================================================
@@ -330,7 +309,7 @@ class Robot():
         if not sv1:
             return self.update_result(question)
         for node in subgraph:
-            iquestion = self.iformat(node["name"])
+            iquestion = self.iformat(node[1])
             if question == iquestion:
                 print("Similarity Score: Original sentence")
                 return self.update_result(question, node)
@@ -341,11 +320,12 @@ class Robot():
         max_score = max(ss)
         if max_score > threshold:
             node = subgraph[ss.index(max_score)]
-            iquestion = self.iformat(node["name"])
+            iquestion = self.iformat(node[1])
             print("Q: " + iquestion + " Similarity Score: " + str(temp_sim))
             return self.update_result(question, node)
         return self.update_result(question)
 
+    # TODO：改写为 SQL 版本
     def extract_keysentence(self, question, data=None, threshold=0.40):
         """Extract keysentence QA in NLU database。
         QA匹配模式：从知识库选取包含关键句的问答对。
@@ -354,7 +334,7 @@ class Robot():
             question: User question. 用户问题。
         """
         if data:
-            subgraph = [node for node in data if node["name"] in question]
+            subgraph = [node for node in data if node[1] in question]
         else:
             usertopics = ' '.join(self.usertopics)
             # 只从目前挂接的知识库中匹配
@@ -370,6 +350,7 @@ class Robot():
             return self.update_result(question, node)
         return self.update_result(question)
 
+    # TODO：改写为 SQL 版本
     def extract_keysentence_first(self, question, data=None, threshold=0.40):
         """Extract keysentence QA in NLU database。
         QA匹配模式：从知识库选取包含关键句且匹配度最高的问答对。
@@ -378,7 +359,7 @@ class Robot():
             question: User question. 用户问题。
         """
         if data:
-            subgraph = [node for node in data if node["name"] in question]
+            subgraph = [node for node in data if node[1] in question]
         else:
             usertopics = ' '.join(self.usertopics)
             # 只从目前挂接的知识库中匹配
@@ -416,13 +397,14 @@ class Robot():
     def get_links(self, data):
         links = set()
         for key in data.keys():
-            link = (data[key]['content'], int(data[key]['url']))
+            tid = int(data[key]['url']) if data[key]['url'] else None
+            link = (data[key]['content'], tid)
             if link:
                 links.add(link)
         return links
 
     @time_me()
-    def search(self, question="question", tid="", userid="userid"):
+    def search(self, question="question", userid="A0001"):
         """Nlu search. 语义搜索。
 
         Args:
@@ -433,8 +415,8 @@ class Robot():
 
         Returns:
             Dict contains:
-            question, answer, topic, tid, url, behavior, parameter, txt, img, button.
-            返回包含问题，答案，话题，资源，行为，动作，文本，图片及按钮的字典。
+            question, answer, topic, tid, ftid, url, behavior, parameter, txt, img, button.
+            返回包含问题，答案，话题，场景id，父场景id，资源，行为，动作，文本，图片及按钮的字典。
         """
         # 添加到问题记忆
         # self.qmemory.append(question)
@@ -442,7 +424,7 @@ class Robot():
 
         # 语义：场景+全图+用户配置模式（用户根据 userid 动态获取其配置信息）
         # ========================初始化配置信息==========================
-        self.user = self.selector.select("User", userid=userid).first()
+        self.user = self.db.get_user(userid=userid)
         self.usertopics = self.get_usertopics(userid=userid)
         do_not_know = dict(
             question=question,
@@ -533,12 +515,10 @@ class Robot():
                         if next:
                             next_tid = next['url']
                             next_question = next['content']
-                            match_string = "MATCH (n:NluCell {name:'" + \
-                                next_question + "', topic:'" + self.topic + \
-                                "', tid:" + next_tid + "}) RETURN n"
-                            match_data = list(self.graph.run(match_string).data())
+                            match_next = "SELECT * FROM NluCell WHERE name=? and topic=? and tid=?"
+                            match_data = self.db.fetch(match_next, data=(next_question, self.topic, next_tid))
                             if match_data:
-                                node = match_data[0]['n']
+                                node = match_data[0]
                                 result = self.update_result(question, node)
                                 # 添加到场景记忆
                                 self.pmemory.append(self.amemory[-1])
@@ -549,13 +529,14 @@ class Robot():
         # ==========================场景匹配=========================      
         if self.is_scene: # 在场景中：语义模式+关键句模式
             # 场景内所有节点
-            match_scene = "MATCH (n:NluCell) WHERE n.topic='" + self.topic + "' RETURN n"
-            scene_nodes = self.graph.run(match_scene).data()
+            match_scene = "SELECT * FROM NluCell WHERE topic=?"
+            scene_nodes = self.db.fetch(match_scene, data=(self.topic,))
             # 模式：根据场景节点的 tid 及其 name 是否符合上下文筛选子场景节点
             data_img = json.loads(self.amemory[-1]['img']) if self.amemory[-1]['img'] else {}
             data_button = json.loads(self.amemory[-1]['button']) if self.amemory[-1]['button'] else {}
             pre_links = self.get_links(data_img).union(self.get_links(data_button.setdefault('area', {})))
-            subscene_nodes = [item['n'] for item in scene_nodes if (item['n']['name'], int(item['n']['tid'])) in pre_links]
+            subscene_nodes = [item for item in scene_nodes if (item[1], item[4]) in pre_links]
+            # subscene_nodes = [item for item in scene_nodes if (item[1], int(item[4])) in pre_links]
             if subscene_nodes:
                 result = self.extract_synonym_first(question, subscene_nodes)
                 if not result["context"]:
@@ -571,15 +552,16 @@ class Robot():
         else: # 不在场景中：语义模式+关键句模式
             # 场景内和问题语义标签一致的所有节点
             tag = get_tag(question, self.user)
-            match_graph = "MATCH (n:NluCell) WHERE n.tag='" + tag + \
-                "' and '" + ' '.join(self.usertopics) + "' CONTAINS n.topic RETURN n"
-            usergraph_all = [item['n'] for item in self.graph.run(match_graph).data()]
+            match_graph = "SELECT * FROM NluCell WHERE tag=?"
+            tag_data = self.db.fetch(match_graph, data=(tag,))
+            usergraph_all = [item for item in tag_data if item[3] in self.usertopics] if tag_data else []
             if usergraph_all:
                 result = self.extract_synonym(question, usergraph_all)
                 if not result["context"]:
                     result = self.extract_keysentence(question)
                 if not result["context"]:
                     result = self.extract_pinyin(question, usergraph_all)
+            # TODO：改写为 SQL 版本
             # else: # 全局拼音匹配
                 # match_pinyin = "MATCH (n:NluCell) WHERE '" + \
                     # ' '.join(self.usertopics) + "' CONTAINS n.topic RETURN n"

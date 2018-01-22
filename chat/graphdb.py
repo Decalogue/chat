@@ -178,7 +178,7 @@ class Database():
             # table = data.sheet_by_index(0)
             if data:
                 # 2.Select specified column
-                col_format = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N']
+                col_format = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O']
                 try:
                     nrows = table.nrows
                     # ncols = table.ncols
@@ -195,17 +195,18 @@ class Database():
                         temp = table.cell(i, col_index[2]).value
                         topic =  temp if temp else sheet_name
                         tid = table.cell(i, col_index[3]).value
-                        behavior = table.cell(i, col_index[4]).value
-                        parameter = table.cell(i, col_index[5]).value
-                        url = table.cell(i, col_index[6]).value
-                        tag = table.cell(i, col_index[7]).value
-                        keywords = table.cell(i, col_index[8]).value
-                        api = table.cell(i, col_index[9]).value
-                        txt = table.cell(i, col_index[10]).value
-                        img = table.cell(i, col_index[11]).value
-                        button = table.cell(i, col_index[12]).value
-                        description = table.cell(i, col_index[13]).value
-                        # hot = 0 table.cell(i, col_index[14]).value
+                        ftid = table.cell(i, col_index[4]).value
+                        behavior = table.cell(i, col_index[5]).value
+                        parameter = table.cell(i, col_index[6]).value
+                        url = table.cell(i, col_index[7]).value
+                        tag = table.cell(i, col_index[8]).value
+                        keywords = table.cell(i, col_index[9]).value
+                        api = table.cell(i, col_index[10]).value
+                        txt = table.cell(i, col_index[11]).value
+                        img = table.cell(i, col_index[12]).value
+                        button = table.cell(i, col_index[13]).value
+                        description = table.cell(i, col_index[14]).value
+                        # hot = 0 table.cell(i, col_index[15]).value
 					    # 3.Your processing function of excel data here
                         self.add_qa(name=name, content=content, topic=topic, \
                         tid=tid, behavior=behavior, parameter=parameter, url=url, tag=tag, \
@@ -274,10 +275,10 @@ class Database():
         assert names is not [], "Subgraph names can not be empty!"
         cypher_info = "MATCH (n:NluCell) WHERE n.topic='{topic}' RETURN n"
         # Modify：使键值按照指定顺序导出 excel (2018-1-8)
-        info = [('name', '问题'), ('content', '回答'), ('topic', '场景标签'), ('tid', '场景ID'), 
-            ('behavior', '行为'), ('parameter', '动作参数'), ('url', '资源'), ('tag', '语义标签'),
-            ('keywords', '关键词'), ('api', '内置功能'), ('txt', '显示文本'), ('img', '显示图片'),
-            ('button', '显示按钮'), ('description', '场景描述'), ("hot", '搜索热度')]
+        info = [('name', '问题'), ('content', '回答'), ('topic', '场景标签'), ('tid', '场景ID'),
+            ('ftid', '父场景ID'), ('behavior', '行为'), ('parameter', '动作参数'), ('url', '资源'), 
+            ('tag', '语义标签'), ('keywords', '关键词'), ('api', '内置功能'), ('txt', '显示文本'), 
+            ('img', '显示图片'), ('button', '显示按钮'), ('description', '场景描述'), ("hot", '搜索热度')]
         # Modify：若采用字典，可用如下方案(2018-1-9)
         # import collections
         # info = collections.OrderedDict(info)
@@ -300,10 +301,10 @@ class Database():
         """
         assert filename is not None, "Filename must be *.xls!"
         assert topic is not '', "Topic can not be ''!"
-        info = [('name', '问题'), ('content', '回答'), ('topic', '场景标签'), ('tid', '场景ID'), 
-            ('behavior', '行为'), ('parameter', '动作参数'), ('url', '资源'), ('tag', '语义标签'),
-            ('keywords', '关键词'), ('api', '内置功能'), ('txt', '显示文本'), ('img', '显示图片'),
-            ('button', '显示按钮'), ('description', '场景描述'), ("hot", '搜索热度')]
+        info = [('name', '问题'), ('content', '回答'), ('topic', '场景标签'), ('tid', '场景ID'),
+            ('ftid', '父场景ID'), ('behavior', '行为'), ('parameter', '动作参数'), ('url', '资源'), 
+            ('tag', '语义标签'), ('keywords', '关键词'), ('api', '内置功能'), ('txt', '显示文本'), 
+            ('img', '显示图片'), ('button', '显示按钮'), ('description', '场景描述'), ("hot", '搜索热度')]
         cypher_info = "MATCH (n:{label}) WHERE n.topic='{topic}' RETURN n"
         match_str = cypher_info.format(label=label, topic=topic)
         
@@ -354,7 +355,7 @@ class Database():
             # table = data.sheet_by_index(0)
             if data:
                 # 2.Select specified column
-                col_format = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N']
+                col_format = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O']
                 try:
                     nrows = table.nrows
                     # ncols = table.ncols

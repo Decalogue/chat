@@ -1,6 +1,7 @@
 CHANGES
 =======
 
+* Modify get\_age
 * 升级模糊匹配
 * Modify self.conf
 * Modify tests

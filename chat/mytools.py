@@ -420,6 +420,21 @@ def write_excel(filename="demo.xlsx", sheets=None):
                 new_sheet.write(index+2, col, item['n'][key[0]])
     file.save(filename) # 保存文件
 
+def write_excel_sql(filename="demo.xlsx", sheets=None):
+    """Write excel from data.
+    """
+    file = xlwt.Workbook() # 创建工作簿
+    for sheet in sheets:
+        new_sheet = file.add_sheet(sheet["name"], cell_overwrite_ok=True) # 创建sheet
+        info = sheet["info"]
+        for col, key in enumerate(info):
+            new_sheet.write(0, col, key[1], set_excel_style('Arial Black', 220, True))
+            new_sheet.write(1, col, key[0], set_excel_style('Arial Black', 220, True))
+        for index, item in enumerate(sheet["items"]):
+            for col, key in enumerate(info):
+                new_sheet.write(index+2, col, item[col+1])
+    file.save(filename) # 保存文件
+
 def generate_dict(dictpath, sourcepath):
     """Generate dictionary file from sourcefile.
 
