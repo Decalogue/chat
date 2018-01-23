@@ -367,7 +367,6 @@ class Database():
                         temp = table.cell(i, col_index[2]).value
                         topic =  temp if temp else sheet_name
                         tid = table.cell(i, col_index[3]).value
-                        print(tid)
                         ftid = table.cell(i, col_index[4]).value
                         behavior = table.cell(i, col_index[5]).value
                         parameter = table.cell(i, col_index[6]).value

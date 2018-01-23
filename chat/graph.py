@@ -89,8 +89,8 @@ class Database():
             print("You can set 'filename=<filepath>' when you call 'Database.reset.'")
         print("Reset test standard successfully!")
 
-    def add_qa(self, label="NluCell", name=None, content=None, topic="", tid="", \
-    behavior="", parameter="", url="", tag="", keywords="", api="", txt="", \
+    def add_nlucell(self, label="NluCell", name=None, content=None, topic="", tid="", \
+    ftid="", behavior="", parameter="", url="", tag="", keywords="", api="", txt="", \
     img="", button="", description="", delimiter=None):
         """
         Add qa node in graph.
@@ -102,7 +102,7 @@ class Database():
             if question: # 问题不能为空，避免因知识库表格填写格式不对而导致存入空问答对
                 tag = get_tag(question, self.user)
                 node = Node(label, name=question, content=content, topic=topic, \
-                tid=tid, behavior=behavior, parameter=parameter, url=url, tag=tag, \
+                tid=tid, ftid=ftid, behavior=behavior, parameter=parameter, url=url, tag=tag, \
                 keywords=keywords, api=api, txt=txt, img=img, button=button, \
                 description=description, hot="0")
                 self.graph.create(node)
@@ -208,8 +208,8 @@ class Database():
                         description = table.cell(i, col_index[14]).value
                         # hot = 0 table.cell(i, col_index[15]).value
 					    # 3.Your processing function of excel data here
-                        self.add_qa(name=name, content=content, topic=topic, \
-                        tid=tid, behavior=behavior, parameter=parameter, url=url, tag=tag, \
+                        self.add_nlucell(name=name, content=content, topic=topic, \
+                        tid=tid, ftid=ftid, behavior=behavior, parameter=parameter, url=url, tag=tag, \
                         keywords=keywords, api=api, txt=txt, img=img, button=button, \
                         description=description, delimiter="|")
                         # 添加到场景标签列表
@@ -249,7 +249,7 @@ class Database():
                 answer = file.readline().rstrip()
                 print("question: " + question)
                 print("answer: " + answer)
-                self.add_qa(name=question, content=answer, delimiter="|")
+                self.add_nlucell(name=question, content=answer, delimiter="|")
                 question = file.readline().rstrip()
 
     def get_available_kb(self):

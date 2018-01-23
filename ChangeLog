@@ -1,6 +1,7 @@
 CHANGES
 =======
 
+* 修复部分 ftid 丢失情况
 * 修复部分 bug
 * Add SQL support
 * Modify get\_age
