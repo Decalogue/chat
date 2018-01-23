@@ -194,7 +194,7 @@ class Robot():
             question: User question. 用户问题。
         """
         result = dict(question=question, name='', content=self.iformat(random_item(self.do_not_know)), \
-            context="", tid="", url="", behavior=0, parameter="", txt="", img="", button="", valid=1)
+            context="", tid="", ftid="", url="", behavior=0, parameter="", txt="", img="", button="", valid=1)
         # temp_sim = 0
         # sv1 = synonym_cut(question, 'wf')
         # if not sv1:
@@ -223,13 +223,14 @@ class Robot():
 
     def update_result(self, question='', node=None):
         result = dict(question=question, name='', content=self.iformat(random_item(self.do_not_know)), \
-            context="", tid="", url="", behavior=0, parameter="", txt="", img="", button="", valid=1)
+            context="", tid="", ftid="", url="", behavior=0, parameter="", txt="", img="", button="", valid=1)
         if not node:
             return result
         result['name'] = self.iformat(node["name"])
         result["content"] = self.iformat(random_item(node["content"].split("|")))
         result["context"] = node["topic"]
         result["tid"] = node["tid"]
+        result["ftid"] = node["ftid"]
         result["txt"] = node["txt"]
         result["img"] = node["img"]
         result["button"] = node["button"]
@@ -452,6 +453,7 @@ class Robot():
             # content="",
             context="",
             tid="",
+            ftid="",
             url="",
             behavior=0,
             parameter="",
@@ -465,6 +467,7 @@ class Robot():
             content=self.user['error_page'],
             context="",
             tid="",
+            ftid="",
             url="",
             behavior=int("0x1500", 16), # Modify：场景内 behavior 统一为 0x1500。(2018-1-8)
             parameter="",

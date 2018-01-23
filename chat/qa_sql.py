@@ -433,6 +433,7 @@ class Robot():
             # content="",
             context="",
             tid="",
+            ftid="",
             url="",
             behavior=0,
             parameter="",
@@ -446,6 +447,7 @@ class Robot():
             content=self.user['error_page'],
             context="",
             tid="",
+            ftid="",
             url="",
             behavior=int("0x1500", 16), # Modify：场景内 behavior 统一为 0x1500。(2018-1-8)
             parameter="",
