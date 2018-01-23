@@ -108,6 +108,63 @@ class Database():
         else:
             print('The [{}] is empty or equal None!'.format(sql))
 
+    def create_table_user(self):
+        user = '''CREATE TABLE `User` (
+            `userid` varchar(100) NOT NULL,
+            `robotname` varchar(100) NOT NULL,
+            `robotage` varchar(100) NOT NULL,
+            `robotgender` varchar(100) NOT NULL,
+            `mother` varchar(100) NOT NULL,
+            `father` varchar(100) NOT NULL,
+            `username` varchar(100) NOT NULL,
+            `companyname` varchar(100) NOT NULL,
+            `companytype` varchar(100) NOT NULL,
+            `servicename` varchar(100) NOT NULL,
+            `director` varchar(100) NOT NULL,
+            `address` varchar(100) NOT NULL,
+            `province` varchar(100) NOT NULL,
+            `city` varchar(100) NOT NULL,
+            `self_intro` varchar(100) NOT NULL,
+            `company_intro` varchar(100) NOT NULL,
+            `error_page` varchar(100) NOT NULL,
+             PRIMARY KEY (`userid`)
+        )'''
+        self.create_table(user)
+
+    def create_table_config(self):
+        config = '''CREATE TABLE `Config` (
+            `id` int(11) NOT NULL,
+            `userid` varchar(100) NOT NULL,
+            `name` varchar(100) NOT NULL,
+            `topic` varchar(200) NOT NULL,
+            `bselected` varchar(200) NOT NULL,
+             PRIMARY KEY (`id`)
+        )'''
+        self.create_table(config)
+
+    def create_table_nlucell(self):
+        nlucell = '''CREATE TABLE `NluCell` (
+            `id` int(11) NOT NULL,
+            `name` varchar(100) NOT NULL,
+            `content` varchar(200) NOT NULL,
+            `topic` varchar(200) NOT NULL,
+            `tid` int(10) NOT NULL,
+            `ftid` int(10) NOT NULL,
+            `behavior` varchar(200) NOT NULL,
+            `parameter` varchar(200) NOT NULL,
+            `url` varchar(200) NOT NULL,
+            `tag` varchar(200) NOT NULL,
+            `keywords` varchar(200) NOT NULL,
+            `api` varchar(200) NOT NULL,
+            `txt` varchar(200) NOT NULL,
+            `img` varchar(200) NOT NULL,
+            `button` varchar(200) NOT NULL,
+            `description` varchar(200) NOT NULL,
+            `hot` varchar(200) NOT NULL,
+             PRIMARY KEY (`id`)
+        )'''
+        self.create_table(nlucell)
+
     def fetch(self, sql, data=None):
         '''查询数据'''
         if sql is not None and sql != '':
@@ -212,15 +269,19 @@ class Database():
     def add_user(self, data=None):
         sql = '''INSERT INTO User values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'''
         if not data:
-            data = [("A0001", "小民", "2岁", "男孩", "宁波GQY股份有限公司", "宁波GQY股份有限公司", "", "宁波GQY股份有限公司", "科技",  "GQY业务", "郭总", "宁波GQY股份有限公司上海分公司", "浙江", "上海市", "我是来自未来世界的机器人小民，聪明伶俐，落落大方，集语音交互与人脸识别于一身，自主行走，不仅擅长歌舞，业务办理也是铭记在心，不光学习的快，而且乐于分享。哈哈，我是不是吹的有点高了。", "宁波GQY股份有限公司，是一家以AR专业视讯和智能服务机器人为主业的现代化企业集团。此次受邀亮相世界机器人大会是基于GQY多年来在智能机器人及AR领域的科技积累与孵化。观众可直接现场与机器人进行互动，体验传统服务模式与创新科技有机结合而带来的人类与机器交流协作的生动场景，向全世界展示中国智能机器人应用的领先水平。", "请按屏幕提示操作")]
+            data = [(['A0001', 'robotname', 'robotage', 'robotgender', 'mother', 'father', 
+                'username', 'companyname', 'companytype', 'servicename', 'director', 
+                'address', 'province', 'city', 'self_intro', 'company_intro', 'error_page'])]
         self.update(sql, data)
     
     def get_user(self, userid=None):
         if not userid:
             userid = self.userid
         sql = 'SELECT * FROM User WHERE userid = ? '
-        result = self.fetchone(sql, userid)[0]
-        print(result)
+        try:
+            result = self.fetchone(sql, userid)[0]
+        except:
+            return None
         user = {}
         keys = ['userid', 'robotname', 'robotage', 'robotgender', 'mother', 'father', 
                 'username', 'companyname', 'companytype', 'servicename', 'director', 
@@ -346,18 +407,16 @@ class Database():
             userid = self.userid
         kb = []
         sql = 'SELECT * FROM Config WHERE userid = ? '
-        for item in self.fetchone(sql, userid):
+        for item in self.fetch(sql, data=(userid,)):
             kb.append(item[2])
         return kb
     
     def get_selected_kb(self, userid=None):
         if not userid:
             userid = self.userid
-        kb = []
         sql = 'SELECT * FROM Config WHERE userid = ? and bselected = ?'
-        data = [(userid, '1')]
-        for item in self.fetchone(sql, data):
-            kb.append(item[2])
+        config = self.fetch(sql, data=(userid, '1'))
+        kb = [item[2] for item in config] if config else []
         return kb
 
     def download(self, filename=None, names=[]):
@@ -402,64 +461,12 @@ if __name__ == '__main__':
         db.drop_table(table)
         
     print('创建数据库表测试...')
-    table_user = '''CREATE TABLE `User` (
-                          `userid` varchar(100) NOT NULL,
-                          `robotname` varchar(100) NOT NULL,
-                          `robotage` varchar(100) NOT NULL,
-                          `robotgender` varchar(100) NOT NULL,
-                          `mother` varchar(100) NOT NULL,
-                          `father` varchar(100) NOT NULL,
-                          `username` varchar(100) NOT NULL,
-                          `companyname` varchar(100) NOT NULL,
-                          `companytype` varchar(100) NOT NULL,
-                          `servicename` varchar(100) NOT NULL,
-                          `director` varchar(100) NOT NULL,
-                          `address` varchar(100) NOT NULL,
-                          `province` varchar(100) NOT NULL,
-                          `city` varchar(100) NOT NULL,
-                          `self_intro` varchar(100) NOT NULL,
-                          `company_intro` varchar(100) NOT NULL,
-                          `error_page` varchar(100) NOT NULL,
-                           PRIMARY KEY (`userid`)
-                        )'''
-    db.create_table(table_user)
-    
-    table_config = '''CREATE TABLE `Config` (
-                          `id` int(11) NOT NULL,
-                          `userid` varchar(100) NOT NULL,
-                          `name` varchar(100) NOT NULL,
-                          `topic` varchar(200) NOT NULL,
-                          `bselected` varchar(200) NOT NULL,
-                           PRIMARY KEY (`id`)
-                        )'''
-    db.create_table(table_config)
-    
-    table_nlucell = '''CREATE TABLE `NluCell` (
-                          `id` int(11) NOT NULL,
-                          `name` varchar(100) NOT NULL,
-                          `content` varchar(200) NOT NULL,
-                          `topic` varchar(200) NOT NULL,
-                          `tid` int(10) NOT NULL,
-                          `ftid` int(10) NOT NULL,
-                          `behavior` varchar(200) NOT NULL,
-                          `parameter` varchar(200) NOT NULL,
-                          `url` varchar(200) NOT NULL,
-                          `tag` varchar(200) NOT NULL,
-                          `keywords` varchar(200) NOT NULL,
-                          `api` varchar(200) NOT NULL,
-                          `txt` varchar(200) NOT NULL,
-                          `img` varchar(200) NOT NULL,
-                          `button` varchar(200) NOT NULL,
-                          `description` varchar(200) NOT NULL,
-                          `hot` varchar(200) NOT NULL,
-                           PRIMARY KEY (`id`)
-                        )'''
-    db.create_table(table_nlucell)
+    db.create_table_user()
+    db.create_table_config()
+    db.create_table_nlucell()
     
     print('添加 User 测试...')
-    add_user = '''INSERT INTO User values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'''
-    user = [("A0001", "小民", "2岁", "男孩", "宁波GQY股份有限公司", "宁波GQY股份有限公司", "", "宁波GQY股份有限公司", "科技", "GQY业务", "郭总", "宁波GQY股份有限公司上海分公司", "浙江", "上海市", "我是来自未来世界的机器人小民，聪明伶俐，落落大方，集语音交互与人脸识别于一身，自主行走，不仅擅长歌舞，业务办理也是铭记在心，不光学习的快，而且乐于分享。哈哈，我是不是吹的有点高了。", "宁波GQY股份有限公司，是一家以AR专业视讯和智能服务机器人为主业的现代化企业集团。此次受邀亮相世界机器人大会是基于GQY多年来在智能机器人及AR领域的科技积累与孵化。观众可直接现场与机器人进行互动，体验传统服务模式与创新科技有机结合而带来的人类与机器交流协作的生动场景，向全世界展示中国智能机器人应用的领先水平。", "请按屏幕提示操作")]
-    db.update(add_user, user)
+    db.add_user()
     
     print('添加 Config 测试...')
     add_config = '''INSERT INTO Config values (?, ?, ?, ?, ?)'''
@@ -471,7 +478,7 @@ if __name__ == '__main__':
     print('添加 NluCell 测试...')
     db.handle_excel('C:/nlu/data/kb/chat.xls')
     print('可用知识库：', db.get_available_kb())
-    print('可用知识库：', db.get_available_kb())
+    print('已挂接知识库：', db.get_selected_kb())
     
     print('重置 NluCell 测试...')
     db.reset(tabel='NluCell', filename='C:/nlu/data/kb/chat.xls')

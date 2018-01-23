@@ -14,7 +14,7 @@ import sqlite3
 from collections import deque
 from .config import getConfig
 from .api import nlu_tuling, get_location_by_ip
-from .sqldb import Database
+from .sql import Database
 from .semantic import synonym_cut, get_tag, similarity, check_swords, get_location
 from .mytools import time_me, get_current_time, random_item, get_age
 from .word2pinyin import pinyin_cut, jaccard_pinyin
@@ -184,7 +184,7 @@ class Robot():
                 print("Original navigation")
                 result["name"] = keyword
                 result["content"] = location
-                result["context"] = "user_navigation"
+                # result["context"] = "user_navigation" # 导航不在本地处理 Modify：2018-1-23
                 result["behavior"] = int("0x001B", 16)
                 return result
             # sv2 = synonym_cut(location, 'wf')
@@ -587,51 +587,51 @@ class Robot():
                 self.pmemory.append(result)
                 return result
 
-        # ========================五、在线语义===========================
-        if not self.topic:
+        # ========五、在线语义（Modify：关闭该部分功能 2018-1-23）=========
+        # if not self.topic:
             # 1.音乐(唱一首xxx的xxx)
-            if "唱一首" in question or "唱首" in question or "我想听" in question:
-                result["behavior"] = int("0x0001", 16)
-                result["content"] = "好的，正在准备哦"
+            # if "唱一首" in question or "唱首" in question or "我想听" in question:
+                # result["behavior"] = int("0x0001", 16)
+                # result["content"] = "好的，正在准备哦"
             # 2.附近有什么好吃的
-            elif "附近" in question or "好吃的" in question:
-                result["behavior"] = int("0x001C", 16)
-                result["content"] = self.address
+            # elif "附近" in question or "好吃的" in question:
+                # result["behavior"] = int("0x001C", 16)
+                # result["content"] = self.address
             # 3.nlu_tuling(天气)
-            elif "天气" in question:
+            # elif "天气" in question:
                 # 图灵API变更之后 Add in 2017-8-4
-                location = get_location(question)
-                if not location:
+                # location = get_location(question)
+                # if not location:
                     # 问句中不包含地址
-                    weather = nlu_tuling(self.address + question)
-                else:
+                    # weather = nlu_tuling(self.address + question)
+                # else:
                     # 问句中包含地址
-                    weather = nlu_tuling(question)
+                    # weather = nlu_tuling(question)
                 # 图灵API变更之前    
                 # weather = nlu_tuling(question, loc=self.address)
-                result["behavior"] = int("0x0000", 16)
-                try:
-                    # 图灵API变更之前
-                    temp = weather.split(";")[0].split(",")[1].split()
-                    myweather = temp[0] + temp[2] + temp[3]
+                # result["behavior"] = int("0x0000", 16)
+                # try:
+                    # 图灵API变更之前(目前可用)
+                    # temp = weather.split(";")[0].split(",")[1].split()
+                    # myweather = temp[0] + temp[2] + temp[3]
 
                     # 图灵API变更之后 Add in 2017-8-3
                     # temp = weather.split(",")
                     # myweather = temp[1] + temp[2]
-                except:
-                    myweather = weather
-                result["content"] = myweather
-                result["context"] = "nlu_tuling"
+                # except:
+                    # myweather = weather
+                # result["content"] = myweather
+                # result["context"] = "nlu_tuling"
             # 4.追加记录回答不上的所有问题
-            else:
-                with open(log_do_not_know, "a", encoding="UTF-8") as file:
-                    file.write(question + "\n")
+            # else:
+                # with open(log_do_not_know, "a", encoding="UTF-8") as file:
+                    # file.write(question + "\n")
             # 5.nlu_tuling
             # else:
                 # result["content"] = nlu_tuling(question, loc=self.address)
                 # result["context"] = "nlu_tuling"
-        if result["context"]: # 匹配到在线语义
-            self.amemory.append(result) # 添加到普通记忆
+        # if result["context"]: # 匹配到在线语义
+            # self.amemory.append(result) # 添加到普通记忆
         # ==============================================================
 
         return result

@@ -9,14 +9,17 @@ import os
 import json
 import socketserver
 from .config import getConfig
-from .qa_sql import Robot
-# from .qa_graph import Robot
+from .qa_graph import Robot
+# from .qa_sql import Robot
 from .mytools import get_current_time
 from .ianswer import answer2xml
 
 # 初始化语义服务器
 logpath = getConfig("path", "log")
-robot = Robot(path=getConfig("path", "db"), password=getConfig("neo4j", "password"))
+# 从 qa_graph 初始化
+robot = Robot(password=getConfig("neo4j", "password"))
+# 从 qa_sql 初始化
+# robot = Robot(path=getConfig("path", "db"), password=None)
 
 
 class MyTCPHandler(socketserver.BaseRequestHandler):
@@ -90,5 +93,8 @@ def start(host="localhost", port=7000):
     sock.serve_forever()
 
 if __name__ == "__main__":
+    # host = getConfig("nluserver", "host")
+    # port = getConfig("nluserver", "port")
+    # start(host, port)
     start()
 	
