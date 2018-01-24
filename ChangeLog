@@ -1,6 +1,7 @@
 CHANGES
 =======
 
+* 优化子场景匹配
 * Debug
 * 修复部分 ftid 丢失情况
 * 修复部分 bug

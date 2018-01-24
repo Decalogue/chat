@@ -9,10 +9,12 @@ import os
 import json
 import socketserver
 from .config import getConfig
-from .qa_graph import Robot
+from .qa_graph2 import Robot
+# from .qa_graph import Robot
 # from .qa_sql import Robot
 from .mytools import get_current_time
-from .ianswer import answer2xml
+# from .ianswer import answer2xml
+from .ianswer2 import answer2xml
 
 # 初始化语义服务器
 logpath = getConfig("path", "log")

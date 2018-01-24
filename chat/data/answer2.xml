@@ -1,0 +1,1 @@
+<?xml version="1.0" encoding="UTF-8"?><root><CreateTime>{timestamp}</CreateTime><MsgType><![CDATA[{news}]]></MsgType><ArticleCount>{article_count}</ArticleCount><Articles><item><Title><![CDATA[{content}]]></Title><Description><![CDATA[{context}&{button}&{imgs}]]></Description><PicUrl><![CDATA[{img_url}]]></PicUrl><Url><![CDATA[]]></Url></item>{items}</Articles></root>
