@@ -8,9 +8,9 @@ QA based on NLU and Dialogue scene.
 Available functions:
 - All classes and functions: 所有类和函数
 """
-import sqlite3
 import copy
 import json
+import sqlite3
 from collections import deque
 from py2neo import Graph, Node, Relationship, NodeSelector
 from .config import getConfig
@@ -417,10 +417,10 @@ class Robot():
     def get_links(self, data):
         links = set()
         for key in data.keys():
-            tid = int(data[key]['url']) if data[key]['url'] else None
-            link = (data[key]['content'], tid)
-            if link:
-                links.add(link)
+            name = data[key]['content']
+            tid = data[key]['url']
+            if name and tid:
+                links.add((name, int(tid)))
         return links
 
     @time_me()
@@ -555,11 +555,22 @@ class Robot():
             # 场景内所有节点
             match_scene = "MATCH (n:NluCell) WHERE n.topic='" + self.topic + "' RETURN n"
             scene_nodes = self.graph.run(match_scene).data()
-            # 模式：根据场景节点的 tid 及其 name 是否符合上下文筛选子场景节点
-            data_img = json.loads(self.amemory[-1]['img']) if self.amemory[-1]['img'] else {}
-            data_button = json.loads(self.amemory[-1]['button']) if self.amemory[-1]['button'] else {}
-            pre_links = self.get_links(data_img).union(self.get_links(data_button.setdefault('area', {})))
-            subscene_nodes = [item['n'] for item in scene_nodes if (item['n']['name'], int(item['n']['tid'])) in pre_links]
+            # 模式1：根据场景节点的 tid 及其 name 是否符合上下文筛选子场景节点
+            # ===========================================================
+            # data_img = json.loads(self.amemory[-1]['img']) if self.amemory[-1]['img'] else {}
+            # data_button = json.loads(self.amemory[-1]['button']) if self.amemory[-1]['button'] else {}
+            # pre_links = self.get_links(data_img).union(self.get_links(data_button.setdefault('area', {})))
+            # subscene_nodes = []
+            # for item in scene_nodes:
+                # if item['n']['tid'] == '':
+                    # continue
+                # elif (item['n']['name'], int(item['n']['tid'])) in pre_links:
+                    # subscene_nodes.append(item['n'])
+            # ===========================================================
+            # 模式2：根据场景节点的 ftid 是否等于父节点 tid 筛选子场景节点
+            # ===========================================================
+            subscene_nodes = [item['n'] for item in scene_nodes if item['n']['ftid'] == self.amemory[-1]['tid']]
+            # ===========================================================
             if subscene_nodes:
                 result = self.extract_synonym_first(question, subscene_nodes)
                 if not result["context"]:

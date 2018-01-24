@@ -397,10 +397,10 @@ class Robot():
     def get_links(self, data):
         links = set()
         for key in data.keys():
-            tid = int(data[key]['url']) if data[key]['url'] else None
-            link = (data[key]['content'], tid)
-            if link:
-                links.add(link)
+            name = data[key]['content']
+            tid = data[key]['url']
+            if name and tid:
+                links.add((name, int(tid)))
         return links
 
     @time_me()
@@ -533,12 +533,17 @@ class Robot():
             # 场景内所有节点
             match_scene = "SELECT * FROM NluCell WHERE topic=?"
             scene_nodes = self.db.fetch(match_scene, data=(self.topic,))
-            # 模式：根据场景节点的 tid 及其 name 是否符合上下文筛选子场景节点
-            data_img = json.loads(self.amemory[-1]['img']) if self.amemory[-1]['img'] else {}
-            data_button = json.loads(self.amemory[-1]['button']) if self.amemory[-1]['button'] else {}
-            pre_links = self.get_links(data_img).union(self.get_links(data_button.setdefault('area', {})))
-            subscene_nodes = [item for item in scene_nodes if (item[1], item[4]) in pre_links]
-            # subscene_nodes = [item for item in scene_nodes if (item[1], int(item[4])) in pre_links]
+            # 模式1：根据场景节点的 tid 及其 name 是否符合上下文筛选子场景节点
+            # ===========================================================
+            # data_img = json.loads(self.amemory[-1]['img']) if self.amemory[-1]['img'] else {}
+            # data_button = json.loads(self.amemory[-1]['button']) if self.amemory[-1]['button'] else {}
+            # pre_links = self.get_links(data_img).union(self.get_links(data_button.setdefault('area', {})))
+            # subscene_nodes = [item for item in scene_nodes if (item[1], item[4]) in pre_links]
+            # ===========================================================
+            # 模式2：根据场景节点的 ftid 是否等于父节点 tid 筛选子场景节点
+            # ===========================================================
+            subscene_nodes = [item for item in scene_nodes if item[5] == self.amemory[-1]['tid']]
+            # ===========================================================
             if subscene_nodes:
                 result = self.extract_synonym_first(question, subscene_nodes)
                 if not result["context"]:
