@@ -33,7 +33,6 @@ def answer2xml(data):
         img = json.loads(data['img'])
         img_urls = [item['iurl'] for item in img.values()]
         img_names = [item['content'] for item in img.values()]
-        img_tids = [item['url'] for item in img.values()]
         if img_names:
             imgs = '|'.join(img_names)
         if len(img_urls) > 1:

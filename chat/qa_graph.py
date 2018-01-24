@@ -589,12 +589,16 @@ class Robot():
             match_graph = "MATCH (n:NluCell) WHERE n.tag='" + tag + \
                 "' and '" + ' '.join(self.usertopics) + "' CONTAINS n.topic RETURN n"
             usergraph_all = [item['n'] for item in self.graph.run(match_graph).data()]
+            # 根据对进入场景根节点的要求选择单个或多个匹配算法以及设定阈值
             if usergraph_all:
-                result = self.extract_synonym(question, usergraph_all)
-                if not result["context"]:
-                    result = self.extract_keysentence(question)
-                if not result["context"]:
-                    result = self.extract_pinyin(question, usergraph_all)
+                # 同义句匹配
+                result = self.extract_synonym(question, usergraph_all, threshold=0.90)
+                # 关键词匹配
+                # if not result["context"]:
+                    # result = self.extract_keysentence(question)
+                # 拼音匹配
+                # if not result["context"]:
+                    # result = self.extract_pinyin(question, usergraph_all)
             # else: # 全局拼音匹配
                 # match_pinyin = "MATCH (n:NluCell) WHERE '" + \
                     # ' '.join(self.usertopics) + "' CONTAINS n.topic RETURN n"
