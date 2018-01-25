@@ -10,6 +10,7 @@ class TestMe(TestCase):
 
     def test_similarity(self):
         data = [
+            ("我要取票", "我要取票"),
             ("存钱", "取钱"),
             ("中国", "中华人民共和国"),
             ("喧闹的大街上人山人海", "热闹的街道上人来人往"),

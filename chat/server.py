@@ -9,15 +9,39 @@ import os
 import json
 import socketserver
 from .config import getConfig
-# from .qa_graph2 import Robot
-from .qa_graph import Robot
+from .mytools import Walk, get_current_time
+from .graph import Database
+# from .sql import Database
 # from .qa_sql import Robot
-from .mytools import get_current_time
-from .ianswer import answer2xml
-# from .ianswer2 import answer2xml
+# 简版数据格式
+from .ianswer2 import answer2xml
+from .qa_graph2 import Robot
+# 全json版数据格式
+# from .ianswer import answer2xml
+# from .qa_graph import Robot
+
+
+kb = Database()
+
+class WalkUserData(Walk):
+    def handle_file(self, filepath, pattern=None):
+        kb.handle_excel(filepath)
+
+def add_qa(path=None, names=None):
+    """Add subgraph from excel data.
+    """
+    walker = WalkUserData()
+    print(path)
+    fnamelist = walker.dir_process(1, path, style="fnamelist")
+    print("知识库更新内容:", fnamelist)
+
+# 开机从U盘自动导入知识库
+add_qa(path=getConfig("path", "usbkb"))
+
+# 初始化日志路径
+logpath = getConfig("path", "log")
 
 # 初始化语义服务器
-logpath = getConfig("path", "log")
 # 从 qa_graph 初始化
 robot = Robot(password=getConfig("neo4j", "password"))
 # 从 qa_sql 初始化
