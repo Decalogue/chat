@@ -1,4 +1,8 @@
-#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-"""Natural Language Understanding based on Machine Learning."""
+"""Chat robot based on natural language understanding and machine learning."""
+
+__name__ = 'chat'
+__verison__ = '1.0.6'
+__author__ = 'Decalogue'
+__author_email__ = '1044908508@qq.com'

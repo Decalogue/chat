@@ -12,10 +12,12 @@ class TestMe(TestCase):
         self.userid = "A0001"
 
     def test_match(self):
-        sentences = ['理财产品', '你好', '理财产品取号', '退出', '你好']
-        for sentence in sentences:
-            result = match(question=sentence, userid=self.userid)
-            print(sentence, ':\n', result)
+        # sentences = ['理财产品', '你好', '理财产品取号', '退出', '你好']
+        # for sentence in sentences:
+            # result = match(question=sentence, userid=self.userid)
+            # print(sentence, ':\n', result)
+        
+        pass
     
     def test_config(self):
         result = json.loads(config(info="", userid="A0001"))
@@ -25,9 +27,9 @@ class TestMe(TestCase):
         skbs = [item['name'] for item in databases if item['bselected']==1 ]
         print('skbs: ', skbs)
         
-        # usertopics = config(info=' '.join(skbs[:-1]), userid="A0001")
-        usertopics = config(info=' '.join(akbs), userid="A0001")
-        print('usertopics: ', usertopics)
+        result = config(info=' '.join(skbs[:-1]), userid="A0001")
+        # result = config(info=' '.join(akbs), userid="A0001")
+        print('config: ', result)
         result = json.loads(config(info="", userid="A0001"))
         databases = result.setdefault('databases', [])
         akbs = [item['name'] for item in databases if item['available']==1 ]
@@ -35,8 +37,11 @@ class TestMe(TestCase):
         skbs = [item['name'] for item in databases if item['bselected']==1 ]
         print('skbs: ', skbs)
         
+        pass
+        
     def test_batch_test(self):
-        batch_test("testcase.txt")
+        # batch_test("testcase.txt")
+        pass
 
 if __name__ == '__main__':
     main()

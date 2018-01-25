@@ -50,10 +50,11 @@ class TestMe(TestCase):
         # self.database.handle_txt("C:/nlu/data/kb/bank.txt")
     
     def test_download(self):
-        akbs = self.database.get_available_kb()
-        self.database.download(filename="全部.xls", names=akbs)
-        self.database.download(filename="银行业务.xls", names=["银行业务"])
-        self.database.download_scene(filename="理财产品.xls", topic="理财产品")
+        # akbs = self.database.get_available_kb()
+        # self.database.download(filename="全部.xls", names=akbs)
+        # self.database.download(filename="银行业务.xls", names=["银行业务"])
+        # self.database.download_scene(filename="理财产品.xls", topic="理财产品")
+        pass
 
     def test_generate_test_cases(self):
         # self.database.generate_test_cases(

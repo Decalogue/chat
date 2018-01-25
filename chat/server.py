@@ -1,5 +1,4 @@
 # -*- coding:utf8 -*-
-# PEP 8 check with Pylint
 """Create and start NLU TCPServer with socketserver.
 创建并启动语义理解服务器。
 
@@ -98,7 +97,7 @@ class MyTCPHandler(socketserver.BaseRequestHandler):
                         file.write(key + ": " + str(result[key]) + "\n")
                 # 写入配置信息
                 elif "config_content" in json_data.keys():
-                    file.write("Config: " + " ".join(result) + "\n")
+                    file.write("Config: " + json.dumps(result) + "\n")
                 file.write("\n")
 
 

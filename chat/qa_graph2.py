@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-# PEP 8 check with Pylint
 """qa
 
 QA based on NLU and Dialogue scene.
@@ -20,31 +19,25 @@ from .mytools import time_me, get_current_time, random_item, get_age
 from .word2pinyin import pinyin_cut, jaccard_pinyin
 
 log_do_not_know = getConfig("path", "do_not_know")
-cmd_end_scene = ["退出业务场景", "退出场景", "退出", "返回", "结束", "发挥"]
-# 上一步功能为通用模式
-cmd_previous_step = ["上一步", "上一部", "上一页", "上一个"]
-# 下一步功能通过界面按钮实现
-cmd_next_step = ["下一步", "下一部", "下一页", "下一个"]
-cmd_repeat = ['重复', '再来一个', '再来一遍', '你刚说什么', '再说一遍', '重来']
 
-def get_navigation_location():
-    """获取导航地点 
-    """
-    try:
-        nav_db = getConfig("nav", "db")
-        tabel = getConfig("nav", "tabel")
-        conn = sqlite3.connect(nav_db)
-    except:
-        print("导航数据库连接失败！请检查是否存在文件：" + nav_db)
-        return []
-    try:
-        result = conn.execute("SELECT name from " + tabel)
-    except:
-        print("导航数据库没有找到表：" + tabel)
-        return []
-    # 过滤0记录
-    names = [row[0] for row in result if row[0]]
-    return names
+
+# def get_navigation_location():
+    # """获取导航地点 
+    # """
+    # try:
+        # nav_db = getConfig("nav", "db")
+        # tabel = getConfig("nav", "tabel")
+        # conn = sqlite3.connect(nav_db)
+    # except:
+        # print("导航数据库连接失败！请检查是否存在文件：" + nav_db)
+        # return []
+    # try:
+        # result = conn.execute("SELECT name from " + tabel)
+    # except:
+        # print("导航数据库没有找到表：" + tabel)
+        # return []
+    # names = [row[0] for row in result if row[0]]
+    # return names
 
 
 class Robot():
@@ -52,35 +45,41 @@ class Robot():
     自然语言理解机器人。
 
     Public attributes:
-    - graph: The connection of graph database. 图形数据库连接。
-    - pattern: The pattern for NLU tool: 'semantic' or 'vec'. 语义标签或词向量模式。
-    - memory: The context memory of robot. 机器人对话上下文记忆。
+    - graph: The connection of graph database. 图数据库连接
+    - selector: The selector of graph database. 图数据库选择器
+    - locations: Navigation Locations. 导航地点列表
+    - is_scene: 在线场景标志，默认为 False
+    - user: 机器人配置信息
+    - usertopics: 可用话题列表
+    - address: 在线调用百度地图 IP 定位 API，网络异常时从配置信息获取默认地址
+    - topic: 当前QA话题
+    - qa_id: 当前QA id
+    - qmemory: 短期记忆-最近用户问过的10个问题
+    - amemory: 短期记忆-最近回答用户的10个答案
+    - pmemory: 短期记忆-最近一次回答用户的正确答案
+    - cmd_end_scene: 退出场景命令集
+    - cmd_previous_step: 上一步命令集，场景内全局模式
+    - cmd_next_step: 下一步命令集，通过界面按钮实现
+    - cmd_repeat: 重复命令集
+    - do_not_know: 匹配不到时随机回答
     """
-    def __init__(self, password="train"):
-        # 连接图知识库
+    def __init__(self, password="train", userid="A0001"):
         self.graph = Graph("http://localhost:7474/db/data/", password=password)
         self.selector = NodeSelector(self.graph)
-        # 语义模式：'semantic' or 'vec'
-        self.pattern = 'semantic'
-        # 获取导航地点数据库
-        self.locations = get_navigation_location()
-        # 在线场景标志，默认为False
+        # self.locations = get_navigation_location()
         self.is_scene = False
-        # 在线调用百度地图IP定位api，网络异常时返回默认地址：上海市/从配置信息获取
-        self.address = get_location_by_ip(self.graph.find_one("User", "userid", "A0001")['city'])
-        # 机器人配置信息
-        self.user = None
-        # 可用话题列表
-        self.usertopics = []
-        # 当前QA话题
+        self.user = self.selector.select("User", userid=userid).first()
+        self.usertopics = self.get_usertopics(userid=userid)
+        self.address = get_location_by_ip(self.user['city'])
         self.topic = ""
-        # 当前QA id
         self.qa_id = get_current_time()
-		# 短期记忆：最近问过的10个问题与10个答案
-        self.qmemory = deque(maxlen=10) # 问题
-        self.amemory = deque(maxlen=10) # 答案
-        self.pmemory = deque(maxlen=10) # 上一步
-        # 匹配不到时随机回答 TODO：记录回答不上的所有问题，
+        self.qmemory = deque(maxlen=10)
+        self.amemory = deque(maxlen=10)
+        self.pmemory = deque(maxlen=10)
+        self.cmd_end_scene = ["退出业务场景", "退出场景", "退出", "返回", "结束", "发挥"]
+        self.cmd_previous_step = ["上一步", "上一部", "上一页", "上一个"]
+        self.cmd_next_step = ["下一步", "下一部", "下一页", "下一个"]
+        self.cmd_repeat = ['重复', '再来一个', '再来一遍', '你刚说什么', '再说一遍', '重来']
         self.do_not_know = [
             "这个问题太难了，{robotname}还在学习中",
             "这个问题{robotname}不会，要么我去问下",
@@ -103,48 +102,47 @@ class Robot():
         return "Hello! I'm {robotname} and I'm {robotage} years old.".format(**self.user)
 
     @time_me()
-    def configure(self, info="", userid="userid"):
+    def configure(self, info="", userid="A0001"):
         """Configure knowledge base.
         配置知识库。
         """
         assert userid is not "", "The userid can not be empty!"
-        # TO UPGRADE 对传入的userid参数分析，若不合适则报相应消息 2017-6-7
+        # 对传入的 userid 参数分析，若不合适则报相应消息 2017-6-7
         if userid != "A0001":
             userid = "A0001"
-            print("userid 不是标准A0001，已经更改为A0001")
+            print("userid 不是默认值，已经更改为A0001")
         match_string = "MATCH (config:Config) RETURN config.name as name"
         subgraphs = [item[0] for item in self.graph.run(match_string)]
         print("所有知识库：", subgraphs)
-        if not info:
-            config = {"databases": []}
-            match_string = "MATCH (user:User)-[r:has]->(config:Config)" + \
-                "where user.userid='" + userid + \
-                "' RETURN config.name as name, r.bselected as bselected, r.available as available"
-            for item in self.graph.run(match_string):
-                config["databases"].append(dict(name=item[0], bselected=item[1], available=item[2]))
-            print("可配置信息：", config)
-            return config
-        else:
+        config = {"databases": []}
+
+        if info != '':
             selected_names = info.split()
-        forbidden_names = list(set(subgraphs).difference(set(selected_names)))
-        print("选中知识库：", selected_names)
-        print("禁用知识库：", forbidden_names)
-        # TODO：待合并精简
-        for name in selected_names:
-            match_string = "MATCH (user:User)-[r:has]->(config:Config) where user.userid='" \
-                + userid + "' AND config.name='" + name + "' SET r.bselected=1"
-            # print(match_string)
-            self.graph.run(match_string)
-        for name in forbidden_names:
-            match_string = "MATCH (user:User)-[r:has]->(config:Config) where user.userid='" \
-                + userid + "' AND config.name='" + name + "' SET r.bselected=0"
-            # print(match_string)
-            self.graph.run(match_string)
-        return self.get_usertopics(userid=userid)
+            forbidden_names = list(set(subgraphs).difference(set(selected_names)))
+            print("选中知识库：", selected_names)
+            print("禁用知识库：", forbidden_names)
+            # TODO：待合并精简 可用 CONTAINS
+            for name in selected_names:
+                match_string = "MATCH (user:User)-[r:has]->(config:Config) where user.userid='" \
+                    + userid + "' AND config.name='" + name + "' SET r.bselected=1"
+                self.graph.run(match_string)
+            for name in forbidden_names:
+                match_string = "MATCH (user:User)-[r:has]->(config:Config) where user.userid='" \
+                    + userid + "' AND config.name='" + name + "' SET r.bselected=0"
+                self.graph.run(match_string)
+
+        match_string = "MATCH (user:User)-[r:has]->(config:Config)" + \
+            "where user.userid='" + userid + \
+            "' RETURN config.name as name, r.bselected as bselected, r.available as available"
+        for item in self.graph.run(match_string):
+            config["databases"].append(dict(name=item[0], bselected=item[1], available=item[2]))
+        print("可配置信息：", config)
+        
+        return config
 
     # @time_me()
     def get_usertopics(self, userid="A0001"):
-        """Get usertopics list.
+        """Get available topics list.
         """
         usertopics = []
         if not userid:
@@ -165,7 +163,7 @@ class Robot():
         return sentence.format(**self.user)
 
     # @time_me()
-    def add_to_memory(self, question="question", userid="userid"):
+    def add_to_memory(self, question="question", userid="A0001"):
         """Add user question to memory.
         将用户当前对话加入信息记忆。
 
@@ -184,31 +182,23 @@ class Robot():
         else:
             self.graph.create(node)
 
-    # Development requirements from Mr Tang in 2017-5-11.
-    # 由模糊匹配->全匹配 from Mr Tang in 2017-6-1.
-    def extract_navigation(self, question):
-        """Extract navigation。抽取导航地点。
-        QA匹配模式：从导航地点列表选取匹配度最高的地点。
+    # def extract_navigation(self, question):
+        """Extract navigation from question。从问题中抽取导航地点。
+        从导航地点列表选取与问题匹配度最高的地点。
+        QA匹配模式：（模糊匹配/全匹配）
 
         Args:
             question: User question. 用户问题。
         """
-        result = dict(question=question, name='', content=self.iformat(random_item(self.do_not_know)), \
-            context="", tid="", ftid="", url="", behavior=0, parameter="", txt="", img="", button="", valid=1)
+        # result = dict(question=question, name='', content=self.iformat(random_item(self.do_not_know)), \
+            # context="", tid="", ftid="", url="", behavior=0, parameter="", txt="", img="", button="", valid=1)
+        
+        # 模式1：模糊匹配
         # temp_sim = 0
         # sv1 = synonym_cut(question, 'wf')
         # if not sv1:
             # return result
-        for location in self.locations:
-            # 判断“去”和地址关键词是就近的动词短语情况
-            keyword = "去" + location
-            if keyword in question:
-                print("Original navigation")
-                result["name"] = keyword
-                result["content"] = location
-                # result["context"] = "user_navigation" # 导航不在本地处理 Modify：2018-1-23
-                result["behavior"] = int("0x001B", 16)
-                return result
+        # for location in self.locations:
             # sv2 = synonym_cut(location, 'wf')
             # if sv2:
                 # temp_sim = similarity(sv1, sv2, 'j')
@@ -219,7 +209,19 @@ class Robot():
                 # result["context"] = "user_navigation"
                 # result["behavior"] = int("0x001B", 16)
                 # return result
-        return result
+        
+        # 模式2：全匹配，判断“去”和地址关键词是就近的动词短语情况
+        # for location in self.locations:
+            
+            # keyword = "去" + location
+            # if keyword in question:
+                # print("Original navigation")
+                # result["name"] = keyword
+                # result["content"] = location
+                # result["context"] = "user_navigation"
+                # result["behavior"] = int("0x001B", 16)
+                # return result
+        # return result
 
     def update_result(self, question='', node=None):
         result = dict(question=question, name='', content=self.iformat(random_item(self.do_not_know)), \
@@ -407,7 +409,7 @@ class Robot():
         return question
 
     @time_me()
-    def search(self, question="question", tid="", userid="userid"):
+    def search(self, question="question", tid="", userid="A0001"):
         """Nlu search. 语义搜索。
 
         Args:
@@ -460,7 +462,7 @@ class Robot():
             valid=0)
 
         # ========================一、预处理=============================
-        # 问题过滤(添加敏感词过滤 2017-5-25)
+        # 敏感词过滤
         if check_swords(question):
             print("问题包含敏感词！")
             return do_not_know
@@ -468,17 +470,17 @@ class Robot():
         question = self.remove_name(question)
 
         # ========================二、导航===============================
-        result = self.extract_navigation(question)
-        if result["context"] == "user_navigation":
-            self.amemory.append(result) # 添加到普通记忆
-            self.pmemory.append(result)
-            return result
+        # result = self.extract_navigation(question)
+        # if result["context"] == "user_navigation":
+            # self.amemory.append(result) # 添加到普通记忆
+            # self.pmemory.append(result)
+            # return result
         
         # ========================三、语义场景===========================
         result = copy.deepcopy(do_not_know)
         
         # 全局上下文——重复
-        for item in cmd_repeat:
+        for item in self.cmd_repeat:
             # TODO：确认返回的是正确的指令而不是例如唱歌时的结束语“可以了”
             # TODO：从记忆里选取最近的有意义行为作为重复的内容
             if item == question:
@@ -488,7 +490,7 @@ class Robot():
                     return do_not_know
 
         # 场景——退出
-        for item in cmd_end_scene:
+        for item in self.cmd_end_scene:
             if item == question: # 完全匹配退出模式
                 result['behavior'] = 0
                 result['name'] = '退出'
@@ -501,7 +503,7 @@ class Robot():
 
         # 场景——上一步：返回父节点(TODO：和下一步模式统一)
         if self.is_scene:
-            for item in cmd_previous_step:
+            for item in self.cmd_previous_step:
                 if item in question:
                     # 添加了链接跳转判断（采用该方案 2017-12-22）
                     if len(self.pmemory) > 1:
@@ -512,13 +514,13 @@ class Robot():
                     else:
                         return error_page
             # 场景——下一步：通过 button 实现
-            for item in cmd_next_step:
+            for item in self.cmd_next_step:
                 if item in question:
                     if len(self.amemory) >= 1:
                         parent = self.amemory[-1]
                         if parent['button']:
                             next_name = parent['button'].split('|')[-1]
-                            if next_name != '0':
+                            if next_name != '0': # 确定有下一步
                                 # print(type(parent['tid']), parent['tid'])
                                 match_string = "MATCH (n:NluCell {name:'" + \
                                     next_name + "', topic:'" + self.topic + \
@@ -559,12 +561,15 @@ class Robot():
                 "' and '" + ' '.join(self.usertopics) + "' CONTAINS n.topic RETURN n"
             usergraph_all = [item['n'] for item in self.graph.run(match_graph).data()]
             if usergraph_all:
-                result = self.extract_synonym(question, usergraph_all)
-                if not result["context"]:
-                    result = self.extract_keysentence(question)
-                if not result["context"]:
-                    result = self.extract_pinyin(question, usergraph_all)
-            # else: # 全局拼音匹配
+                # 同义句匹配 TODO：阈值可配置
+                result = self.extract_synonym(question, usergraph_all, threshold=0.90)
+                # 关键词匹配 TODO：配置开关
+                # if not result["context"]:
+                    # result = self.extract_keysentence(question)
+                # 拼音匹配 TODO：配置开关
+                # if not result["context"]:
+                    # result = self.extract_pinyin(question, usergraph_all)
+            # else: # 全局拼音匹配 TODO：配置开关
                 # match_pinyin = "MATCH (n:NluCell) WHERE '" + \
                     # ' '.join(self.usertopics) + "' CONTAINS n.topic RETURN n"
                 # usergraph_pinyin = [item['n'] for item in self.graph.run(match_pinyin).data()]
@@ -589,7 +594,7 @@ class Robot():
                 self.pmemory.append(result)
                 return result
 
-        # ========五、在线语义（Modify：关闭该部分功能 2018-1-23）=========
+        # ========五、在线语义（Modify：暂时关闭 2018-1-23）===============
         # if not self.topic:
             # 1.音乐(唱一首xxx的xxx)
             # if "唱一首" in question or "唱首" in question or "我想听" in question:
@@ -635,5 +640,9 @@ class Robot():
         # if result["context"]: # 匹配到在线语义
             # self.amemory.append(result) # 添加到普通记忆
         # ==============================================================
-
+        
+        # 追加记录回答不上的所有问题
+        if not self.topic:
+            with open(log_do_not_know, "a", encoding="UTF-8") as file:
+                file.write(question + "\n")
         return result

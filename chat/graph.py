@@ -194,8 +194,13 @@ class Database():
                         # 场景 topic 必须填写，问答 topic 可不填，若填写必须为 sheet_name
                         temp = table.cell(i, col_index[2]).value
                         topic =  temp if temp else sheet_name
-                        tid = table.cell(i, col_index[3]).value
-                        ftid = table.cell(i, col_index[4]).value
+                        
+                        temp = table.cell(i, col_index[3]).value
+                        tid = int(temp) if temp != '' else ''
+                        
+                        temp = table.cell(i, col_index[4]).value
+                        ftid = int(temp) if temp != '' else ''
+                        
                         behavior = table.cell(i, col_index[5]).value
                         parameter = table.cell(i, col_index[6]).value
                         url = table.cell(i, col_index[7]).value

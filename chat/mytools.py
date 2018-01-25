@@ -1,6 +1,4 @@
-#!/usr/bin/env python3
 # -*- coding:utf8 -*-
-# PEP 8 check with Pylint
 """A collection of useful tools. 实用工具集合。
 
 Including batch processing, performance analysis, data analysis, etc..

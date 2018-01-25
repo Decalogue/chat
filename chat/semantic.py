@@ -1,11 +1,9 @@
-#/usr/bin/env python
 # -*- coding: utf-8 -*-
-# PEP 8 check with Pylint
 """A collection of semantic tools. 语义工具集合。
 
 Use 'jieba' as Chinese word segmentation tool. The 'set_dictionary' and
 'load_userdict' must before import 'jieba.posseg' and 'jieba.analyse'.
-采用'jieba'作为中文分词工具。
+采用'jieba'作为中文分词工具，使用自定义分词词典。
 
 Available functions:
 - All classes and functions: 所有类和函数
@@ -48,10 +46,7 @@ def check_swords(sentence):
     return False
     # words = synonym_cut(sentence, pattern="w")
     # swords = set(sensitive_words).intersection(words)
-    # if swords:
-        # return True
-    # else:
-        # return False
+    # return bool(swords)
 
 def synonym_cut(sentence, pattern="wf"):
     """Cut the sentence into a synonym vector tag.

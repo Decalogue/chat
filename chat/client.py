@@ -1,6 +1,4 @@
-#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# PEP 8 check with Pylint
 """Chat client. 聊天客户端。
 
 Available functions:
@@ -21,7 +19,7 @@ from .mytools import time_me
 mysock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 mysock.connect(("localhost", 7000))
 
-def question_pack(info="", userid="userid"):
+def question_pack(info="", userid="A0001"):
     """Package the question as the JSON format specified by the server.
     将问题打包为服务器指定的json格式。
 
@@ -43,7 +41,7 @@ def question_pack(info="", userid="userid"):
         }
     return json.dumps(data)
 
-def config_pack(info="", userid="userid"):
+def config_pack(info="", userid="A0001"):
     """Package the config info as the JSON format specified by the server.
     将配置信息打包为服务器指定的json格式。
 
@@ -65,7 +63,7 @@ def config_pack(info="", userid="userid"):
         }
     return json.dumps(data)
 
-def match(question="question", userid="userid"):
+def match(question="question", userid="A0001"):
     """Match the answers from the semantic knowledge database.
     从语义知识数据库搜索答案。
 
@@ -84,7 +82,7 @@ def match(question="question", userid="userid"):
     received = received.decode("UTF-8")
     return received
 
-def config(info="", userid="userid"):
+def config(info="", userid="A0001"):
     """Configure the semantic knowledge database.
     配置语义知识数据库。
 
@@ -111,7 +109,7 @@ def start():
         question = input("\n>>question=")
         userid = input(">>userid=")
         if not userid:
-            userid = "userid"
+            userid = "A0001"
         if question == "config":
             result = config(info="", userid=userid)
         else:
