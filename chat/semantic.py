@@ -22,8 +22,8 @@ from string import punctuation
 # The 'punctuation_all' is the combination set of Chinese and English punctuation.
 punctuation_zh = " 、，。°？！：；“”’‘～…【】（）《》｛｝×―－·→℃"
 punctuation_all = set(punctuation) | set(punctuation_zh)
-# 句尾语气词过滤
-tone_words = "。？！的了呢吧吗啊啦呀"
+# 句尾语气词
+tone_words = "的了呢吧吗啊啦呀"
 # 敏感词库 Modified in 2017-5-25
 try:
     with codecs.open(thispath + "\\dict\\swords.txt", "r", "UTF-8") as file:
@@ -59,6 +59,9 @@ def synonym_cut(sentence, pattern="wf"):
     Args:
         pattern: 'w'-分词, 'k'-唯一关键词，'t'-关键词列表, 'wf'-分词标签, 'tf-关键词标签'。
     """
+    # Modify: 添加完整的句尾标点符号过滤 2018-1-26 Contributor: 
+    sentence = sentence.rstrip(''.join(punctuation_all))
+    # 句尾语气词过滤
     sentence = sentence.rstrip(tone_words)
     synonym_vector = []
     if pattern == "w":

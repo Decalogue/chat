@@ -27,8 +27,8 @@ class TestMe(TestCase):
         skbs = [item['name'] for item in databases if item['bselected']==1 ]
         print('skbs: ', skbs)
         
-        result = config(info=' '.join(skbs[:-1]), userid="A0001")
-        # result = config(info=' '.join(akbs), userid="A0001")
+        # result = config(info=' '.join(skbs[:-1]), userid="A0001")
+        result = config(info=' '.join(akbs), userid="A0001")
         print('config: ', result)
         result = json.loads(config(info="", userid="A0001"))
         databases = result.setdefault('databases', [])

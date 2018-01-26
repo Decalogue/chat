@@ -12,27 +12,26 @@ item = '''<item><Title><![CDATA[]]></Title><Description><![CDATA[]]></Descriptio
 def answer2xml(data):
     imgs = ''
     img_urls = []
+    img_names = []
     items = ''
     result = {
-        # ===========================原接口==============================
         "question": data['question'],
         "content": data['content'],
         "context": data['context'],
         "url": data['url'],
         "behavior": data['behavior'],
         "parameter": data['parameter'],
-        # ===========================新扩展==============================
         "picurl": ""
     }
-    # 对于无按钮图片的场景节点和问答节点，"picurl" 直接返回 "" 而不是格式化为 xml.
+    # 对于无按钮图片的场景节点和问答节点，picurl 直接返回 '' 而不是格式化为 xml.
     # Modify：2018-1-8
     if data['button'] == '' and data['img'] == '':
         return result
 
     if data['img'] != '':
-        img = json.loads(data['img'])
-        img_urls = [item['iurl'] for item in img.values()]
-        img_names = [item['content'] for item in img.values()]
+        for img in json.loads(data['img']):
+            img_urls.append(img['iurl'])
+            img_names.append(img['content'])
         if img_names:
             imgs = '|'.join(img_names)
         if len(img_urls) > 1:

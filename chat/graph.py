@@ -55,7 +55,7 @@ class Database():
         elif pattern == "nrm":
             self.graph.run("MATCH (n)-[r:" + label + "]-(m) DETACH DELETE r, n, m")
 
-    def reset(self, pattern="n", label=None, filename=None):
+    def reset(self, pattern="n", label="NluCell", filename=None):
         """Reset data of label in database.
         重置数据库子图。
 
@@ -64,7 +64,7 @@ class Database():
             label: Label of subgraph. 子图标签。
         """ 
         assert filename is not None, "filename can not be None."
-        self.delete(pattern="n", label="NluCell")
+        self.delete(pattern=pattern, label=label)
         print("Delete successfully!")
         if os.path.exists(filename):
             self.handle_excel(filename)
@@ -90,22 +90,45 @@ class Database():
         print("Reset test standard successfully!")
 
     def add_nlucell(self, label="NluCell", name=None, content=None, topic="", tid="", \
-    ftid="", behavior="", parameter="", url="", tag="", keywords="", api="", txt="", \
-    img="", button="", description="", delimiter=None):
-        """
-        Add qa node in graph.
+        ftid="", behavior="", parameter="", url="", tag="", keywords="", api="", txt="", \
+        img="", button="", description="", delimiter='|'):
+        """Add nlucell node in graph.
+        根据 name, topic, tid 确认节点是否已存在，存在则覆盖，不存在则追加。
+        问题不能为空，避免因知识库表格填写格式不对而导致存入空问答对
         """
         assert name is not None, "name must be string."
         assert content is not None, "content must be string."
-        questions = name.split(delimiter)
-        for question in questions:
-            if question: # 问题不能为空，避免因知识库表格填写格式不对而导致存入空问答对
-                tag = get_tag(question, self.user)
-                node = Node(label, name=question, content=content, topic=topic, \
-                tid=tid, ftid=ftid, behavior=behavior, parameter=parameter, url=url, tag=tag, \
-                keywords=keywords, api=api, txt=txt, img=img, button=button, \
-                description=description, hot="0")
-                self.graph.create(node)
+        for question in name.split(delimiter):
+            question = question.strip()
+            if question: # 问题不能为空
+                # 根据 name, topic, tid 确认节点是否已存在
+                match_tid = "''" if tid == '' else str(tid)
+                node = self.selector.select("NluCell").where("_.name ='" + question + "'", \
+                    "_.topic ='" + topic + "'", "_.tid =" + match_tid).first()
+                if node: # 存在则覆盖
+                    # node['name'] = question
+                    node['content'] = content
+                    # node['topic'] = topic
+                    # node['tid'] = tid
+                    node['ftid'] = ftid
+                    node['behavior'] = behavior
+                    node['parameter'] = parameter
+                    node['url'] = url
+                    # node['tag'] = tag
+                    node['keywords'] = keywords
+                    node['api'] = api
+                    node['txt'] = txt
+                    node['img'] = img
+                    node['button'] = button
+                    node['description'] = description
+                    self.graph.push(node)
+                else: # 不存在则追加
+                    tag = get_tag(question, self.user)
+                    node = Node(label, name=question, content=content, topic=topic, \
+                        tid=tid, ftid=ftid, behavior=behavior, parameter=parameter, \
+                        url=url, tag=tag, keywords=keywords, api=api, txt=txt, img=img, \
+                        button=button, description=description, hot=0)
+                    self.graph.create(node)
 
     def add_ts(self, label="TestStandard", question=None, content=None, context="", \
     behavior="", parameter="", url=""):
@@ -115,6 +138,7 @@ class Database():
         assert question is not None, "question must be string."
         assert content is not None, "content must be string."
         for item in question.split():
+            item = item.strip()
             if item: # 问题不能为空，避免因知识库表格填写格式不对而导致存入空问答对
                 node = Node(label, question=item, content=content, context=context, \
                 behavior=behavior, parameter=parameter, url=url)
@@ -186,7 +210,7 @@ class Database():
                     i_upcase = range(len(str_upcase))
                     ncols_dir = dict(zip(str_upcase, i_upcase))
                     col_index = [ncols_dir.get(i) for i in col_format]
-                    # 前两行为表头
+                    # 前两行为表头，从第3行开始读取
                     for i in range(2, nrows):
                         name = table.cell(i, col_index[0]).value
                         content = table.cell(i, col_index[1]).value
@@ -212,11 +236,11 @@ class Database():
                         button = table.cell(i, col_index[13]).value
                         description = table.cell(i, col_index[14]).value
                         # hot = 0 table.cell(i, col_index[15]).value
-					    # 3.Your processing function of excel data here
+					    # 3.Your processing function of excel data here                           
                         self.add_nlucell(name=name, content=content, topic=topic, \
-                        tid=tid, ftid=ftid, behavior=behavior, parameter=parameter, url=url, tag=tag, \
-                        keywords=keywords, api=api, txt=txt, img=img, button=button, \
-                        description=description, delimiter="|")
+                            tid=tid, ftid=ftid, behavior=behavior, parameter=parameter, \
+                            url=url, tag=tag, keywords=keywords, api=api, txt=txt, \
+                            img=img, button=button, description=description, delimiter="|")
                         # 添加到场景标签列表
                         if topic:
                             topics.append(topic)
@@ -232,7 +256,7 @@ class Database():
             # config_node = self.graph.find_one("Config", "name", sheet_name)
             config_node = self.selector.select("Config", name=sheet_name).first()
             if not config_node:
-                # 默认User类型节点已经存在了
+                # 默认 self.user 已存在
                 self.graph.run('MATCH (user:User {userid: "' + self.user["userid"] + \
                 '"})\nCREATE (config:Config {name: "' + sheet_name + '", topic: "' + \
                 ",".join(set(topics)) + '"})\nCREATE (user)-[:has {bselected: 1, available: 1}]->(config)')
