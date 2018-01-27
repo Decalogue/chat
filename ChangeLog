@@ -1,6 +1,8 @@
 CHANGES
 =======
 
+* 修改导入功能与句尾标点符号过滤
+* Debug type of tid and ftid
 * Debug
 * 调整语义匹配算法及阈值
 * 简化知识库格式
