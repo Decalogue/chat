@@ -1,0 +1,16 @@
+language: python
+matrix:
+  include:
+    - python: 3.4
+      env: TOXENV=py34
+    - python: 3.5
+      env: TOXENV=py35   
+    - python: 3.6
+      env: TOXENV=py36
+
+install:
+  - pip install -U tox twine wheel codecov
+
+script: tox
+after_success:
+  - codecov
