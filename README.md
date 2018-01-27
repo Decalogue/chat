@@ -5,10 +5,8 @@
 `基于自然语言理解与机器学习的聊天机器人`
 
 [![Documentation Status](https://readthedocs.org/projects/chat-cn/badge/?version=latest)](http://chat-cn.readthedocs.io/zh_CN/latest/?badge=latest)
-
-[![PyPI Version](https://badge.fury.io/py/chat)](https://badge.fury.io/py/chat.svg)
-
-[![Py Version](https://github.com/Decalogue/chat)](https://img.shields.io/pypi/pyversions/chat.svg)
+[![PyPI Version](https://badge.fury.io/py/chat.svg)](https://badge.fury.io/py/chat)
+[![Py Version](https://img.shields.io/pypi/pyversions/chat.svg)](https://github.com/Decalogue/chat)
 
 ## 这就是 Chat
 
