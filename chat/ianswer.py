@@ -10,43 +10,28 @@ with open(thispath + '/data/answer.xml', 'r', encoding="UTF-8") as file:
 item = '''<item><Title><![CDATA[]]></Title><Description><![CDATA[]]></Description><PicUrl><![CDATA[{img_url}]]></PicUrl><Url><![CDATA[]]></Url></item>'''
 
 def answer2xml(data):
-    previous = '0'
-    next = '0'
-    buttons = ''
     imgs = ''
     img_urls = []
+    img_names = []
     items = ''
     result = {
-        # ===========================原接口==============================
         "question": data['question'],
         "content": data['content'],
         "context": data['context'],
         "url": data['url'],
         "behavior": data['behavior'],
         "parameter": data['parameter'],
-        # ===========================新扩展==============================
         "picurl": ""
     }
-    # 对于无按钮图片的场景节点和问答节点，"picurl" 直接返回 "" 而不是格式化为 xml.
+    # 对于无按钮图片的场景节点和问答节点，picurl 直接返回 '' 而不是格式化为 xml.
     # Modify：2018-1-8
     if data['button'] == '' and data['img'] == '':
         return result
 
-    if data['button'] != '':
-        button = json.loads(data['button'])
-        button_names = [item['content'] for item in button['area'].values()]
-        button_tids = [item['url'] for item in button['area'].values()]
-        if button_names:
-            buttons = ('|'.join(button_names) + '|')
-        if button['previous']:
-            previous = button['previous']['content']
-        if button['next']:
-            next = button['next']['content']
     if data['img'] != '':
-        img = json.loads(data['img'])
-        img_urls = [item['iurl'] for item in img.values()]
-        img_names = [item['content'] for item in img.values()]
-        img_tids = [item['url'] for item in img.values()]
+        for img in json.loads(data['img']):
+            img_urls.append(img['iurl'])
+            img_names.append(img['content'])
         if img_names:
             imgs = '|'.join(img_names)
         if len(img_urls) > 1:
@@ -59,9 +44,7 @@ def answer2xml(data):
         article_count=str(len(img_urls)),
         content=data['content'],
         context=data['context'],
-        previous=previous,
-        buttons=buttons,
-        next=next,
+        button=data['button'],
         imgs=imgs,
         img_url=img_urls[0] if img_urls else '',
         items=items

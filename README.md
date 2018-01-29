@@ -7,7 +7,6 @@
 [![Documentation Status](https://readthedocs.org/projects/chat-cn/badge/?version=latest)](http://chat-cn.readthedocs.io/zh_CN/latest/?badge=latest)
 [![PyPI Version](https://badge.fury.io/py/chat.svg)](https://badge.fury.io/py/chat)
 [![Py Version](https://img.shields.io/pypi/pyversions/chat.svg)](https://github.com/Decalogue/chat)
-[![Coverage report](https://img.shields.io/codecov/c/github/Decalogue/chat.svg)](https://codecov.io/gh/Decalogue/chat)
 
 ## 这就是 Chat
 
@@ -36,7 +35,7 @@
     from chat.qa import Robot
   
     robot = Robot()
-    answer = robot.search(question="您好", userid="userid")
+    answer = robot.search(question="你的问题", userid="你的ID")
     print(answer)
 
 ### Step 2 方式2-1：启动语义服务器
@@ -50,7 +49,7 @@
     import json
     from chat.client import match
   
-    result = json.loads(match(question="你的问题", userid="userid"))
+    result = json.loads(match(question="你的问题", userid="你的ID"))
     answer = result['content']
     print(answer)
 

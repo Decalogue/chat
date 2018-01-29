@@ -12,12 +12,8 @@ from .mytools import Walk, get_current_time
 from .graph import Database
 # from .sql import Database
 # from .qa_sql import Robot
-# 简版数据格式
-from .ianswer2 import answer2xml
-from .qa_graph2 import Robot
-# 全json版数据格式
-# from .ianswer import answer2xml
-# from .qa_graph import Robot
+from .ianswer import answer2xml
+from .qa import Robot
 
 
 kb = Database()
