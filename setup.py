@@ -39,7 +39,7 @@ setup(
     description="Chat robot based on natural language understanding and machine learning.",
     license="MIT",
     url="https://github.com/Decalogue/chat",
-    packages=find_packages(),
+    packages=chat,
     classifiers=[
         "Development Status :: 4 - Beta",
         "Environment :: Console",
