@@ -37,7 +37,7 @@ add_qa(path=getConfig("path", "usbkb"))
 logpath = getConfig("path", "log")
 
 # 初始化语义服务器
-# 从 qa_graph 初始化
+# 从 qa 初始化
 robot = Robot(password=getConfig("neo4j", "password"))
 # 从 qa_sql 初始化
 # robot = Robot(path=getConfig("path", "db"), password=None)

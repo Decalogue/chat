@@ -570,11 +570,11 @@ class Robot():
                 # 同义句匹配 TODO：阈值可配置
                 result = self.extract_synonym(question, usergraph_all, threshold=0.90)
                 # 关键词匹配 TODO：配置开关
-                # if not result["context"]:
-                    # result = self.extract_keysentence(question)
+                if not result["context"]:
+                    result = self.extract_keysentence(question)
                 # 拼音匹配 TODO：配置开关
-                # if not result["context"]:
-                    # result = self.extract_pinyin(question, usergraph_all)
+                if not result["context"]:
+                    result = self.extract_pinyin(question, usergraph_all)
             # else: # 全局拼音匹配 TODO：配置开关
                 # match_pinyin = "MATCH (n:NluCell) WHERE '" + \
                     # ' '.join(self.usertopics) + "' CONTAINS n.topic RETURN n"

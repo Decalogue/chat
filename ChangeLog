@@ -1,6 +1,18 @@
 CHANGES
 =======
 
+* Debug publish
+* 修复发布
+* v1.0.7
+* 添加基于语义标签树的句子相似度算法
+* Modify README
+* rename
+* Modify setup.py
+* Add url
+* Add coverage
+* Add url
+* Add Py version and PyPI version
+* Add Py version and PyPI version
 * 修改导入功能与句尾标点符号过滤
 * Debug type of tid and ftid
 * Debug

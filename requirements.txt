@@ -6,3 +6,6 @@ requests==2.12.1
 xlrd==1.0.0
 xlwt==1.2.0
 pypinyin==0.22.0
+Flask==0.11.1
+flask_restful==0.3.6
+flask_uploads==0.2.1
