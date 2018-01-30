@@ -14,7 +14,7 @@ from collections import deque
 from py2neo import Graph, Node, Relationship, NodeSelector
 from .config import getConfig
 from .api import nlu_tuling, get_location_by_ip
-from .semantic import synonym_cut, get_tag, similarity, check_swords, get_location
+from .semantic import synonym_cut, segment, get_tag, similarity, check_swords, get_location
 from .mytools import time_me, get_current_time, random_item, get_age
 from .word2pinyin import pinyin_cut, jaccard_pinyin
 
@@ -292,7 +292,8 @@ class Robot():
         temp_sim = 0
         ss = []
         max_score = 0
-        sv1 = synonym_cut(question, 'wf')
+        sv1 = synonym_cut(question, 'wf') # 基于 semantic.jaccard
+        # sv1 = segment(question) # 基于 semantic.jaccard2
         if not sv1:
             return self.update_result(question)
         for node in subgraph:
@@ -300,9 +301,11 @@ class Robot():
             if question == iquestion:
                 print("Similarity Score: Original sentence")
                 return self.update_result(question, node)
-            sv2 = synonym_cut(iquestion, 'wf')
+            sv2 = synonym_cut(iquestion, 'wf') # 基于 semantic.jaccard
+            # sv2 = segment(iquestion) # 基于 semantic.jaccard2
             if sv2:
-                temp_sim = similarity(sv1, sv2, 'j')
+                temp_sim = similarity(sv1, sv2, 'j') # 基于 semantic.jaccard
+                # temp_sim = similarity(sv1, sv2, 'j2') # 基于 semantic.jaccard2
             # 匹配加速，不必选取最高相似度，只要达到阈值就终止匹配
             if temp_sim > athreshold:
                 print("Q: " + iquestion + " Similarity Score: " + str(temp_sim))
@@ -329,7 +332,8 @@ class Robot():
         temp_sim = 0
         ss = []
         max_score = 0
-        sv1 = synonym_cut(question, 'wf')
+        sv1 = synonym_cut(question, 'wf') # 基于 semantic.jaccard
+        # sv1 = segment(question) # 基于 semantic.jaccard2
         if not sv1:
             return self.update_result(question)
         for node in subgraph:
@@ -337,9 +341,11 @@ class Robot():
             if question == iquestion:
                 print("Similarity Score: Original sentence")
                 return self.update_result(question, node)
-            sv2 = synonym_cut(iquestion, 'wf')
+            sv2 = synonym_cut(iquestion, 'wf') # 基于 semantic.jaccard
+            # sv2 = segment(iquestion) # 基于 semantic.jaccard2
             if sv2:
-                temp_sim = similarity(sv1, sv2, 'j')
+                temp_sim = similarity(sv1, sv2, 'j') # 基于 semantic.jaccard
+                # temp_sim = similarity(sv1, sv2, 'j2') # 基于 semantic.jaccard2
             ss.append(temp_sim)
         max_score = max(ss)
         if max_score > threshold:

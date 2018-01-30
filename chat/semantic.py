@@ -10,6 +10,8 @@ Available functions:
 """
 import os
 import codecs
+import math
+import pickle
 import numpy as np
 import jieba
 thispath = os.path.split(os.path.realpath(__file__))[0]
@@ -18,6 +20,29 @@ jieba.load_userdict(thispath + "\\dict\\userdict.txt")
 import jieba.posseg as posseg
 import jieba.analyse as analyse
 from string import punctuation
+
+# 语义标签树 pkl 文件绝对路径
+thispath = os.path.split(os.path.realpath(__file__))[0]
+pkl_tagtree = thispath + './dict/tagtree.pkl'
+pkl_tagcount_1 = thispath + './dict/tagcount_1.pkl'
+pkl_tagcount_2 = thispath + './dict/tagcount_2.pkl'
+pkl_tagcount_3 = thispath + './dict/tagcount_3.pkl'
+pkl_tagcount_4 = thispath + './dict/tagcount_4.pkl'
+
+def load_dict(path=''):
+    """通过 pkl 文件加载原生字典对象
+    """
+    if os.path.isfile(path):
+        with open(path, 'rb') as fp:
+            return pickle.load(fp)
+    else:
+        return {} 
+
+tagtree = load_dict(path=pkl_tagtree)
+tagcount_1 = load_dict(path=pkl_tagcount_1)
+tagcount_2 = load_dict(path=pkl_tagcount_2)
+tagcount_3 = load_dict(path=pkl_tagcount_3)
+tagcount_4 = load_dict(path=pkl_tagcount_4)
 
 # The 'punctuation_all' is the combination set of Chinese and English punctuation.
 punctuation_zh = " 、，。°？！：；“”’‘～…【】（）《》｛｝×―－·→℃"
@@ -48,6 +73,17 @@ def check_swords(sentence):
     # swords = set(sensitive_words).intersection(words)
     # return bool(swords)
 
+def segment(sentence):
+    """过滤分词。
+    """
+    # 句尾标点符号过滤
+    s = sentence.rstrip(''.join(punctuation_all))
+    # 句尾语气词过滤
+    s = s.rstrip(tone_words)
+    # 句中标点符号过滤
+    sv = [word for word in jieba.cut(s) if word not in punctuation_all]
+    return sv
+
 def synonym_cut(sentence, pattern="wf"):
     """Cut the sentence into a synonym vector tag.
     将句子切分为同义词向量标签。
@@ -59,7 +95,7 @@ def synonym_cut(sentence, pattern="wf"):
     Args:
         pattern: 'w'-分词, 'k'-唯一关键词，'t'-关键词列表, 'wf'-分词标签, 'tf-关键词标签'。
     """
-    # Modify: 添加完整的句尾标点符号过滤 2018-1-26 Contributor: 
+    # Modify: 添加完整的句尾标点符号过滤 2018-1-26 Contributor: zheyang0715(https://github.com/zheyang0715)
     sentence = sentence.rstrip(''.join(punctuation_all))
     # 句尾语气词过滤
     sentence = sentence.rstrip(tone_words)
@@ -90,8 +126,7 @@ def synonym_cut(sentence, pattern="wf"):
     return synonym_vector
 
 def get_tag(sentence, config):
-    """
-    Get semantic tag of sentence.
+    """Get semantic tag of sentence. 获取句子语义标签。
     """
     iquestion = sentence.format(**config)
     try:
@@ -145,6 +180,107 @@ def sum_cosine(matrix, threshold):
     num = (row - count) if row > col else (col - count)
     return dict(total=total, num_not_match=num, total_dif=max_score)
 
+def get_tags(word):
+    """获取词对应的语义标签集合
+    """
+    return tagtree.setdefault(word, [])
+    
+def sim_tag(tag1, tag2):
+    """计算两个语义标签的相似度，得分区间为[0, 1]。
+    """
+    score = 0.1
+    n = 0 # n 是分支层的节点总数
+    d = 0 # d 是两个分支间的距离
+    s1 = 0.65
+    s2 = 0.8
+    s3 = 0.9
+    s4 = 0.96
+    if tag1 == tag2:               # 语义标签相等
+        if tag1[7] == '=':          # 在第五层相等
+            score = 0.95
+        else:
+            score = 0.5
+    elif tag1[:5] == tag2[:5]:      # 在第4层相等 int
+        n = tagcount_4.setdefault(tag1[:5], 0)
+        d = abs(int(tag1[5:7]) - int(tag2[5:7]))
+        return math.cos(n * math.pi / 180) * ((n - d + 1) / n) * s4
+    elif tag1[:4] == tag2[:4]:      # 在第3层相等 ord
+        n = tagcount_3.setdefault(tag1[:4], 0)
+        d = abs(ord(tag1[4:5]) - ord(tag2[4:5]))
+        return math.cos(n * math.pi / 180) * ((n - d + 1) / n) * s3
+    elif tag1[:2] == tag2[:2]:      # 在第2层相等 int
+        n = tagcount_2.setdefault(tag1[:2], 0)
+        d = abs(int(tag1[2:4]) - int(tag2[2:4]))
+        return math.cos(n * math.pi / 180) * ((n - d + 1) / n) * s2
+    elif tag1[:1] == tag2[:1]:      # 在第1层相等 ord
+        n = tagcount_1.setdefault(tag1[:1], 0)
+        d = abs(ord(tag1[1:2]) - ord(tag2[1:2]))
+        return math.cos(n * math.pi / 180) * ((n - d + 1) / n) * s1
+    return score
+
+def max_sim_tag(word1, word2):
+    """计算两个词对应的语义标签集合中标签的最大相似度，得分区间为[0, 1]。
+    """
+    if word1 == word2:
+        return 1.0
+    max_score = 0
+    score = 0
+    tags1 = get_tags(word1)
+    tags2 = get_tags(word2)
+    if not tags1 or not tags2: # 至少有一个语义标签集合为空
+        return 0.1
+    for t1 in tags1:
+        for t2 in tags2:
+            score = sim_tag(t1, t2)
+            if score > max_score:
+                max_score = score
+            if max_score == 1:
+                return max_score
+    return max_score
+
+def jaccard2(sv1, sv2, threshold=0.8):
+    """Similarity score between two vectors with jaccard.
+    两个向量的语义jaccard相似度得分。
+
+    According to the semantic jaccard model to calculate the similarity.
+    The similarity score interval for each two sentences was [0, 1].
+    根据语义jaccard模型来计算相似度。每两个向量的相似度得分区间为[0, 1]。
+    
+    分词：自定义词典
+    单词相似度：从语义标签树中获取两个单词对应的语义标签集合，计算它们在分级编码
+    语义标签树中的距离
+    算法：基于词向量相似度矩阵 + 向量余弦
+    
+    实现：通过计算语义标签相似度矩阵，比较两词相似度。
+    1.阈值：0.8，每两个语义标签的相似度区间：[0,1]，若无标签则计算原词相似度得分。
+    2.计算两个标签相似度得分：词林提供三层编码：第一级大类用大写英文字母表示，
+    第二级中类用小写字母表示，第三级小类用二位十进制整数表示，第四级词群用大写
+    英文字母表示，第五级原子词群用二位十进制整数表示。第八位的标记有三种，分别
+    是“=“、”#“、”@“，=代表相等、同义，#代表不等、同类，@代表自我封闭、独立，
+    它在词典中既没有同义词，也没有相关词。
+    """
+    sv_matrix = []
+    sv_rows = []
+    n = 0 # n是分支层的节点总数
+    k = 0 # k是两个分支间的距离
+    a = 0.65
+    b = 0.8
+    c = 0.9
+    d = 0.96
+    for word1 in sv1:
+        for word2 in sv2:
+            score = max_sim_tag(word1, word2)
+            sv_rows.append(score)
+        sv_matrix.append(sv_rows)
+        sv_rows = []
+    matrix = np.mat(sv_matrix)
+    result = sum_cosine(matrix, threshold)
+    total = result["total"]
+    total_dif = result["total_dif"]
+    num = result["num_not_match"]
+    sim = total/(total + num*(1-total_dif))
+    return sim
+
 def jaccard_basic(synonym_vector1, synonym_vector2):
     """Similarity score between two vectors with basic jaccard.
     两个向量的基础jaccard相似度得分。
@@ -165,11 +301,17 @@ def jaccard(synonym_vector1, synonym_vector2, threshold=0.8):
     According to the semantic jaccard model to calculate the similarity.
     The similarity score interval for each two sentences was [0, 1].
     根据语义jaccard模型来计算相似度。每两个向量的相似度得分区间为为[0, 1]。
+    
+    分词：语义标签词典 + 自定义词典
+    单词相似度：基于标签字母前n位相同情况
+    算法：基于词向量相似度矩阵 + 向量余弦
+    
+    实现：通过计算语义标签相似度矩阵，比较两词相似度。
+    1.阈值：0.8，每两个语义标签的相似度区间：[0,1]，若无标签则计算原词相似度得分。
+    2.计算两个标签相似度得分：根据标签字母前n位相同情况判断得分。
     """
     sv_matrix = []
     sv_rows = []
-	# 阈值设定为0.8，每两个词的相似度打分为[0,1]，若无标签则计算原词相似度得分
-	# 标签字母前n位相同得分如下
     for word1, tag1 in synonym_vector1:
         for word2, tag2 in synonym_vector2:
             if word1 == word2:
@@ -233,9 +375,21 @@ def similarity(synonym_vector1, synonym_vector2, pattern='j'):
         sim = jaccard_basic(synonym_vector1, synonym_vector2)
     elif pattern == 'j':
         sim = jaccard(synonym_vector1, synonym_vector2)
+    elif pattern == 'j2':
+        sim = jaccard2(synonym_vector1, synonym_vector2)
     elif pattern == 'e':
         sim = edit_distance(synonym_vector1, synonym_vector2)
     return sim
+
+def similarity2(s1, s2):
+    """Similarity score between two sentences.
+    计算两个句子的相似度，得分区间为[0, 1]。
+    """
+    assert s1 != '', "sentence can not be empty"
+    assert s2 != '', "sentence can not be empty"
+    if s1 == s2:
+        return 1.0
+    return jaccard2(segment(s1), segment(s2))
 
 def get_location(sentence):
     """Get location in sentence. 获取句子中的地址。
