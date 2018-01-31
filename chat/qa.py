@@ -13,7 +13,7 @@ import sqlite3
 from collections import deque
 from py2neo import Graph, Node, Relationship, NodeSelector
 from .config import getConfig
-from .api import nlu_tuling, get_location_by_ip
+from .apilib import nlu_tuling, get_location_by_ip
 from .semantic import synonym_cut, segment, get_tag, similarity, check_swords, get_location
 from .mytools import time_me, get_current_time, random_item, get_age
 from .word2pinyin import pinyin_cut, jaccard_pinyin

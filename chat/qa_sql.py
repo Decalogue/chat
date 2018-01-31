@@ -13,7 +13,7 @@ import json
 import sqlite3
 from collections import deque
 from .config import getConfig
-from .api import nlu_tuling, get_location_by_ip
+from .apilib import nlu_tuling, get_location_by_ip
 from .sql import Database
 from .semantic import synonym_cut, get_tag, similarity, check_swords, get_location
 from .mytools import time_me, get_current_time, random_item, get_age
