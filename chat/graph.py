@@ -191,16 +191,16 @@ class Database():
         assert filename is not None, "filename can not be None"
         data = read_excel(filename)
         data_sheets = data.sheet_names()
-        if custom_sheets:
+        if custom_sheets: # 可自定义要导入的子表格
             sheet_names = list(set(data_sheets).intersection(set(custom_sheets)))
         else:
             sheet_names = data_sheets
-        for sheet_name in sheet_names: # 可自定义要导入的子表格
+        for sheet_name in sheet_names:
             table = data.sheet_by_name(sheet_name)
             topics = []
             # 1.Select specified table
             # table = data.sheet_by_index(0)
-            if data:
+            if table:
                 # 2.Select specified column
                 col_format = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O']
                 try:

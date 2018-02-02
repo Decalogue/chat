@@ -1,6 +1,8 @@
 CHANGES
 =======
 
+* Add kmapi
+* Add kmserver
 * Debug publish
 * 修复发布
 * v1.0.7

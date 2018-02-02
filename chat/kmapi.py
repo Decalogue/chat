@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# -*- coding: utf-8 -*-
 """KB Manager
 """
 import os
@@ -328,18 +328,28 @@ def config_delete_admin():
 @app.route("/search/nlucell", methods=['GET', 'POST'])
 def search_nlucell():
     """Search NluCell 搜索问答节点
+    Get：返回所有问答节点
+    POST：返回所有包含搜索关键词的问答节点
     """
     data = {
         'skb': database.skb,
         'result': []
     }
-    name = ''
-    skb = database.selector.select("Config").where("_.name ='" + database.skb + "'").first()
+    state = {
+        'success' : 0,
+        'message' : "请先选择知识库再搜索节点"
+    }
+    if not database.skb:
+        return json.dumps(state)
     if request.method == 'POST':
         pdata = request.form.to_dict()
-        name = pdata['name']
-    subgraph = database.graph.run("MATCH (n:NluCell) WHERE n.name CONTAINS '" \
-        + name + "' and '" + skb['topic'] + "' CONTAINS n.topic and n.tid='' RETURN n").data()
+        subgraph = database.graph.run(
+            "MATCH (n:NluCell) WHERE n.name CONTAINS '" \
+            + pdata['name'] + "' and n.topic='" + database.skb + \
+            "' and n.tid='' RETURN n").data()
+    else:
+        subgraph = database.graph.run("MATCH (n:NluCell) WHERE n.topic='" + \
+            database.skb + "' and n.tid='' RETURN n").data()
     data['result'] = [each['n'] for each in subgraph]
     return json.dumps(data)
 
@@ -353,17 +363,23 @@ def search_scene():
         'skb': database.skb,
         'result': []
     }
+    state = {
+        'success' : 0,
+        'message' : "请先选择知识库再搜索节点"
+    }
     skb = database.selector.select("Config").where("_.name ='" + database.skb + "'").first()
-    topics = skb['topic'].split(',')
+    if not skb:
+        return json.dumps(state)
     if request.method == 'POST':
         pdata = request.form.to_dict()
-        name = pdata['name']
+        if not pdata['name']:
+            state['message'] = "问题不能为空"
+            return json.dumps(state)
         subgraph = database.graph.run("MATCH (n:NluCell) WHERE n.name CONTAINS '" \
-            + name + "' and '" + skb['topic'] + "' CONTAINS n.topic and n.tid<>'' RETURN n").data()
-        data['result'] = [each['n'] for each in subgraph]
-        return json.dumps(data)
-    subgraph = database.graph.run("MATCH (n:NluCell) WHERE '" + skb['topic'] \
-        + "' CONTAINS n.topic and n.tid=0 RETURN n").data()
+            + pdata['name'] + "' and '" + skb['topic'] + "' CONTAINS n.topic and n.tid<>'' RETURN n").data()
+    else:
+        subgraph = database.graph.run("MATCH (n:NluCell) WHERE '" + skb['topic'] \
+            + "' CONTAINS n.topic and n.tid=0 RETURN n").data()
     data['result'] = [each['n'] for each in subgraph]
     return json.dumps(data)
     
@@ -377,6 +393,12 @@ def nlucell_item():
         'skb': database.skb,
         'result': []
     }
+    state = {
+        'success' : 0,
+        'message' : "请先选择知识库再搜索节点"
+    }
+    if not database.skb:
+        return json.dumps(state)
     if request.method == 'POST':
         pdata = request.form.to_dict()
         subgraph = database.graph.run(
@@ -507,14 +529,21 @@ def scene_topic():
         'skb': database.skb,
         'result': []
     }
+    state = {
+        'success' : 0,
+        'message' : "请先选择知识库再搜索节点"
+    }
+    if not database.skb:
+        return json.dumps(state)
     skb = database.selector.select("Config").where("_.name ='" + database.skb + "'").first()
     if request.method == 'POST':
         pdata = request.form.to_dict()
-        match_node = "MATCH (n:NluCell) WHERE n.topic='" + pdata['topic'] + "' and '" + \
-            skb['topic'] + "' CONTAINS n.topic and n.tid=" + str(pdata['tid']) + \
-            " and n.ftid=" + str(pdata['ftid']) + " RETURN n"
-        match_child = "MATCH (n:NluCell) WHERE n.topic='" + pdata['topic'] + "' and '" + \
-            skb['topic'] + "' CONTAINS n.topic and n.ftid=" + str(pdata['tid']) + " RETURN n"
+        match_node = "MATCH (n:NluCell) WHERE n.topic='" + pdata['topic'] + \
+            "' and '" + skb['topic'] + "' CONTAINS n.topic and n.tid=" + \
+            str(pdata['tid']) + " and n.ftid=" + str(pdata['ftid']) + " RETURN n"
+        match_child = "MATCH (n:NluCell) WHERE n.topic='" + pdata['topic'] + \
+            "' and '" + skb['topic'] + "' CONTAINS n.topic and n.tid<>n.ftid and n.ftid=" + \
+            str(pdata['tid']) + " RETURN n"
         subgraph = database.graph.run(match_node).data()
         data['child'] = [each['n'] for each in database.graph.run(match_child).data()]
     else:
@@ -533,6 +562,12 @@ def scene_item():
         'skb': database.skb,
         'result': []
     }
+    state = {
+        'success' : 0,
+        'message' : "请先选择知识库再搜索节点"
+    }
+    if not database.skb:
+        return json.dumps(state)
     skb = database.selector.select("Config").where("_.name ='" + database.skb + "'").first()
     if request.method == 'POST':
         pdata = request.form.to_dict()
@@ -551,9 +586,12 @@ def scene_add():
     """添加场景节点
     """
     if request.method == 'POST':
+        state = {
+            'success' : 0,
+            'message' : "问题不能为空"
+        }
         pdata = request.form.to_dict()
         if not pdata['name']:
-            state['message'] = "问题不能为空"
             return json.dumps(state)
         skb = database.selector.select("Config", name=database.skb).first()
         if skb:
@@ -564,13 +602,13 @@ def scene_add():
             database.graph.push(skb)
             count = database.graph.run("MATCH (n:NluCell) WHERE n.topic='"\
                 + pdata['topic'] + "' RETURN count(n) as n").data()[0]['n']
-            if int(pdata['tid']) == 0: # 根节点直接添加
+            if pdata['tid'] == '': # 子节点先生成 tid 再添加                    
+                tid = int(count)
+            elif int(pdata['tid']) == 0: # 根节点直接添加
                 if count > 0:
                     state['message'] = "根节点已存在"
                     return json.dumps(state)
                 tid = int(pdata['tid'])
-            elif pdata['tid'] == '': # 子节点先生成 tid 再添加                    
-                tid = int(count)
             database.add_nlucell(
                 name=pdata['name'],
                 content=pdata['content'],

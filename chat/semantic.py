@@ -101,8 +101,7 @@ def synonym_cut(sentence, pattern="wf"):
     sentence = sentence.rstrip(tone_words)
     synonym_vector = []
     if pattern == "w":
-        result = list(jieba.cut(sentence))
-        synonym_vector = [item for item in result if item not in punctuation_all]
+        synonym_vector = [item for item in jieba.cut(sentence) if item not in punctuation_all]
     elif pattern == "k":
         synonym_vector = analyse.extract_tags(sentence, topK=1)
     elif pattern == "t":
