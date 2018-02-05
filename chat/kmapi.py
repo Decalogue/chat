@@ -222,6 +222,21 @@ def upload_img():
             state['url'] = filename
         return json.dumps(state)
 
+@app.route('/download/img', methods=['POST'])
+def download_img():
+    """Download img. 下载图片
+    """
+    if request.method == 'POST':
+        pdata = request.form.to_dict()
+        state = {
+            'success' : 0,
+            'message' : "找不到图片"
+        }
+        filepath, filename = os.path.split(pdata['url'])
+        if allowed_file(filename):
+            return send_from_directory(filepath, filename)
+        return json.dumps(state)
+
 @app.route('/download', methods=['GET', 'POST'])
 def download():
     """Download 下载
