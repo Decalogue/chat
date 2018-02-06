@@ -630,6 +630,7 @@ def scene_add():
                 topic=pdata['topic'],
                 tid=tid,
                 ftid=int(pdata['ftid']),
+                behavior='0x1500',
                 parameter=pdata['parameter'], # str
                 txt=pdata['txt'],
                 img=pdata['img'],              # str
@@ -672,6 +673,7 @@ def scene_edit():
             # node['topic']=pdata['topic']
             node['tid']=int(pdata['tid'])
             node['ftid']=int(pdata['ftid'])
+            # node['behavior']=pdata['behavior'] # behavior 不能编辑
             node['parameter']=pdata['parameter']
             node['txt']=pdata['txt']
             node['img']=pdata['img']
