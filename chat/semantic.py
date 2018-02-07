@@ -15,8 +15,8 @@ import pickle
 import numpy as np
 import jieba
 thispath = os.path.split(os.path.realpath(__file__))[0]
-jieba.set_dictionary(thispath + "\\dict\\synonymdict.txt")
-jieba.load_userdict(thispath + "\\dict\\userdict.txt")
+jieba.set_dictionary(thispath + "/dict/synonymdict.txt")
+jieba.load_userdict(thispath + "/dict/userdict.txt")
 import jieba.posseg as posseg
 import jieba.analyse as analyse
 from string import punctuation

@@ -690,7 +690,7 @@ def scene_edit():
 
 @app.route("/scene/delete", methods=['GET', 'POST'])
 def scene_delete():
-    """删除场景节点
+    """删除场景节点及其所有子节点
     """
     data = {
         'akb': get_available_kb(),
@@ -705,10 +705,20 @@ def scene_delete():
         name = pdata['name']
         if not name:
             return json.dumps(state)
-        node = database.selector.select("NluCell").where("_.name ='" + name + "'", \
-            "_.topic ='" + pdata['topic'] + "'", "_.tid =" + str(pdata['tid'])).first()
-        if node:
-            database.graph.delete(node)
+        # 循环删除当前节点及其所有子节点
+        tids = []
+        childs = list(database.selector.select("NluCell").where("_.name ='" + name + "'", \
+            "_.topic ='" + pdata['topic'] + "'", "_.tid =" + str(pdata['tid'])))
+        if childs:
+            while childs:
+                for child in childs:
+                    tids.append(child['tid'])
+                    database.graph.delete(child)
+                childs = []
+                for tid in tids:
+                    childs.extend(list(database.selector.select("NluCell").where("_.topic ='" + \
+                        pdata['topic'] + "'", "_.ftid =" + str(tid))))
+                tids = []
             state['success'] = 1
             state['message'] = "删除场景节点成功"
             return json.dumps(state)
