@@ -8,6 +8,7 @@ from werkzeug import secure_filename
 from .app import app, files
 from .graph import Database
 # from .sql import Database
+from .semantic import get_tag
 
 # 初始化知识库
 database = Database(password="train", userid="A0001")
@@ -615,10 +616,20 @@ def scene_add():
             topics.append(pdata['topic'])
             skb["topic"] = ",".join(set(topics))
             database.graph.push(skb)
-            count = database.graph.run("MATCH (n:NluCell) WHERE n.topic='"\
-                + pdata['topic'] + "' RETURN count(n) as n").data()[0]['n']
-            if pdata['tid'] == '': # 子节点先生成 tid 再添加                    
-                tid = int(count)
+            # count = database.graph.run("MATCH (n:NluCell) WHERE n.topic='"\
+                # + pdata['topic'] + "' RETURN count(n) as n").data()[0]['n']
+            
+            etids_data = database.graph.run("MATCH (n:NluCell) WHERE n.topic='"\
+                + pdata['topic'] + "' RETURN n.tid as t").data()
+            etids = [each['t'] for each in etids_data]
+            count = len(etids)
+            if pdata['tid'] == '': # 子节点先生成 tid 再添加
+                # 若之前删除过其它子树，tid 应选取 <=count 范围内与其它节点 tid 不重复的值
+                atid = list(set(range(0, count+1)) - set(etids))
+                tid = int(atid[0])
+
+            # if pdata['tid'] == '': # 子节点先生成 tid 再添加
+                # tid = int(count)
             elif int(pdata['tid']) == 0: # 根节点直接添加
                 if count > 0:
                     state['message'] = "根节点已存在"
@@ -675,6 +686,8 @@ def scene_edit():
             node['ftid']=int(pdata['ftid'])
             # node['behavior']=pdata['behavior'] # behavior 不能编辑
             node['parameter']=pdata['parameter']
+            if pdata['pre_name'] != pdata['name']: # Modify 2018-2-7
+                node['tag'] = get_tag(node['name'], database.user)
             node['txt']=pdata['txt']
             node['img']=pdata['img']
             node['button']=pdata['button']

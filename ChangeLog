@@ -1,6 +1,8 @@
 CHANGES
 =======
 
+* Modify 删除子场景树接口和修改 chat.semantic 词典路径以支持 Linux
+* Debug behavior
 * Add download img
 * Update KB manager
 * Add kmapi
