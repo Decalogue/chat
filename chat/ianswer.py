@@ -36,7 +36,7 @@ def answer2xml(data):
             imgs = '|'.join(img_names)
         if len(img_urls) > 1:
             xml_items = [item.format(img_url=url) for url in img_urls[1:]]
-            items = '\n'.join(xml_items)
+            items = ''.join(xml_items)
     
     result['picurl'] = answer.format(
         timestamp=str(get_timestamp()),

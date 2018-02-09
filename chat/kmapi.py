@@ -176,6 +176,9 @@ def reset():
         if allowed_file(f.filename):
             filename = 'C:/nlu/data/upload/' + secure_filename(f.filename)
             f.save(filename)
+            # 删除配置
+            database.graph.run("MATCH (n:Config) DETACH DELETE n")
+            # 重新导入
             database.reset(filename=filename)
             state['success'] = 1
             state['message'] = "重置知识库成功"
