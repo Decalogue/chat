@@ -527,10 +527,17 @@ class Robot():
                         if parent['button']:
                             next_name = parent['button'].split('|')[-1]
                             if next_name != '0': # 确定有下一步
-                                # print(type(parent['tid']), parent['tid'])
-                                match_string = "MATCH (n:NluCell {name:'" + \
-                                    next_name + "', topic:'" + self.topic + \
-                                    "', ftid:" + str(int(parent['tid'])) + "}) RETURN n"
+                                # 下一步是当前场景节点的子节点
+                                # match_string = "MATCH (n:NluCell {name:'" + \
+                                    # next_name + "', topic:'" + self.topic + \
+                                    # "', ftid:" + str(int(parent['tid'])) + "}) RETURN n"
+
+                                # 下一步是当前场景节点的子节点或同层级节点 Modify：2018-2-26
+                                match_string = "MATCH (n:NluCell) WHERE n.name='" + \
+                                    next_name + "' and n.topic='" + self.topic + \
+                                    "' and n.ftid=" + str(int(parent['tid'])) + \
+                                    " or n.ftid=" + str(int(parent['ftid'])) + " RETURN n"
+
                                 match_data = list(self.graph.run(match_string).data())                           
                                 if match_data:
                                     node = match_data[0]['n']
@@ -547,7 +554,12 @@ class Robot():
             match_scene = "MATCH (n:NluCell) WHERE n.topic='" + self.topic + "' RETURN n"
             scene_nodes = self.graph.run(match_scene).data()
             # 根据场景节点的 ftid 是否等于父节点 tid 筛选子场景节点
-            subscene_nodes = [item['n'] for item in scene_nodes if item['n']['ftid'] == self.amemory[-1]['tid']]
+            # subscene_nodes = [item['n'] for item in scene_nodes if item['n']['ftid'] == self.amemory[-1]['tid']]
+
+            # 根据场景节点的 ftid 是否等于父节点 tid 或 ftid 筛选子场景节点及同层级节点 Modify：2018-2-26
+            subscene_nodes = [item['n'] for item in scene_nodes
+                if item['n']['ftid'] == self.amemory[-1]['tid'] or item['n']['ftid'] == self.amemory[-1]['ftid']]
+
             if subscene_nodes:
                 result = self.extract_synonym_first(question, subscene_nodes)
                 if not result["context"]:
@@ -555,7 +567,8 @@ class Robot():
                 if not result["context"]:
                     result = self.extract_pinyin(question, subscene_nodes)
                 if result["context"]:
-                    print("正确匹配到当前场景的子场景")
+                    # print("正确匹配到当前场景的子场景")
+                    print("正确匹配到当前场景的子场景或同层级场景") # Modify：2018-2-26
                     self.pmemory.append(self.amemory[-1])
                     self.amemory.append(result) # 添加到场景记忆
                     return result
