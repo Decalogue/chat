@@ -315,8 +315,10 @@ def jaccard(synonym_vector1, synonym_vector2, threshold=0.8):
         for word2, tag2 in synonym_vector2:
             if word1 == word2:
                 score = 1.0
-            elif tag1 == tag2:
+            elif tag1 == tag2 and len(tag1) == 8:
                 score = 0.95
+            elif tag1 == tag2: # 少于8位时为默认分词属性，不在自定义词典内
+                score = 0.40
             elif tag1[:7] == tag2[:7]:
                 score = 0.90
             elif tag1[:6] == tag2[:6]:
@@ -332,7 +334,7 @@ def jaccard(synonym_vector1, synonym_vector2, threshold=0.8):
             elif tag1[:1] == tag2[:1]:
                 score = 0.40
             else:
-                score = 0.20
+                score = 0.10
             if score < 0.5:
                 jscore = jaccard_basic(list(word1), list(word2))
                 if jscore >= 0.5:

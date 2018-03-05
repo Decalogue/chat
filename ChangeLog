@@ -1,6 +1,8 @@
 CHANGES
 =======
 
+* 添加支持平级场景
+* 修改 XML 格式及重置知识库功能
 * Modify 自动生成场景节点ID
 * Modify 删除子场景树接口和修改 chat.semantic 词典路径以支持 Linux
 * Debug behavior

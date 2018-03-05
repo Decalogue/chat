@@ -6,7 +6,6 @@
 
 [![Documentation Status](https://readthedocs.org/projects/chat-cn/badge/?version=latest)](http://chat-cn.readthedocs.io/zh_CN/latest/?badge=latest)
 [![PyPI Version](https://img.shields.io/pypi/v/chat.svg)](https://pypi.python.org/pypi/chat)
-[![Py Version](https://img.shields.io/pypi/pyversions/chat.svg)](https://github.com/Decalogue/chat)
 
 ## 这就是 Chat
 

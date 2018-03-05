@@ -12,6 +12,9 @@ class TestMe(TestCase):
     @time_me()
     def test_similarity(self):
         data = [
+            ("黄克功", "王怀安"),
+            ("黄克功", "黄克功"),
+            ("宋朝的历史", "明朝的历史"),
             ("电脑", "打印机"),
             ("怎么了？，。。。。", "怎么了?..,#$"),
             ("我喜欢你", "你喜欢我"),
@@ -29,8 +32,8 @@ class TestMe(TestCase):
             sv2 = synonym_cut(s2, 'wf')
             print(s1, 'VS', s2)
             print(sv1, 'VS', sv2)
-            score = similarity(sv1, sv2)
-            print("similarity1: ", score)
+
+            print("similarity1: ", similarity(sv1, sv2))
             print('similarity2: ', similarity2(s1, s2), '\n')
 
 
