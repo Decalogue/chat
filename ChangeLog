@@ -1,6 +1,8 @@
 CHANGES
 =======
 
+* 退出场景时返回的场景标签为当前场景标签
+* Modify semantic.jaccard
 * 添加支持平级场景
 * 修改 XML 格式及重置知识库功能
 * Modify 自动生成场景节点ID

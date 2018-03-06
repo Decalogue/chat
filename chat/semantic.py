@@ -47,7 +47,7 @@ tagcount_4 = load_dict(path=pkl_tagcount_4)
 # The 'punctuation_all' is the combination set of Chinese and English punctuation.
 punctuation_zh = " 、，。°？！：；“”’‘～…【】（）《》｛｝×―－·→℃"
 punctuation_all = set(punctuation) | set(punctuation_zh)
-# 句尾语气词
+# 句尾语气词 TODO：考虑语气词单独成句的情况
 tone_words = "的了呢吧吗啊啦呀"
 # 敏感词库 Modified in 2017-5-25
 try:

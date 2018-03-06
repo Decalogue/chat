@@ -323,16 +323,17 @@ def config_delete():
             'message' : "要删除的知识库名不能为空或不存在"
         }
         name = request.form.to_dict()['kb']
+        # 删除该用户有权限的知识库，无权限的同名知识库不能删除
         if not name or not name in akb:
             return json.dumps(state)
-        # TODO：删除该用户有权限的知识库，无权限的同名知识库不能删除
-        # match_str = "MATCH (user:User {userid: 'A0001'})-[r:has]->\
-            # (config:Config {name: '" + name + "'}) DELETE r"
+        config = database.selector.select("Config", name=name).first()
+        # 删除该 Config 节点属性 topic 对应的所有 NluCell 节点
+        database.graph.run("MATCH (n:NluCell) WHERE '" + config['topic'] \
+            + "' CONTAINS n.topic DELETE n")
+        # 删除该 Config 节点及其关系
         match_str = "MATCH (user:User {userid: 'A0001'})-[r:has]->\
             (config:Config {name: '" + name + "'}) DELETE r, config"
         database.graph.run(match_str)
-        # TODO：删除该 Config 节点属性 topic 对应的所有 NluCell 节点
-        # or 若多知识库统一管理则由管理员对用户权限进行操作，不支持用户删除知识库
         state['success'] = 1
         state['message'] = "删除知识库成功"
         return json.dumps(state)
@@ -341,6 +342,7 @@ def config_delete():
 @app.route("/config/delete/admin", methods=['GET', 'POST'])
 def config_delete_admin():
     """管理员删除知识库
+    多知识库管理由管理员统一对用户权限进行操作，不支持用户删除知识库。
     """
     pass
 
@@ -447,7 +449,7 @@ def nlucell_add():
         if not pdata['name']:
             return json.dumps(state)
         skb = database.selector.select("Config", name=database.skb).first()
-        # 追加并更新可用话题集(TODO：问答不用追加话题 topic=database.skb)
+        # 追加并更新可用话题集(问答 topic=database.skb)
         if skb:
             match_str = "MATCH (n:NluCell {name:'"+ pdata['name'] + "'}) WHERE '" \
                 + skb['topic'] + "' CONTAINS n.topic RETURN n"
@@ -612,6 +614,14 @@ def scene_add():
         pdata = request.form.to_dict()
         if not pdata['name']:
             return json.dumps(state)
+        # 确保新场景标签是全局唯一的
+        all_topics = []
+        for config in database.selector.select("Config"):
+            all_topics.extend(config['topic'].split(',') if config["topic"] else [])
+        if pdata['topic'] in all_topics:
+            state['message'] = "该场景已存在，请重命名场景标签"
+            return json.dumps(state)
+ 
         skb = database.selector.select("Config", name=database.skb).first()
         if skb:
             # 追加并更新可用话题集
@@ -619,8 +629,6 @@ def scene_add():
             topics.append(pdata['topic'])
             skb["topic"] = ",".join(set(topics))
             database.graph.push(skb)
-            # count = database.graph.run("MATCH (n:NluCell) WHERE n.topic='"\
-                # + pdata['topic'] + "' RETURN count(n) as n").data()[0]['n']
             
             etids_data = database.graph.run("MATCH (n:NluCell) WHERE n.topic='"\
                 + pdata['topic'] + "' RETURN n.tid as t").data()
@@ -630,14 +638,12 @@ def scene_add():
                 # 若之前删除过其它子树，tid 应选取 <=count 范围内与其它节点 tid 不重复的值
                 atid = list(set(range(0, count+1)) - set(etids))
                 tid = int(atid[0])
-
-            # if pdata['tid'] == '': # 子节点先生成 tid 再添加
-                # tid = int(count)
             elif int(pdata['tid']) == 0: # 根节点直接添加
                 if count > 0:
                     state['message'] = "根节点已存在"
                     return json.dumps(state)
                 tid = int(pdata['tid'])
+
             database.add_nlucell(
                 name=pdata['name'],
                 content=pdata['content'],

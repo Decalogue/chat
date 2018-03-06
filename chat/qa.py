@@ -500,10 +500,10 @@ class Robot():
             if item == question: # 完全匹配退出模式
                 result['behavior'] = 0
                 result['name'] = '退出'
-                result["context"] = self.topic # Modify 2018-3-6 退出时返回的场景标签为当前场景
-                result['content'] = ""
+                result['context'] = self.topic # Modify 2018-3-6 退出时返回的场景标签为当前场景
+                result['content'] = ''
                 self.is_scene = False
-                self.topic = ""
+                self.topic = ''
                 self.amemory.clear() # 清空场景记忆
                 self.pmemory.clear() # 清空场景上一步记忆
                 return result
@@ -536,8 +536,8 @@ class Robot():
                                 # 下一步是当前场景节点的子节点或同层级节点 Modify：2018-2-26
                                 match_string = "MATCH (n:NluCell) WHERE n.name='" + \
                                     next_name + "' and n.topic='" + self.topic + \
-                                    "' and n.ftid=" + str(int(parent['tid'])) + \
-                                    " or n.ftid=" + str(int(parent['ftid'])) + " RETURN n"
+                                    "' and n.ftid IN [" + str(int(parent['tid'])) + \
+                                    "," + str(int(parent['ftid'])) + "] RETURN n"
 
                                 match_data = list(self.graph.run(match_string).data())                           
                                 if match_data:
