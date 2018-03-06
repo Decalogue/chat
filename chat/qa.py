@@ -500,6 +500,7 @@ class Robot():
             if item == question: # 完全匹配退出模式
                 result['behavior'] = 0
                 result['name'] = '退出'
+                result["context"] = self.topic # Modify 2018-3-6 退出时返回的场景标签为当前场景
                 result['content'] = ""
                 self.is_scene = False
                 self.topic = ""
