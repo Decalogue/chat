@@ -1,4 +1,4 @@
-API - 语义数据库管理
+API - 语义数据库管理 SQL 版本
 ========================
 
 .. image:: my_figs/database.ico 

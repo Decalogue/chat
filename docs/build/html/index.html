@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Chat: 基于自然语言理解与机器学习的聊天机器人 &mdash; chat 1.0.5 documentation</title>
+  <title>Chat: 基于自然语言理解与机器学习的聊天机器人 &mdash; chat 1.0.7 documentation</title>
   
 
   
@@ -30,7 +30,7 @@
   
 
   
-    <link rel="top" title="chat 1.0.5 documentation" href="#"/>
+    <link rel="top" title="chat 1.0.7 documentation" href="#"/>
         <link rel="next" title="安装 Installation" href="user/installation.html"/> 
 
   
@@ -59,7 +59,7 @@
             
             
               <div class="version">
-                1.0.5
+                1.0.7
               </div>
             
           
@@ -92,12 +92,19 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="modules/server.html">API - 语义服务器</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules/client.html">API - 语义客户端</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/graph.html">API - 语义数据库管理 Neo4j 版本</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/sql.html">API - 语义数据库管理 SQL 版本</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules/qa.html">API - 语义理解问答</a></li>
-<li class="toctree-l1"><a class="reference internal" href="modules/semantic.html">API - 语义工具箱</a></li>
-<li class="toctree-l1"><a class="reference internal" href="modules/database.html">API - 语义数据库管理</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules/mytools.html">API - 常用工具箱</a></li>
-<li class="toctree-l1"><a class="reference internal" href="modules/upload.html">API - 上传本地知识库</a></li>
-<li class="toctree-l1"><a class="reference internal" href="modules/download.html">API - 下载语义知识库</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/semantic.html">API - 语义工具箱</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/semantic2.html">API - 语义工具箱2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/api.html">API - 语义理解 Restful API 接口</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/apilib.html">API - 第三方 API 接口</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/app.html">API - 语义知识库管理 Flask app</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/config.html">API - chat 配置</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/ianswer.html">API - XML 封装答案</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/tts.html">API - 语音合成</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/word2pinyin.html">API - 拼音语义算法</a></li>
 </ul>
 
             
@@ -148,17 +155,18 @@
 <div class="section" id="id1">
 <h2>这就是 Chat<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
 <p>Chat 是一个基于自然语言理解与机器学习的语义理解库。
-Chat 提供丰富的语义分析工具与语义知识图的构建工具，非常适合从0开始迅速搭建自己的聊天机器人，也能够减少工程师在实际开发当中的重复工作。Chat 非常易于修改和扩展，所以个性化定制也是非常方便的。如果你有如下需求，欢迎选择 Chat：</p>
+Chat 提供丰富的语义分析工具与语义知识图的构建工具，非常适合从0开始迅速搭建自己的聊天机器人，也能够减少工程师在实际开发当中的重复工作。Chat 非常易于修改和扩展，可以方便地个性化定制。如果您有如下需求，欢迎选择 Chat：</p>
 <ul class="simple">
 <li>想从0开始迅速搭建自己的聊天机器人</li>
-<li>想了解自然语言处理以及如何构建自己的知识图谱</li>
+<li>想了解自然语言处理与机器学习算法在问答中的应用</li>
 <li>想智能化生活工作，提升效率</li>
+<li>对知识图谱以及 KBQA 感兴趣，想从0开始构建自己的知识图谱</li>
 </ul>
 <p>Chat 适用的 Python 版本是：Python 3.3-3.6</p>
 <p>Chat 的设计原则</p>
 <ul class="simple">
 <li>用户友好：用户的使用体验始终是我们考虑的首要和中心内容。Chat 遵循减少认知困难的最佳实践：Chat 提供一致而简洁的 API， 能够极大减少一般应用下用户的工作量，同时，Chat 提供清晰和具有实践意义的 bug 反馈。</li>
-<li>模块性：完全独立可配置的模块可以用最少的代价自由组合在一起，你可以使用它们来构建自己的模块。</li>
+<li>模块性：完全独立可配置的模块可以用最少的代价自由组合在一起，您可以使用它们来构建自己的模块。</li>
 <li>易扩展性：添加新模块超级容易，只需要仿照现有的模块编写新的类或函数即可。创建新模块的便利性使得 Chat 更适合于快速开发。</li>
 <li>知识图谱：基于图数据库的知识图表达提供了更快的搜索速度与智能。</li>
 </ul>
@@ -170,24 +178,26 @@ Chat 提供丰富的语义分析工具与语义知识图的构建工具，非常
 </div>
 <div class="section" id="id2">
 <h2>当前版本与更新<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
-<p>如果你发现本文档提供的信息有误，有两种可能：</p>
+<p>如果您发现本文档提供的信息有误，有两种可能：</p>
 <ul class="simple">
-<li>你的Chat版本过低：Chat是一个发展迅速的语义理解库，请保持您的 Chat 与官方最新的 release 版本相符。</li>
+<li>您的Chat版本过低：Chat是一个发展迅速的语义理解库，请保持您的 Chat 与官方最新的 release 版本相符。</li>
 <li>我们的中文文档没有及时更新：如果是这种情况，请发邮件给我，我会尽快更新。</li>
 </ul>
-<p>目前文档的版本号是1.0.5，对应于官方的1.0.5 release 版本, 本次更新的主要内容是：</p>
+<p>目前文档的版本号是1.0.7，对应于官方的1.0.7 release 版本, 本次更新的主要内容是：</p>
 <ul class="simple">
-<li>文档全面升级，绝大多数 API 均得到更新</li>
-<li>补充了原文档中缺失，但源代码中确实可用的类和函数</li>
-<li>添加了项目细节图示说明，包括架构、部署、具体实现等</li>
-<li>重新整理了文档风格和栏目，使得文档更容易阅读</li>
+<li>添加场景问答上下文支持；</li>
+<li>部分添加对 SQL 的支持，后续会完善对 SQL 的支持；</li>
+<li>文档全面升级，绝大多数 API 均得到更新；</li>
+<li>补充了原文档中缺失，但源代码中确实可用的类和函数；</li>
+<li>添加了项目细节图示说明，包括架构、部署、具体实现等；</li>
+<li>重新整理了文档风格和栏目，使得文档更容易阅读。</li>
 </ul>
 <div class="admonition note">
 <p class="first admonition-title">Note</p>
-<p>我们欢迎你在 <a class="reference external" href="https://github.com/decalogue/chat">Github</a> 上 star 和 watch <a class="reference external" href="https://github.com/decalogue/chat">官方项目</a> ，这样当官方有更新时，你会立即知道。</p>
-<p class="last">如果你阅读在线中文文档时有什么问题，你可以在 github 上下载这个项目，
-然后去 <code class="docutils literal"><span class="pre">/docs/build/html/index.html</span></code> 阅读离线中文文档。
-或者在 <a class="reference external" href="http://chat-cn.readthedocs.io/zh_CN/latest/">Read the docs</a> 中阅读官方原文档。</p>
+<p>我们欢迎您在 <a class="reference external" href="https://github.com/decalogue/chat">Github</a> 上 Star, Fork 以及 Watch <a class="reference external" href="https://github.com/decalogue/chat">官方项目</a> ，这样当官方有更新时，您会立即知道。</p>
+<p>您可以在 <a class="reference external" href="http://chat-cn.readthedocs.io/zh_CN/latest/">Read the docs</a> 中阅读官方中文文档。</p>
+<p class="last">如果您阅读在线中文文档时有什么问题，您可以在 Github 上下载这个项目，
+然后去 <code class="docutils literal"><span class="pre">/docs/build/html/index.html</span></code> 阅读离线中文文档。</p>
 </div>
 </div>
 <div class="section" id="id4">
@@ -224,12 +234,13 @@ Chat 提供丰富的语义分析工具与语义知识图的构建工具，非常
 <li class="toctree-l1"><a class="reference internal" href="user/ts.html">技术支持</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="user/ts.html#github">Github</a></li>
 <li class="toctree-l2"><a class="reference internal" href="user/ts.html#faq">FAQ</a></li>
-<li class="toctree-l2"><a class="reference internal" href="user/ts.html#id3">你的贡献</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user/ts.html#id3">您的贡献</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="user/thanks.html">致谢</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="user/thanks.html#id2">代码贡献</a></li>
 <li class="toctree-l2"><a class="reference internal" href="user/thanks.html#id3">文档贡献</a></li>
+<li class="toctree-l2"><a class="reference internal" href="user/thanks.html#id5">建议贡献</a></li>
 </ul>
 </li>
 </ul>
@@ -252,50 +263,108 @@ Chat 提供丰富的语义分析工具与语义知识图的构建工具，非常
 <li class="toctree-l2"><a class="reference internal" href="modules/client.html#id4">配置语义知识库</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="modules/graph.html">API - 语义数据库管理 Neo4j 版本</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="modules/graph.html#id1">语义数据库管理</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modules/sql.html">API - 语义数据库管理 SQL 版本</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="modules/sql.html#id1">语义数据库管理</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="modules/qa.html">API - 语义理解问答</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="modules/qa.html#id1">语义理解机器人</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="modules/semantic.html">API - 语义工具箱</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="modules/semantic.html#id1">自定义分词</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/semantic.html#id2">获取语义标签</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/semantic.html#cosinejaccard">根据语义分词Cosine相似性矩阵计算语义jaccard模型的各个参数</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/semantic.html#jaccard">向量相似度计算-基础jaccard模型</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/semantic.html#id3">向量相似度计算-语义jaccard模型</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/semantic.html#id4">向量相似度计算-语义编辑距离模型</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/semantic.html#id5">向量相似度计算（模型参数可选）</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/semantic.html#id6">从句子中获取地名信息</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/semantic.html#id7">从句子中获取音乐信息</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="modules/database.html">API - 语义数据库管理</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="modules/database.html#id1">语义数据库管理</a></li>
-</ul>
-</li>
 <li class="toctree-l1"><a class="reference internal" href="modules/mytools.html">API - 常用工具箱</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="modules/mytools.html#id1">自定义异常</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/mytools.html#id2">自定义字符串格式异常</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/mytools.html#myencoder-json-dumps-datetime">MyEncoder 解决 json.dumps 不能序列化 datetime 类型的问题</a></li>
 <li class="toctree-l2"><a class="reference internal" href="modules/mytools.html#mac">获取Mac地址</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/mytools.html#id1">获取主机名</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/mytools.html#id3">获取主机名</a></li>
 <li class="toctree-l2"><a class="reference internal" href="modules/mytools.html#ip">获取IP地址</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/mytools.html#id2">获取当前运行函数名</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/mytools.html#id3">遍历目录进行批处理</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/mytools.html#id4">程序时间性能分析</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/mytools.html#id5">获取当前时间</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/mytools.html#id6">列表随机元素</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/mytools.html#id7">文件替换</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/mytools.html#id4">获取当前运行函数名</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/mytools.html#id5">遍历目录进行批处理</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/mytools.html#id6">程序时间性能分析</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/mytools.html#id7">获取指定日期表示方式的时间戳或者当前时间戳</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/mytools.html#id8">获取指定日期表示方式的当前时间</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/mytools.html#id9">获取指定日期表示方式的年龄</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/mytools.html#id10">列表随机元素</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/mytools.html#id11">文件替换</a></li>
 <li class="toctree-l2"><a class="reference internal" href="modules/mytools.html#excel">读取excel</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/mytools.html#id8">设置excel样式</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/mytools.html#id9">写入excel</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/mytools.html#id10">生成词典</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/mytools.html#id11">显示等待中</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/mytools.html#id12">设置excel样式</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/mytools.html#id13">写入excel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/mytools.html#id14">生成词典</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/mytools.html#id15">显示等待中</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="modules/upload.html">API - 上传本地知识库</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="modules/upload.html#excel">上传excel文件</a></li>
-<li class="toctree-l2"><a class="reference internal" href="modules/upload.html#id1">上传子图</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/semantic.html">API - 语义工具箱</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="modules/semantic.html#pkl">通过 pkl 文件加载原生字典对象</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/semantic.html#id1">生成敏感词词典</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/semantic.html#id2">检测是否包含敏感词</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/semantic.html#id3">自定义分词（包含标点及语气词过滤）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/semantic.html#id4">自定义分词（可将句子切分为同义词向量标签）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/semantic.html#id5">获取句子语义标签</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/semantic.html#id6">获取词对应的语义标签集合</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/semantic.html#id7">计算两个语义标签的相似度，得分区间为[0, 1]</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/semantic.html#id8">计算两个词对应的语义标签集合中标签的最大相似度，得分区间为[0, 1]</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/semantic.html#cosinejaccard">根据语义分词Cosine相似性矩阵计算语义jaccard模型的各个参数</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/semantic.html#jaccard">向量相似度计算-基础 jaccard 模型</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/semantic.html#id9">向量相似度计算-语义 jaccard 模型</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/semantic.html#jaccard2">向量相似度计算-语义 jaccard2 模型</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/semantic.html#id10">向量相似度计算-语义编辑距离模型</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/semantic.html#id11">向量相似度计算（模型参数可选）</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/semantic.html#id12">计算两个句子的相似度，得分区间为[0, 1]</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/semantic.html#id13">从句子中获取地名信息</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/semantic.html#id14">从句子中获取音乐信息</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="modules/download.html">API - 下载语义知识库</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="modules/download.html#id1">匹配子图</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules/semantic2.html">API - 语义工具箱2</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="modules/semantic2.html#id1">按行读取文件进行自定义处理，直到遇到空行或者到达文件末尾为止</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/semantic2.html#id2">构建语义标签树</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/semantic2.html#id3">构建第1级编码语义标签树</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/semantic2.html#id4">构建前2级编码语义标签树</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/semantic2.html#id5">构建前3级编码语义标签树</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/semantic2.html#id6">构建前4级编码语义标签树</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/semantic2.html#pkl">通过 pkl 文件加载原生字典对象</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modules/api.html">API - 语义理解 Restful API 接口</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="modules/api.html#restful-api">语义理解 Restful API 接口</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modules/apilib.html">API - 第三方 API 接口</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="modules/apilib.html#api">图灵 API 接口</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/apilib.html#ip">根据IP获取当前地址</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/apilib.html#id1">根据地址获取经纬度</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/apilib.html#id2">根据经纬度获取地址</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/apilib.html#url-mp3">下载 url 对应的 MP3 资源</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/apilib.html#id3">百度音乐 API</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modules/app.html">API - 语义知识库管理 Flask app</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="modules/app.html#flask-app">Flask app</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modules/config.html">API - chat 配置</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="modules/config.html#id1">获取配置信息</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modules/ianswer.html">API - XML 封装答案</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="modules/ianswer.html#xml">XML 封装答案</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modules/tts.html">API - 语音合成</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="modules/tts.html#id1">自定义请求异常</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/tts.html#id2">在线语音合成</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/tts.html#id3">离线语音合成</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="modules/word2pinyin.html">API - 拼音语义算法</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="modules/word2pinyin.html#cosine-jaccard">根据语义分词Cosine相似性矩阵计算语义 jaccard 模型的各个参数</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/word2pinyin.html#id1">计算两个拼音的相似度得分</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/word2pinyin.html#jaccard">计算两个拼音向量的语义 jaccard 相似度得分</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/word2pinyin.html#id2">将句子切分为拼音向量</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules/word2pinyin.html#id3">基于拼音向量的语义 jaccard 句子相似度得分</a></li>
 </ul>
 </li>
 </ul>
@@ -328,7 +397,7 @@ Chat 提供丰富的语义分析工具与语义知识图的构建工具，非常
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, Rain.
+        &copy; Copyright 2017, Decalogue.
 
     </p>
   </div>
@@ -350,7 +419,7 @@ Chat 提供丰富的语义分析工具与语义知识图的构建工具，非常
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'1.0.5',
+            VERSION:'1.0.7',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

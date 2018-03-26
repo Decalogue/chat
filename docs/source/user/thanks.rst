@@ -15,3 +15,12 @@
 ==================
 
 * `Decalogue <https://github.com/decalogue/chat>`_
+
+建议贡献
+==================
+
+* `zheyang0715 <https://github.com/zheyang0715>`_
+
+具体内容：chat.semantic.synonym_cut 句尾标点符号过滤
+
+* 各位热心朋友的建议以及在 Issues 里的提问

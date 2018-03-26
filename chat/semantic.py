@@ -57,6 +57,8 @@ except:
     sensitive_words = []
 
 def generate_swords():
+    """生成敏感词词典
+    """
     with codecs.open(thispath + "\\dict\\sensitive_words.txt", "r", "UTF-8") as file:
         with codecs.open(thispath + "\\dict\\swords.txt", "w", "UTF-8") as newfile:
             sensitive_words = sorted(list(set(file.read().split())))
@@ -95,7 +97,7 @@ def synonym_cut(sentence, pattern="wf"):
     Args:
         pattern: 'w'-分词, 'k'-唯一关键词，'t'-关键词列表, 'wf'-分词标签, 'tf-关键词标签'。
     """
-    # Modify: 添加完整的句尾标点符号过滤 2018-1-26 Contributor: zheyang0715(https://github.com/zheyang0715)
+    # 句尾标点符号过滤
     sentence = sentence.rstrip(''.join(punctuation_all))
     # 句尾语气词过滤
     sentence = sentence.rstrip(tone_words)

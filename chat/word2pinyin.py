@@ -10,7 +10,7 @@ from pypinyin import pinyin, lazy_pinyin
 def sum_cosine(matrix, threshold):
     """Calculate the parameters of the semantic Jaccard model based on the
     Cosine similarity matrix of semantic word segmentation.
-    根据语义分词Cosine相似性矩阵计算语义jaccard模型的各个参数。
+    根据语义分词Cosine相似性矩阵计算语义 jaccard 模型的各个参数。
 
     Args:
         matrix: Semantic Cosine similarity matrix. 语义分词Cosine相似性矩阵。
@@ -46,7 +46,7 @@ def sum_cosine(matrix, threshold):
 
 def match_pinyin(pinyin1, pinyin2):
     """Similarity score between two pinyin.
-    两个拼音的相似度得分。
+    计算两个拼音的相似度得分。
     """
     assert pinyin1 != "", "pinyin1 can not be empty"
     assert pinyin2 != "", "pinyin2 can not be empty"
@@ -69,7 +69,7 @@ def match_pinyin(pinyin1, pinyin2):
     
 def jaccard_pinyin(pv1, pv2, threshold=0.7):
     """Similarity score between two pinyin vectors with jaccard.
-    两个拼音向量的语义jaccard相似度得分。
+    计算两个拼音向量的语义 jaccard 相似度得分。
 
     According to the semantic jaccard model to calculate the similarity.
     The similarity score interval for each two pinyin sentences was [0, 1].
@@ -100,7 +100,7 @@ def pinyin_cut(sentence, pattern=None):
 # @time_me()    
 def similarity_pinyin(sentence1, sentence2):
     """Similarity score between two based on pinyin vectors with jaccard.
-    基于拼音向量语义jaccard的句子相似度得分。
+    基于拼音向量的语义 jaccard 句子相似度得分。
     """
     pv1 = pinyin_cut(sentence1)
     pv2 = pinyin_cut(sentence2)

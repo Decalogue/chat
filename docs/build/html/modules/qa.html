@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>API - 语义理解问答 &mdash; chat 1.0.5 documentation</title>
+  <title>API - 语义理解问答 &mdash; chat 1.0.7 documentation</title>
   
 
   
@@ -30,9 +30,9 @@
   
 
   
-    <link rel="top" title="chat 1.0.5 documentation" href="../index.html"/>
-        <link rel="next" title="API - 语义工具箱" href="semantic.html"/>
-        <link rel="prev" title="API - 语义客户端" href="client.html"/> 
+    <link rel="top" title="chat 1.0.7 documentation" href="../index.html"/>
+        <link rel="next" title="API - 常用工具箱" href="mytools.html"/>
+        <link rel="prev" title="API - 语义数据库管理 SQL 版本" href="sql.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                1.0.5
+                1.0.7
               </div>
             
           
@@ -93,15 +93,22 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="server.html">API - 语义服务器</a></li>
 <li class="toctree-l1"><a class="reference internal" href="client.html">API - 语义客户端</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graph.html">API - 语义数据库管理 Neo4j 版本</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sql.html">API - 语义数据库管理 SQL 版本</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">API - 语义理解问答</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#id1">语义理解机器人</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="semantic.html">API - 语义工具箱</a></li>
-<li class="toctree-l1"><a class="reference internal" href="database.html">API - 语义数据库管理</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mytools.html">API - 常用工具箱</a></li>
-<li class="toctree-l1"><a class="reference internal" href="upload.html">API - 上传本地知识库</a></li>
-<li class="toctree-l1"><a class="reference internal" href="download.html">API - 下载语义知识库</a></li>
+<li class="toctree-l1"><a class="reference internal" href="semantic.html">API - 语义工具箱</a></li>
+<li class="toctree-l1"><a class="reference internal" href="semantic2.html">API - 语义工具箱2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API - 语义理解 Restful API 接口</a></li>
+<li class="toctree-l1"><a class="reference internal" href="apilib.html">API - 第三方 API 接口</a></li>
+<li class="toctree-l1"><a class="reference internal" href="app.html">API - 语义知识库管理 Flask app</a></li>
+<li class="toctree-l1"><a class="reference internal" href="config.html">API - chat 配置</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ianswer.html">API - XML 封装答案</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tts.html">API - 语音合成</a></li>
+<li class="toctree-l1"><a class="reference internal" href="word2pinyin.html">API - 拼音语义算法</a></li>
 </ul>
 
             
@@ -149,35 +156,19 @@
   <div class="section" id="api">
 <h1>API - 语义理解问答<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h1>
 <img alt="../_images/qa.ico" src="../_images/qa.ico" />
-<span class="target" id="module-chat.qa"></span><p>qa</p>
-<p>NLU based on Natural Language Processing and Graph Database.
-基于自然语言处理与图形数据库的自然语言理解。</p>
-<p>Available functions:
-- All classes and functions: 所有类和函数</p>
 <table border="1" class="longtable docutils">
 <colgroup>
 <col width="10%" />
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#chat.qa.Robot" title="chat.qa.Robot"><code class="xref py py-obj docutils literal"><span class="pre">Robot</span></code></a>([password])</td>
-<td>NLU Robot.</td>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">Robot</span></code></td>
+<td></td>
 </tr>
 </tbody>
 </table>
 <div class="section" id="id1">
 <h2>语义理解机器人<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
-<dl class="function">
-<dt id="chat.qa.Robot">
-<code class="descclassname">chat.qa.</code><code class="descname">Robot</code><span class="sig-paren">(</span><em>password='train'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/chat/qa.html#Robot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#chat.qa.Robot" title="Permalink to this definition">¶</a></dt>
-<dd><p>NLU Robot.
-自然语言理解机器人。</p>
-<p>Public attributes:
-- graph: The connection of graph database. 图形数据库连接。
-- pattern: The pattern for NLU tool: &#8216;semantic&#8217; or &#8216;vec&#8217;. 语义标签或词向量模式。
-- memory: The context memory of robot. 机器人对话上下文记忆。</p>
-</dd></dl>
-
 </div>
 </div>
 
@@ -188,10 +179,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="semantic.html" class="btn btn-neutral float-right" title="API - 语义工具箱" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="mytools.html" class="btn btn-neutral float-right" title="API - 常用工具箱" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="client.html" class="btn btn-neutral" title="API - 语义客户端" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="sql.html" class="btn btn-neutral" title="API - 语义数据库管理 SQL 版本" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -200,7 +191,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, Rain.
+        &copy; Copyright 2017, Decalogue.
 
     </p>
   </div>
@@ -222,7 +213,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'1.0.5',
+            VERSION:'1.0.7',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

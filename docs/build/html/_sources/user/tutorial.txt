@@ -7,7 +7,7 @@
 对话 QA
 ======================
 
-* Step 1：在终端中启动数据库
+* Step 1：在终端中启动数据库(需自定义数据库，其密码设为'train'，可在 chat/conf/self.conf 中修改 [neo4j] 选项 password)
 
 .. code-block:: bash
   
@@ -18,10 +18,10 @@
 .. code-block:: python
 
   from chat.qa import Robot
+  from chat.config import getConfig
   
-  robot = Robot()
-  # 此处 userid 是你的机器人配置信息中的 userid
-  answer = robot.search(question="你好", userid="userid")
+  robot = Robot(password=getConfig("neo4j", "password"))
+  answer = robot.search(question="您的自定义问题")
   print(answer)
 
 * Step 2-1：或者先启动语义服务器
@@ -39,7 +39,7 @@
   import json
   from chat.client import match
   
-  result = json.loads(match(question="你的问题", userid="userid"))
+  result = json.loads(match(question="您的自定义问题"))
   answer = result['content']
   print(answer)
   
@@ -49,10 +49,11 @@
 .. code-block:: python
 
   from chat.qa import Robot
+  from chat.config import getConfig
   
-  robot = Robot()
+  robot = Robot(password=getConfig("neo4j", "password"))
   # 返回已有知识库列表
-  answer = robot.config(info="", userid="userid")
+  result = robot.configure(info="")
   # 配置已有知识库权限
-  # answer = robot.config(info="在已有知识库列表里选择你想要的名称并以空格分隔", userid="userid")
-  print(answer)
+  # result = robot.configure(info="在已有知识库列表里选择你想要的名称并以空格分隔")
+  print(result)

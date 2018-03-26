@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>API - 下载语义知识库 &mdash; chat 1.0.5 documentation</title>
+  <title>API - 下载语义知识库 &mdash; chat 1.0.7 documentation</title>
   
 
   
@@ -30,8 +30,7 @@
   
 
   
-    <link rel="top" title="chat 1.0.5 documentation" href="../index.html"/>
-        <link rel="prev" title="API - 上传本地知识库" href="upload.html"/> 
+    <link rel="top" title="chat 1.0.7 documentation" href="../index.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -59,7 +58,7 @@
             
             
               <div class="version">
-                1.0.5
+                1.0.7
               </div>
             
           
@@ -89,18 +88,22 @@
 <li class="toctree-l1"><a class="reference internal" href="../user/ts.html">技术支持</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../user/thanks.html">致谢</a></li>
 </ul>
-<ul class="current">
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="server.html">API - 语义服务器</a></li>
 <li class="toctree-l1"><a class="reference internal" href="client.html">API - 语义客户端</a></li>
+<li class="toctree-l1"><a class="reference internal" href="graph.html">API - 语义数据库管理 Neo4j 版本</a></li>
+<li class="toctree-l1"><a class="reference internal" href="sql.html">API - 语义数据库管理 SQL 版本</a></li>
 <li class="toctree-l1"><a class="reference internal" href="qa.html">API - 语义理解问答</a></li>
-<li class="toctree-l1"><a class="reference internal" href="semantic.html">API - 语义工具箱</a></li>
-<li class="toctree-l1"><a class="reference internal" href="database.html">API - 语义数据库管理</a></li>
 <li class="toctree-l1"><a class="reference internal" href="mytools.html">API - 常用工具箱</a></li>
-<li class="toctree-l1"><a class="reference internal" href="upload.html">API - 上传本地知识库</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">API - 下载语义知识库</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#id1">匹配子图</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="semantic.html">API - 语义工具箱</a></li>
+<li class="toctree-l1"><a class="reference internal" href="semantic2.html">API - 语义工具箱2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">API - 语义理解 Restful API 接口</a></li>
+<li class="toctree-l1"><a class="reference internal" href="apilib.html">API - 第三方 API 接口</a></li>
+<li class="toctree-l1"><a class="reference internal" href="app.html">API - 语义知识库管理 Flask app</a></li>
+<li class="toctree-l1"><a class="reference internal" href="config.html">API - chat 配置</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ianswer.html">API - XML 封装答案</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tts.html">API - 语音合成</a></li>
+<li class="toctree-l1"><a class="reference internal" href="word2pinyin.html">API - 拼音语义算法</a></li>
 </ul>
 
             
@@ -148,26 +151,19 @@
   <div class="section" id="api">
 <h1>API - 下载语义知识库<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h1>
 <img alt="../_images/packages.ico" src="../_images/packages.ico" />
-<span class="target" id="module-chat.download"></span><p>Download graph data to excel.</p>
 <table border="1" class="longtable docutils">
 <colgroup>
 <col width="10%" />
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#chat.download.match" title="chat.download.match"><code class="xref py py-obj docutils literal"><span class="pre">match</span></code></a>(*[,&nbsp;label,&nbsp;topic])</td>
-<td>Match subgraph and download.</td>
+<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">match</span></code></td>
+<td></td>
 </tr>
 </tbody>
 </table>
 <div class="section" id="id1">
 <h2>匹配子图<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
-<dl class="function">
-<dt id="chat.download.match">
-<code class="descclassname">chat.download.</code><code class="descname">match</code><span class="sig-paren">(</span><em>*</em>, <em>label='NluCell'</em>, <em>topic=''</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/chat/download.html#match"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#chat.download.match" title="Permalink to this definition">¶</a></dt>
-<dd><p>Match subgraph and download.</p>
-</dd></dl>
-
 </div>
 </div>
 
@@ -176,19 +172,12 @@
           </div>
           <footer>
   
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-      
-        <a href="upload.html" class="btn btn-neutral" title="API - 上传本地知识库" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
-    </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, Rain.
+        &copy; Copyright 2017, Decalogue.
 
     </p>
   </div>
@@ -210,7 +199,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'1.0.5',
+            VERSION:'1.0.7',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true

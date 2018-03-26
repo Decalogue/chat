@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>安装 Installation &mdash; chat 1.0.5 documentation</title>
+  <title>安装 Installation &mdash; chat 1.0.7 documentation</title>
   
 
   
@@ -30,7 +30,7 @@
   
 
   
-    <link rel="top" title="chat 1.0.5 documentation" href="../index.html"/>
+    <link rel="top" title="chat 1.0.7 documentation" href="../index.html"/>
         <link rel="next" title="快速开始" href="tutorial.html"/>
         <link rel="prev" title="Chat: 基于自然语言理解与机器学习的聊天机器人" href="../index.html"/> 
 
@@ -60,7 +60,7 @@
             
             
               <div class="version">
-                1.0.5
+                1.0.7
               </div>
             
           
@@ -108,12 +108,19 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../modules/server.html">API - 语义服务器</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../modules/client.html">API - 语义客户端</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/graph.html">API - 语义数据库管理 Neo4j 版本</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/sql.html">API - 语义数据库管理 SQL 版本</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../modules/qa.html">API - 语义理解问答</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../modules/semantic.html">API - 语义工具箱</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../modules/database.html">API - 语义数据库管理</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../modules/mytools.html">API - 常用工具箱</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../modules/upload.html">API - 上传本地知识库</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../modules/download.html">API - 下载语义知识库</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/semantic.html">API - 语义工具箱</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/semantic2.html">API - 语义工具箱2</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/api.html">API - 语义理解 Restful API 接口</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/apilib.html">API - 第三方 API 接口</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/app.html">API - 语义知识库管理 Flask app</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/config.html">API - chat 配置</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/ianswer.html">API - XML 封装答案</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/tts.html">API - 语音合成</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../modules/word2pinyin.html">API - 拼音语义算法</a></li>
 </ul>
 
             
@@ -168,7 +175,7 @@
 <h2>一、图形数据库<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="neo4j">
 <h3>1.Neo4j 简介<a class="headerlink" href="#neo4j" title="Permalink to this headline">¶</a></h3>
-<p>Neo4j 是一个高性能的，NOSQL 图形数据库，它将结构化数据存储在网络上而不是表中。Neo4j 也可以被看作是一个高性能的图引擎，该引擎具有成熟数据库的所有特性。程序员工作在一个面向对象的、灵活的网络结构下而不是严格、静态的表中——但是他们可以享受到具备完全的事务特性、企业级的数据库的所有好处。</p>
+<p>Neo4j 是一个高性能的，NoSQL 图形数据库，它将结构化数据存储在网络上而不是表中。Neo4j 也可以被看作是一个高性能的图引擎，该引擎具有成熟数据库的所有特性。程序员工作在一个面向对象的、灵活的网络结构下而不是严格、静态的表中——但是他们可以享受到具备完全的事务特性、企业级的数据库的所有好处。</p>
 </div>
 <div class="section" id="id4">
 <h3>2.图形数据结构<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
@@ -216,6 +223,9 @@
 <li>xlrd</li>
 <li>xlwt</li>
 <li>pypinyin</li>
+<li>Flask</li>
+<li>flask_restful</li>
+<li>flask_uploads</li>
 </ul>
 <div class="highlight-bash"><div class="highlight"><pre><span></span>pip install -r requirements.txt
 </pre></div>
@@ -249,7 +259,7 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, Rain.
+        &copy; Copyright 2017, Decalogue.
 
     </p>
   </div>
@@ -271,7 +281,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'1.0.5',
+            VERSION:'1.0.7',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true
