@@ -31,9 +31,7 @@
 ### Step 1 在终端中启动数据库
 
 > 方式1：直接使用 chat/tests/nlu.db 这个已经初始化的数据库
-
 > 方式2：需自定义数据库，将其密码设为'train'
-
 > 若要修改密码：可在 chat/conf/self.conf 中修改 [neo4j] 选项 password)
 
     neo4j start
@@ -47,7 +45,6 @@
     server.start()
     
 > 2.2 导入测试知识库（若直接使用 chat/tests/nlu.db 进入 Step 3）
-
 > （详见 chat/tests/test_graph.py，可命令行运行 python test_graph.py）
 
     from chat.graph import Database
@@ -58,7 +55,6 @@
 ### Step 3 开始聊天
 
 > 方式1：启动语义客户端
-
 > （详见 chat/tests/test_client.py，可命令行运行 python test_client.py）
 
     from chat import client

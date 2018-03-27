@@ -74,6 +74,7 @@ Chat 的想法源于组合语义标签的高区分度和图数据库的灵活高
 
 文档由 `Sphinx <http://sphinx-doc.org/latest/index.html>`_ 生成。
 如果要本地编辑它，运行下列命令：
+
 .. code:: bash
 
     cd docs
@@ -87,7 +88,7 @@ Chat 的想法源于组合语义标签的高区分度和图数据库的灵活高
     make clean
     make html
 
-然后，打开 ``docs/build/index.html`` 来查看会出现在 `Read the docs <http://chat-cn.readthedocs.io/zh_CN/latest/>`_ 文档。如果您更改了很多内容，并且似乎出现了许多误导性的错误信息或警告，运行``make clean html``来让 Sphinx 重新生成所有文件。
+然后，打开 ``docs/build/index.html`` 来查看会出现在 `Read the docs <http://chat-cn.readthedocs.io/zh_CN/latest/>`_ 文档。如果您更改了很多内容，并且似乎出现了许多误导性的错误信息或警告，运行 ``make clean html`` 来让 Sphinx 重新生成所有文件。
 
 编写英文文档文字时，请尽可能地按照现有文档的文字习惯，来保证整个文档文字的一致性。所使用的语法及约定的相关信息，请参考以下文档：
 
