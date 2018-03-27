@@ -5,7 +5,7 @@
 """
 from numpy import mat, zeros, where
 from pypinyin import pinyin, lazy_pinyin
-# from mytools import time_me
+# from .mytools import time_me
 
 def sum_cosine(matrix, threshold):
     """Calculate the parameters of the semantic Jaccard model based on the

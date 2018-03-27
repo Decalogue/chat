@@ -16,14 +16,20 @@ database = Database(password="train", userid="A0001")
 img_formats = {'png', 'jpg', 'jpeg', 'gif', 'xls'}
 
 def allowed_file(filename):
+    """判断文件类型是否允许
+    """
     return '.' in filename and \
         filename.rsplit('.', 1)[1].lower() in img_formats
 
 def get_username():
+    """获取 chatbot 名字
+    """
     user = database.selector.select("User").where("_.userid ='A0001'").first()
     return user['robotname']
 
 def get_available_kb():
+    """获取可用的知识库列表
+    """
     kb = []
     match_str = "MATCH (user:User {userid: 'A0001'})\
         -[r:has {available:1}]->(config:Config) RETURN config.name as name"
@@ -32,6 +38,8 @@ def get_available_kb():
     return kb
 
 def get_selected_kb():
+    """获取已启用的知识库列表
+    """
     kb = []
     match_str = "MATCH (user:User {userid: 'A0001'})-[r:has {bselected:1, available:1}] \
         ->(config:Config) RETURN config.name as name"
@@ -868,6 +876,8 @@ def scene_delete_single():
     return json.dumps(data)
 
 def start(port=5000):
+    """启动知识库管理服务
+    """
     app.run(debug=True, port=port, threaded=True)
 
 if __name__ == '__main__':

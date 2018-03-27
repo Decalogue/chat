@@ -32,7 +32,7 @@
   
     <link rel="top" title="chat 1.0.7 documentation" href="../index.html"/>
         <link rel="next" title="API - 语义工具箱" href="semantic.html"/>
-        <link rel="prev" title="API - 语义理解问答" href="qa.html"/> 
+        <link rel="prev" title="API - 语义知识库管理 API 接口" href="kmapi.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -96,6 +96,7 @@
 <li class="toctree-l1"><a class="reference internal" href="graph.html">API - 语义数据库管理 Neo4j 版本</a></li>
 <li class="toctree-l1"><a class="reference internal" href="sql.html">API - 语义数据库管理 SQL 版本</a></li>
 <li class="toctree-l1"><a class="reference internal" href="qa.html">API - 语义理解问答</a></li>
+<li class="toctree-l1"><a class="reference internal" href="kmapi.html">API - 语义知识库管理 API 接口</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">API - 常用工具箱</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#id1">自定义异常</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#id2">自定义字符串格式异常</a></li>
@@ -173,134 +174,326 @@
             
   <div class="section" id="api">
 <h1>API - 常用工具箱<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h1>
-<img alt="../_images/mytools.ico" src="../_images/mytools.ico" />
+<a class="reference internal image-reference" href="../_images/mytools.ico"><img alt="../_images/mytools.ico" src="../_images/mytools.ico" style="width: 64.0px; height: 64.0px;" /></a>
 <table border="1" class="longtable docutils">
 <colgroup>
 <col width="10%" />
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">Error</span></code></td>
-<td></td>
+<tr class="row-odd"><td><a class="reference internal" href="#mytools.Error" title="mytools.Error"><code class="xref py py-obj docutils literal"><span class="pre">mytools.Error</span></code></a>(value)</td>
+<td>Base class for exceptions in this module.</td>
 </tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">StringPatternError</span></code></td>
-<td></td>
+<tr class="row-even"><td><a class="reference internal" href="#mytools.StringPatternError" title="mytools.StringPatternError"><code class="xref py py-obj docutils literal"><span class="pre">mytools.StringPatternError</span></code></a>(value)</td>
+<td>Exception raised for errors in the pattern of string args.</td>
 </tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">MyEncoder</span></code></td>
-<td></td>
+<tr class="row-odd"><td><a class="reference internal" href="#mytools.MyEncoder" title="mytools.MyEncoder"><code class="xref py py-obj docutils literal"><span class="pre">mytools.MyEncoder</span></code></a>([skipkeys,&nbsp;ensure_ascii,&nbsp;...])</td>
+<td>解决json.dumps不能序列化datetime类型的问题：使用Python自带的json.dumps方法</td>
 </tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">get_mac_address</span></code></td>
-<td></td>
+<tr class="row-even"><td><a class="reference internal" href="#mytools.get_mac_address" title="mytools.get_mac_address"><code class="xref py py-obj docutils literal"><span class="pre">mytools.get_mac_address</span></code></a>()</td>
+<td>Get mac address.</td>
 </tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">get_hostname</span></code></td>
-<td></td>
+<tr class="row-odd"><td><a class="reference internal" href="#mytools.get_hostname" title="mytools.get_hostname"><code class="xref py py-obj docutils literal"><span class="pre">mytools.get_hostname</span></code></a>()</td>
+<td>Get hostname.</td>
 </tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">get_ip_address</span></code></td>
-<td></td>
+<tr class="row-even"><td><a class="reference internal" href="#mytools.get_ip_address" title="mytools.get_ip_address"><code class="xref py py-obj docutils literal"><span class="pre">mytools.get_ip_address</span></code></a>(hostname)</td>
+<td>Get host ip address.</td>
 </tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">get_host_ip</span></code></td>
-<td></td>
+<tr class="row-odd"><td><a class="reference internal" href="#mytools.get_host_ip" title="mytools.get_host_ip"><code class="xref py py-obj docutils literal"><span class="pre">mytools.get_host_ip</span></code></a>()</td>
+<td>Get host ip address.</td>
 </tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">get_current_function_name</span></code></td>
-<td></td>
+<tr class="row-even"><td><a class="reference internal" href="#mytools.get_current_function_name" title="mytools.get_current_function_name"><code class="xref py py-obj docutils literal"><span class="pre">mytools.get_current_function_name</span></code></a>()</td>
+<td>Get current function name.</td>
 </tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">Walk</span></code></td>
-<td></td>
+<tr class="row-odd"><td><a class="reference internal" href="#mytools.Walk" title="mytools.Walk"><code class="xref py py-obj docutils literal"><span class="pre">mytools.Walk</span></code></a>([db])</td>
+<td>Walk directory to batch processing.</td>
 </tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">time_me</span></code></td>
-<td></td>
+<tr class="row-even"><td><a class="reference internal" href="#mytools.time_me" title="mytools.time_me"><code class="xref py py-obj docutils literal"><span class="pre">mytools.time_me</span></code></a>([info,&nbsp;format_string])</td>
+<td>Performance analysis - time</td>
 </tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">get_timestamp</span></code></td>
-<td></td>
+<tr class="row-odd"><td><a class="reference internal" href="#mytools.get_timestamp" title="mytools.get_timestamp"><code class="xref py py-obj docutils literal"><span class="pre">mytools.get_timestamp</span></code></a>([s,&nbsp;style,&nbsp;pattern])</td>
+<td>Get timestamp.</td>
 </tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">get_current_time</span></code></td>
-<td></td>
+<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">mytools.get_current_time</span></code>([format_string,&nbsp;info])</td>
+<td>Get current time with specific format_string.</td>
 </tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">get_age</span></code></td>
-<td></td>
+<tr class="row-odd"><td><a class="reference internal" href="#mytools.get_age" title="mytools.get_age"><code class="xref py py-obj docutils literal"><span class="pre">mytools.get_age</span></code></a>([format_string,&nbsp;info])</td>
+<td>Get age with specific format_string.</td>
 </tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">random_item</span></code></td>
-<td></td>
+<tr class="row-even"><td><a class="reference internal" href="#mytools.random_item" title="mytools.random_item"><code class="xref py py-obj docutils literal"><span class="pre">mytools.random_item</span></code></a>(mylist)</td>
+<td>Get random item of data.</td>
 </tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">file_replace</span></code></td>
-<td></td>
+<tr class="row-odd"><td><a class="reference internal" href="#mytools.file_replace" title="mytools.file_replace"><code class="xref py py-obj docutils literal"><span class="pre">mytools.file_replace</span></code></a>(source_file,&nbsp;...)</td>
+<td>File replace.</td>
 </tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">read_excel</span></code></td>
-<td></td>
+<tr class="row-even"><td><a class="reference internal" href="#mytools.read_excel" title="mytools.read_excel"><code class="xref py py-obj docutils literal"><span class="pre">mytools.read_excel</span></code></a>(filepath)</td>
+<td>Get excel source</td>
 </tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">set_excel_style</span></code></td>
-<td></td>
+<tr class="row-odd"><td><a class="reference internal" href="#mytools.set_excel_style" title="mytools.set_excel_style"><code class="xref py py-obj docutils literal"><span class="pre">mytools.set_excel_style</span></code></a>(name,&nbsp;height[,&nbsp;bold])</td>
+<td>Set excel style.</td>
 </tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">write_excel</span></code></td>
-<td></td>
+<tr class="row-even"><td><a class="reference internal" href="#mytools.write_excel" title="mytools.write_excel"><code class="xref py py-obj docutils literal"><span class="pre">mytools.write_excel</span></code></a>([filename,&nbsp;sheets])</td>
+<td>Write excel from data.</td>
 </tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">write_excel_sql</span></code></td>
-<td></td>
+<tr class="row-odd"><td><a class="reference internal" href="#mytools.write_excel_sql" title="mytools.write_excel_sql"><code class="xref py py-obj docutils literal"><span class="pre">mytools.write_excel_sql</span></code></a>([filename,&nbsp;sheets])</td>
+<td>Write excel from data.</td>
 </tr>
-<tr class="row-even"><td><code class="xref py py-obj docutils literal"><span class="pre">generate_dict</span></code></td>
-<td></td>
+<tr class="row-even"><td><a class="reference internal" href="#mytools.generate_dict" title="mytools.generate_dict"><code class="xref py py-obj docutils literal"><span class="pre">mytools.generate_dict</span></code></a>(dictpath,&nbsp;sourcepath)</td>
+<td>Generate dictionary file from sourcefile.</td>
 </tr>
-<tr class="row-odd"><td><code class="xref py py-obj docutils literal"><span class="pre">waitting</span></code></td>
-<td></td>
+<tr class="row-odd"><td><a class="reference internal" href="#mytools.waitting" title="mytools.waitting"><code class="xref py py-obj docutils literal"><span class="pre">mytools.waitting</span></code></a>()</td>
+<td>Print waitting.</td>
 </tr>
 </tbody>
 </table>
 <div class="section" id="id1">
 <h2>自定义异常<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="mytools.Error">
+<code class="descclassname">mytools.</code><code class="descname">Error</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mytools.html#Error"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mytools.Error" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base class for exceptions in this module.</p>
+</dd></dl>
+
 </div>
 <div class="section" id="id2">
 <h2>自定义字符串格式异常<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="mytools.StringPatternError">
+<code class="descclassname">mytools.</code><code class="descname">StringPatternError</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mytools.html#StringPatternError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mytools.StringPatternError" title="Permalink to this definition">¶</a></dt>
+<dd><p>Exception raised for errors in the pattern of string args.</p>
+</dd></dl>
+
 </div>
 <div class="section" id="myencoder-json-dumps-datetime">
 <h2>MyEncoder 解决 json.dumps 不能序列化 datetime 类型的问题<a class="headerlink" href="#myencoder-json-dumps-datetime" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="mytools.MyEncoder">
+<code class="descclassname">mytools.</code><code class="descname">MyEncoder</code><span class="sig-paren">(</span><em>skipkeys=False</em>, <em>ensure_ascii=True</em>, <em>check_circular=True</em>, <em>allow_nan=True</em>, <em>sort_keys=False</em>, <em>indent=None</em>, <em>separators=None</em>, <em>default=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mytools.html#MyEncoder"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mytools.MyEncoder" title="Permalink to this definition">¶</a></dt>
+<dd><p>解决json.dumps不能序列化datetime类型的问题：使用Python自带的json.dumps方法
+转换数据为json的时候，如果格式化的数据中有datetime类型的数据时会报错。
+TypeError: datetime.datetime(2014, 03, 20, 12, 10, 44) is not JSON serializable
+Usage: json.dumps(data, cls=MyEncoder)</p>
+</dd></dl>
+
 </div>
 <div class="section" id="mac">
 <h2>获取Mac地址<a class="headerlink" href="#mac" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="mytools.get_mac_address">
+<code class="descclassname">mytools.</code><code class="descname">get_mac_address</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mytools.html#get_mac_address"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mytools.get_mac_address" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get mac address.</p>
+</dd></dl>
+
 </div>
 <div class="section" id="id3">
 <h2>获取主机名<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="mytools.get_hostname">
+<code class="descclassname">mytools.</code><code class="descname">get_hostname</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mytools.html#get_hostname"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mytools.get_hostname" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get hostname.</p>
+</dd></dl>
+
 </div>
 <div class="section" id="ip">
 <h2>获取IP地址<a class="headerlink" href="#ip" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="mytools.get_ip_address">
+<code class="descclassname">mytools.</code><code class="descname">get_ip_address</code><span class="sig-paren">(</span><em>hostname</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mytools.html#get_ip_address"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mytools.get_ip_address" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get host ip address.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="mytools.get_host_ip">
+<code class="descclassname">mytools.</code><code class="descname">get_host_ip</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mytools.html#get_host_ip"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mytools.get_host_ip" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get host ip address.</p>
+</dd></dl>
+
 </div>
 <div class="section" id="id4">
 <h2>获取当前运行函数名<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="mytools.get_current_function_name">
+<code class="descclassname">mytools.</code><code class="descname">get_current_function_name</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mytools.html#get_current_function_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mytools.get_current_function_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get current function name.</p>
+</dd></dl>
+
 </div>
 <div class="section" id="id5">
 <h2>遍历目录进行批处理<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="mytools.Walk">
+<code class="descclassname">mytools.</code><code class="descname">Walk</code><span class="sig-paren">(</span><em>db=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mytools.html#Walk"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mytools.Walk" title="Permalink to this definition">¶</a></dt>
+<dd><p>Walk directory to batch processing.
+遍历目录进行批处理。</p>
+<p>Subclasses may override the &#8216;handle_file&#8217; method to provide custom file processing mode.
+子类可以重写&#8217;handle_file&#8217;方法来实现自定义的文件处理方式。</p>
+<p>Public attributes:
+- filelist: All filenames with full path in directory.
+- fnamelist: All filenames in directory.
+- dirlist: All dirnames with full path in directory.
+- dnamelist: All dirnames in directory.</p>
+</dd></dl>
+
 </div>
 <div class="section" id="id6">
 <h2>程序时间性能分析<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="mytools.time_me">
+<code class="descclassname">mytools.</code><code class="descname">time_me</code><span class="sig-paren">(</span><em>info='used'</em>, <em>format_string='ms'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mytools.html#time_me"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mytools.time_me" title="Permalink to this definition">¶</a></dt>
+<dd><p>Performance analysis - time</p>
+<p>Decorator of time performance analysis.
+性能分析——计时统计
+系统时间(wall clock time, elapsed time)是指一段程序从运行到终止，系统时钟走过的时间。
+一般系统时间都是要大于CPU时间的。通常可以由系统提供，在C++/Windows中，可以由&lt;time.h&gt;提供。
+注意得到的时间精度是和系统有关系的。
+1.time.clock()以浮点数计算的秒数返回当前的CPU时间。用来衡量不同程序的耗时，比time.time()更有用。
+time.clock()在不同的系统上含义不同。在UNIX系统上，它返回的是&#8221;进程时间&#8221;，它是用秒表示的浮点数（时间戳）。
+而在WINDOWS中，第一次调用，返回的是进程运行的实际时间。而第二次之后的调用是自第一次
+调用以后到现在的运行时间。（实际上是以WIN32上QueryPerformanceCounter()为基础，它比毫秒表示更为精确）
+2.time.perf_counter()能够提供给定平台上精度最高的计时器。计算的仍然是系统时间，
+这会受到许多不同因素的影响，例如机器当前负载。
+3.time.process_time()提供进程时间。</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><p class="first">info: Customize print info. 自定义提示信息。
+format_string: Specifies the timing unit. 指定计时单位，例如&#8217;s&#8217;: 秒，&#8217;ms&#8217;: 毫秒。</p>
+<blockquote class="last">
+<div>Defaults to &#8216;s&#8217;.</div></blockquote>
+</dd>
+</dl>
+</dd></dl>
+
 </div>
 <div class="section" id="id7">
 <h2>获取指定日期表示方式的时间戳或者当前时间戳<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="mytools.get_timestamp">
+<code class="descclassname">mytools.</code><code class="descname">get_timestamp</code><span class="sig-paren">(</span><em>s=None</em>, <em>style='%Y-%m-%d %H:%M:%S'</em>, <em>pattern='s'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mytools.html#get_timestamp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mytools.get_timestamp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get timestamp. 获取指定日期表示方式的时间戳或者当前时间戳。</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><dl class="first last docutils">
+<dt>style: Specifies the format of time. 指定日期表示方式。</dt>
+<dd>Defaults to &#8216;%Y-%m-%d %H:%M:%S&#8217;.</dd>
+<dt>pattern: Specifies the timestamp unit. 指定时间戳单位，&#8217;s&#8217;: 秒，&#8217;ms&#8217;: 毫秒。</dt>
+<dd>Defaults to &#8216;s&#8217;.</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
 </div>
 <div class="section" id="id8">
 <h2>获取指定日期表示方式的当前时间<a class="headerlink" href="#id8" title="Permalink to this headline">¶</a></h2>
 </div>
 <div class="section" id="id9">
 <h2>获取指定日期表示方式的年龄<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="mytools.get_age">
+<code class="descclassname">mytools.</code><code class="descname">get_age</code><span class="sig-paren">(</span><em>format_string='%s年%s个月%s天'</em>, <em>info='2016-7-25'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mytools.html#get_age"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mytools.get_age" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get age with specific format_string.
+获取指定日期表示方式的年龄。</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd><dl class="first last docutils">
+<dt>format_string: Specifies the format of time. 指定日期表示方式。</dt>
+<dd>Defaults to &#8216;{y}年{m}个月{d}天&#8217;.</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
 </div>
 <div class="section" id="id10">
 <h2>列表随机元素<a class="headerlink" href="#id10" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="mytools.random_item">
+<code class="descclassname">mytools.</code><code class="descname">random_item</code><span class="sig-paren">(</span><em>mylist</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mytools.html#random_item"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mytools.random_item" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get random item of data.
+从数据中获取随机元素。</p>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd>item: Random item of data. 数据随机项。</dd>
+</dl>
+</dd></dl>
+
 </div>
 <div class="section" id="id11">
 <h2>文件替换<a class="headerlink" href="#id11" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="mytools.file_replace">
+<code class="descclassname">mytools.</code><code class="descname">file_replace</code><span class="sig-paren">(</span><em>source_file</em>, <em>destination_file</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mytools.html#file_replace"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mytools.file_replace" title="Permalink to this definition">¶</a></dt>
+<dd><p>File replace.
+文件替换。</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>source_file: The full path of source file. 原始文件完整路径。
+destination_file：The full path of destination file. 目标文件完整路径。</dd>
+</dl>
+</dd></dl>
+
 </div>
 <div class="section" id="excel">
 <h2>读取excel<a class="headerlink" href="#excel" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="mytools.read_excel">
+<code class="descclassname">mytools.</code><code class="descname">read_excel</code><span class="sig-paren">(</span><em>filepath</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mytools.html#read_excel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mytools.read_excel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get excel source</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>filepath: The full path of excel file. excel文件完整路径。</dd>
+<dt>Returns:</dt>
+<dd>data: Data of excel. excel数据。</dd>
+</dl>
+</dd></dl>
+
 </div>
 <div class="section" id="id12">
 <h2>设置excel样式<a class="headerlink" href="#id12" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="mytools.set_excel_style">
+<code class="descclassname">mytools.</code><code class="descname">set_excel_style</code><span class="sig-paren">(</span><em>name</em>, <em>height</em>, <em>bold=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mytools.html#set_excel_style"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mytools.set_excel_style" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set excel style.</p>
+</dd></dl>
+
 </div>
 <div class="section" id="id13">
 <h2>写入excel<a class="headerlink" href="#id13" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="mytools.write_excel">
+<code class="descclassname">mytools.</code><code class="descname">write_excel</code><span class="sig-paren">(</span><em>filename='demo.xlsx'</em>, <em>sheets=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mytools.html#write_excel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mytools.write_excel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write excel from data.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="mytools.write_excel_sql">
+<code class="descclassname">mytools.</code><code class="descname">write_excel_sql</code><span class="sig-paren">(</span><em>filename='demo.xlsx'</em>, <em>sheets=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mytools.html#write_excel_sql"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mytools.write_excel_sql" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write excel from data.</p>
+</dd></dl>
+
 </div>
 <div class="section" id="id14">
 <h2>生成词典<a class="headerlink" href="#id14" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="mytools.generate_dict">
+<code class="descclassname">mytools.</code><code class="descname">generate_dict</code><span class="sig-paren">(</span><em>dictpath</em>, <em>sourcepath</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mytools.html#generate_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mytools.generate_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate dictionary file from sourcefile.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>dictpath: The full path of dict file. 源文件完整路径。
+sourcepath: The full path of source file. 源文件完整路径。</dd>
+</dl>
+</dd></dl>
+
 </div>
 <div class="section" id="id15">
 <h2>显示等待中<a class="headerlink" href="#id15" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="mytools.waitting">
+<code class="descclassname">mytools.</code><code class="descname">waitting</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/mytools.html#waitting"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#mytools.waitting" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print waitting.</p>
+</dd></dl>
+
 </div>
 </div>
 
@@ -314,7 +507,7 @@
         <a href="semantic.html" class="btn btn-neutral float-right" title="API - 语义工具箱" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="qa.html" class="btn btn-neutral" title="API - 语义理解问答" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="kmapi.html" class="btn btn-neutral" title="API - 语义知识库管理 API 接口" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

@@ -1,11 +1,13 @@
 # Chat
 
-`Chat robot based on natural language understanding and machine learning.`
+`Chatbot based on natural language understanding and machine learning.`
 
 `基于自然语言理解与机器学习的聊天机器人`
 
 [![Documentation Status](https://readthedocs.org/projects/chat-cn/badge/?version=latest)](http://chat-cn.readthedocs.io/zh_CN/latest/?badge=latest)
 [![PyPI Version](https://img.shields.io/pypi/v/chat.svg)](https://pypi.python.org/pypi/chat)
+
+![chat](https://github.com/Decalogue/chat/blob/master/docs/img/chat.png "chat")
 
 ## 这就是 Chat
 
@@ -26,7 +28,10 @@
     
 ## Tutorial 快速开始
 
-### Step 1 在终端中启动数据库(需自定义数据库，其密码设为'train'，可在 chat/conf/self.conf 中修改 [neo4j] 选项 password)
+### Step 1 在终端中启动数据库
+
+> 需自定义数据库，将其密码设为'train'
+> 修改密码：可在 chat/conf/self.conf 中修改 [neo4j] 选项 password)
 
     neo4j start
 
@@ -56,13 +61,14 @@
 
 ## Chat 的设计原则
 
-* 用户友好：用户的使用体验始终是我们考虑的首要和中心内容。Chat 遵循减少认知困难的最佳实践：Chat 提供一致而简洁的 API， 能够极大减少一般应用下用户的工作量，同时，Chat 提供清晰和具有实践意义的 bug 反馈。
+* 用户友好：用户的使用体验始终是我们考虑的首要和中心内容。Chat 遵循减少认知困难的最佳实践：Chat 提供一致而简洁的 API， 能够极大减少一般应用下用户的工作量，同时，Chat 提供清晰和具有实践意义的 Bug 反馈。
 * 模块性：完全独立可配置的模块可以用最少的代价自由组合在一起，您可以使用它们来构建自己的模块。
 * 易扩展性：添加新模块超级容易，只需要仿照现有的模块编写新的类或函数即可。创建新模块的便利性使得 Chat 更适合于快速开发。
 * 知识图谱：基于图数据库的知识图表达提供了更快的搜索速度与智能。
 
-> 您可以在 [Read the docs](http://chat-cn.readthedocs.io/zh_CN/latest/) 中阅读官方中文文档。如果您阅读在线中文文档时有什么问题，您可以在 Github 上下载这个项目，然后去 ***/docs/build/html/index.html*** 阅读离线中文文档。
+> 您可以在 [Read the docs](http://chat-cn.readthedocs.io/zh_CN/latest/) 中阅读官方中文文档。
+> 如果您阅读在线中文文档时有什么问题，您可以在 Github 上下载这个项目，然后去 ***/docs/build/html/index.html*** 阅读离线中文文档。
 
-`Copyright © 2017 Rain. All Rights Reserved.`
+`Copyright © 2017 Decalogue. All Rights Reserved.`
 
-[樱落清璃-Decalogue的 CSDN 博客](https://www.decalogue.cn)
+[Decalogue](https://www.decalogue.cn)

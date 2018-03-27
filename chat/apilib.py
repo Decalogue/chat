@@ -11,6 +11,8 @@ from urllib.request import urlopen
 mac_address = uuid.UUID(int=uuid.getnode()).hex[-12:]
 
 def nlu_tuling(question, loc="上海"):
+    """图灵 API 
+    """
     url = 'http://www.tuling123.com/openapi/api'
     data = {
         'key': "fd2a2710a7e01001f97dc3a663603fa1",
@@ -40,7 +42,9 @@ def nlu_tuling(question, loc="上海"):
     elif r['code'] == 314000: # 诗词类
         return '\n'.join([r['text'].replace('<br>','\n')])
 
-def get_location_by_ip(city="上海市"): 
+def get_location_by_ip(city="上海市"):
+    """根据IP获取当前地址
+    """
     url = "http://api.map.baidu.com/location/ip"
     data = {
         "ak": "wllxHD5CmWv8qX6CN2lyY73a",
@@ -55,7 +59,9 @@ def get_location_by_ip(city="上海市"):
         print("采用默认城市：", location)
     return location
 
-def get_ll_by_address(address="", city="北京市"): 
+def get_ll_by_address(address="", city="北京市"):
+    """根据地址获取经纬度
+    """
     url = "http://api.map.baidu.com/geocoder/v2/"
     data = {
         "ak": "wllxHD5CmWv8qX6CN2lyY73a",
@@ -69,7 +75,9 @@ def get_ll_by_address(address="", city="北京市"):
     location = json.loads(result)
     return location
 
-def get_location_by_ll(lat=39.908832488104686, lng=116.39753319791058): 
+def get_location_by_ll(lat=39.908832488104686, lng=116.39753319791058):
+    """根据经纬度获取地址
+    """
     url = "http://api.map.baidu.com/geocoder/v2/"
     data = {
         "ak": "wllxHD5CmWv8qX6CN2lyY73a",
@@ -85,6 +93,8 @@ def get_location_by_ll(lat=39.908832488104686, lng=116.39753319791058):
     return location
 
 def down_mp3_by_url(song_url, song_name, song_size):
+    """下载 url 对应的 MP3 资源
+    """
     file_name = song_name + ".mp3"
     base_dir = os.path.dirname(__file__)
     file_full_path = os.path.join(base_dir, file_name)  
@@ -123,6 +133,8 @@ def down_mp3_by_url(song_url, song_name, song_size):
     file.close()  
     
 def music_baidu(song="", singer=""):
+    """百度音乐 API
+    """
     url = "http://tingapi.ting.baidu.com/v1/restserver/ting"
     current_time = time.time()
     # 获取榜单专辑

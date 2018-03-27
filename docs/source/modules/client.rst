@@ -1,7 +1,9 @@
 API - 语义客户端
 ========================
 
-.. image:: my_figs/client.ico 
+.. image:: my_figs/client.png
+  :scale: 50 %
+
 .. automodule:: chat.client
 
 .. autosummary::

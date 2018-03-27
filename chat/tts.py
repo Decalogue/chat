@@ -21,20 +21,19 @@ class RequestError(Exception):
     pass
 
 class TTS():
-    """Online TTS.
-    在线语音合成。
+    """Online TTS. 在线语音合成。
 
     It support instantiated with customized audioplayer.
     支持自定义音频播放器。
 
     Public attributes:
-    - audioplayer: Audio player. 音频播放器。
-    - app_key: API key of TTS service。 TTS服务的注册ID。
-    - secret_key: API key of TTS service。 TTS服务的注册ID对应的密钥。
-    - url_tok_base: The url of get token。 获取口令的URL地址。
-    - url_get_base: The url of get requests。 GET请求的URL地址。
-    - url_post_base: The url of get requests。 POST请求的URL地址。
-    - language: The language of send text。 发送文本的语言。
+        audioplayer: Audio player. 音频播放器。
+        app_key: API key of TTS service。 TTS服务的注册ID。
+        secret_key: API key of TTS service。 TTS服务的注册ID对应的密钥。
+        url_tok_base: The url of get token。 获取口令的URL地址。
+        url_get_base: The url of get requests。 GET请求的URL地址。
+        url_post_base: The url of get requests。 POST请求的URL地址。
+        language: The language of send text。 发送文本的语言。
     """
     def __init__(self, audioplayer=None, tempdir="."):
         if audioplayer:
@@ -53,8 +52,7 @@ class TTS():
         self.tempdir = tempdir if os.path.isdir(tempdir) else "."
 
     def get_token(self):
-        """Get token.
-        获取API服务口令。
+        """Get token. 获取API服务口令。
         """
         data = {
 	            "grant_type": "client_credentials",
@@ -66,8 +64,7 @@ class TTS():
         return access_token
 
     def say(self, info):
-        """Baidu TTS service.
-        百度TTS服务。
+        """Baidu TTS service. 百度TTS服务。
 
         Official documents: http://yuyin.baidu.com/docs/tts/136
         """
@@ -93,8 +90,7 @@ class TTS():
 
 
 class LTTS():
-    """Local TTS.
-    离线语音合成。
+    """Local TTS. 离线语音合成。
 
     Based on Microsoft SAPI.
     基于微软SAPI。
@@ -107,7 +103,6 @@ class LTTS():
         self.language = 'zh'
 
     def say(self, info):
-        """Say info.
-        说出给定的信息。
+        """Say info. 说出给定的信息。
         """
         self.service.Speak(info)

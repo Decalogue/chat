@@ -1,23 +1,25 @@
 API - 语音合成
 ========================
 
-.. image:: my_figs/tts.ico 
+.. image:: my_figs/tts.ico
+  :scale: 50 %
+
 .. automodule:: chat.tts
 
 .. autosummary::
 
-   RequestError
-   TTS
-   LTTS
+   tts.RequestError
+   tts.TTS
+   tts.LTTS
    
 自定义请求异常
 ------------------------
-.. autofunction:: RequestError
+.. autofunction:: tts.RequestError
 
 在线语音合成
 ------------------------
-.. autofunction:: TTS
+.. autofunction:: tts.TTS
 
 离线语音合成
 ------------------------
-.. autofunction:: LTTS
+.. autofunction:: tts.LTTS

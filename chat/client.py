@@ -14,7 +14,7 @@ Available functions:
 
 import json
 import socket
-from .mytools import time_me
+# from .mytools import time_me
 
 mysock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 mysock.connect(("localhost", 7000))
@@ -116,7 +116,7 @@ def start():
             result = match(question=question, userid=userid)
         print(json.loads(result))
 
-@time_me()
+# @time_me()
 def batch_test(filename, userid="A0001"):
     """Batch test.
     """

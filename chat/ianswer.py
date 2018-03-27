@@ -10,6 +10,8 @@ with open(thispath + '/data/answer.xml', 'r', encoding="UTF-8") as file:
 item = '''<item><Title><![CDATA[]]></Title><Description><![CDATA[]]></Description><PicUrl><![CDATA[{img_url}]]></PicUrl><Url><![CDATA[]]></Url></item>'''
 
 def answer2xml(data):
+    """XML 封装答案
+    """
     imgs = ''
     img_urls = []
     img_names = []

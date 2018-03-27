@@ -1,7 +1,9 @@
 API - 语义服务器
 ========================
 
-.. image:: my_figs/server.ico 
+.. image:: my_figs/server.ico
+  :scale: 50 %
+
 .. automodule:: chat.server
 
 .. autosummary::
