@@ -184,7 +184,7 @@ def reset():
         if allowed_file(f.filename):
             filename = 'C:/nlu/data/upload/' + secure_filename(f.filename)
             f.save(filename)
-            # 删除配置
+            # 删除配置（TODO：只能删除其有权限的知识库配置）
             database.graph.run("MATCH (n:Config) DETACH DELETE n")
             # 重新导入
             database.reset(filename=filename)
@@ -881,5 +881,5 @@ def start(port=5000):
     app.run(debug=True, port=port, threaded=True)
 
 if __name__ == '__main__':
-    # start(port=getConfig("kmserver", "port"))
+    # start(port=getConfig("kmapi", "port"))
     start()

@@ -1,13 +1,13 @@
 # -*- coding:utf8 -*-
-"""server
+"""kmapi
 
 Create and start KB Manager Server.
-创建并启动语义理解服务器。
+创建并启动语义知识库管理服务器。
 """
 import sys
 sys.path.append("../")
 from unittest import TestCase, main
-from chat.kmserver import start
+from chat.kmapi import start
 
 class TestMe(TestCase):
     def setUp(self):

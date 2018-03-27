@@ -27,9 +27,9 @@ class TestMe(TestCase):
         pass
 
     def test_reset(self):
-        self.database.reset(pattern="n", label="NluCell", filename="C:/nlu/data/kb/chat.xls")
-        # self.database.reset(pattern="n", label="NluCell", filename="C:/nlu/data/kb/chat2.xls")
-        # self.database.handle_excel(filename="C:/nlu/data/kb/chat2.xls")
+        self.database.delete(pattern='n', label='Config') # 删除知识库配置
+        self.database.reset(pattern="n", label='NluCell', filename="chat.xls")
+        # self.database.handle_excel(filename="chat.xls")
         # pass
  
     def test_reset_ts(self):

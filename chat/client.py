@@ -107,14 +107,15 @@ def start():
     """
     while True:
         question = input("\n>>question=")
-        userid = input(">>userid=")
-        if not userid:
-            userid = "A0001"
+        # userid = input(">>userid=")
+        # if not userid:
+            # userid = "A0001"
         if question == "config":
-            result = config(info="", userid=userid)
+            result = config(info="", userid="A0001")
         else:
-            result = match(question=question, userid=userid)
-        print(json.loads(result))
+            result = match(question=question, userid="A0001")
+        # print(json.loads(result))
+        print(json.loads(result)['content'])
 
 # @time_me()
 def batch_test(filename, userid="A0001"):

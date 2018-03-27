@@ -30,34 +30,51 @@
 
 ### Step 1 在终端中启动数据库
 
-> 需自定义数据库，将其密码设为'train'
-> 修改密码：可在 chat/conf/self.conf 中修改 [neo4j] 选项 password)
+> 方式1：直接使用 chat/tests/nlu.db 这个已经初始化的数据库
+
+> 方式2：需自定义数据库，将其密码设为'train'
+
+> 若要修改密码：可在 chat/conf/self.conf 中修改 [neo4j] 选项 password)
 
     neo4j start
 
-### Step 2 方式1：直接使用 chat 子模块
+### Step 2 初始化语义知识库
 
-    from chat.qa import Robot
-    from chat.config import getConfig
-  
-    robot = Robot(password=getConfig("neo4j", "password"))
-    answer = robot.search(question="您的自定义问题")
-    print(answer)
-
-### Step 2 方式2-1：启动语义服务器
+> 2.1 启动语义服务器并保持（详见 chat/tests/test_server.py，可命令行运行 python test_server.py）
 
     from chat import server
   
     server.start()
     
-### Step 2 方式2-2：通过客户端问答
+> 2.2 导入测试知识库（若直接使用 chat/tests/nlu.db 进入 Step 3）
 
-    import json
-    from chat.client import match
+> （详见 chat/tests/test_graph.py，可命令行运行 python test_graph.py）
+
+    from chat.graph import Database
+    
+    kb = Database(password='train')
+    kb.reset(filename='chat.xls') # 详见 chat/tests/chat.xls，可自定义问答
+    
+### Step 3 开始聊天
+
+> 方式1：启动语义客户端
+
+> （详见 chat/tests/test_client.py，可命令行运行 python test_client.py）
+
+    from chat import client
   
-    result = json.loads(match(question="您的自定义问题"))
+    client.start()
+
+> 方式2：使用 chat.qa 子模块
+
+    from chat.qa import Robot
+    from chat.config import getConfig
+  
+    robot = Robot(password=getConfig("neo4j", "password"))
+    result = robot.search(question="您的自定义问题")
     answer = result['content']
     print(answer)
+
 
 ## Chat 的设计原则
 
@@ -67,8 +84,9 @@
 * 知识图谱：基于图数据库的知识图表达提供了更快的搜索速度与智能。
 
 > 您可以在 [Read the docs](http://chat-cn.readthedocs.io/zh_CN/latest/) 中阅读官方中文文档。
+
 > 如果您阅读在线中文文档时有什么问题，您可以在 Github 上下载这个项目，然后去 ***/docs/build/html/index.html*** 阅读离线中文文档。
 
 `Copyright © 2017 Decalogue. All Rights Reserved.`
 
-[Decalogue](https://www.decalogue.cn)
+关于作者：[Decalogue](https://www.decalogue.cn)

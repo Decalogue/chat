@@ -13,7 +13,7 @@ class WalkUserData(Walk):
 
 class TestMe(TestCase):
     def setUp(self):
-        self.database = Database(path='C:/nlu/data/db/nlu_sqlite.db', userid="A0001")
+        self.database = Database(path='nlu_sqlite.db', userid="A0001")
         
     def test_add_userdata(self):
         """Add userdata from usb.
@@ -51,31 +51,31 @@ class TestMe(TestCase):
         
     def test_add_nlucell(self):
         print('添加 NluCell 测试...')
-        self.database.handle_excel('C:/nlu/data/kb/chat.xls')
+        self.database.handle_excel('chat.xls')
         print('可用知识库：', self.database.get_available_kb())
         print('已挂接知识库：', self.database.get_selected_kb())
         # pass
         
     def test_reset(self):
         print('重置 NluCell 测试...')
-        self.database.reset(tabel='NluCell', filename='C:/nlu/data/kb/chat.xls')
+        self.database.reset(tabel='NluCell', filename='chat.xls')
         # pass
 
     # @time_me(format_string="ms")
     def test_add_qa(self):
         pass
         # Add qa with excel
-        # self.database.handle_excel("C:/nlu/data/kb/chat.xls")
+        # self.database.handle_excel("chat.xls")
     
     def test_download(self):
         akbs = self.database.get_available_kb()
         print('下载 NluCell 测试...')
-        self.database.download(filename='C:/nlu/data/download/chat_sql.xls', names=akbs)
+        self.database.download(filename='chat_sql.xls', names=akbs)
         # pass
 
     def test_generate_test_cases(self):
         # self.database.generate_test_cases(
-            # filename='C:/nlu/data/kb/chat.xls',
+            # filename='chat.xls',
             # custom_sheets=["银行业务"],
             # savedir="."
         # )

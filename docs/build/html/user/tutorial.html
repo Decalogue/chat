@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>快速开始 &mdash; chat 1.0.7 documentation</title>
+  <title>快速开始 QA &mdash; chat 1.0.7 documentation</title>
   
 
   
@@ -83,9 +83,13 @@
             
                 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="installation.html">安装 Installation</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">快速开始</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#qa">对话 QA</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#config">配置 Config</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">快速开始 QA</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#step-1">Step 1 在终端中启动数据库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#step-2">Step 2 初始化语义知识库</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#step-3">Step 3 开始聊天</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#config">配置 Config</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="custom.html">个性化定制您的聊天机器人</a></li>
@@ -141,7 +145,7 @@
   <ul class="wy-breadcrumbs">
     <li><a href="../index.html">Docs</a> &raquo;</li>
       
-    <li>快速开始</li>
+    <li>快速开始 QA</li>
       <li class="wy-breadcrumbs-aside">
         
           
@@ -155,29 +159,23 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="tutorial">
-<span id="id1"></span><h1>快速开始<a class="headerlink" href="#tutorial" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="qa">
-<h2>对话 QA<a class="headerlink" href="#qa" title="Permalink to this headline">¶</a></h2>
+  <div class="section" id="qa">
+<span id="tutorial"></span><h1>快速开始 QA<a class="headerlink" href="#qa" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="step-1">
+<h2>Step 1 在终端中启动数据库<a class="headerlink" href="#step-1" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li>Step 1：在终端中启动数据库(需自定义数据库，其密码设为&#8217;train&#8217;，可在 chat/conf/self.conf 中修改 [neo4j] 选项 password)</li>
+<li>方式1：直接使用 chat/tests/nlu.db 这个已经初始化的数据库</li>
+<li>方式2：需自定义数据库，将其密码设为&#8217;train&#8217;</li>
+<li>若要修改密码：可在 chat/conf/self.conf 中修改 [neo4j] 选项 password)</li>
 </ul>
 <div class="highlight-bash"><div class="highlight"><pre><span></span>neo4j start
 </pre></div>
 </div>
-<ul class="simple">
-<li>Step 2：直接使用 chat 子模块</li>
-</ul>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">chat.qa</span> <span class="kn">import</span> <span class="n">Robot</span>
-<span class="kn">from</span> <span class="nn">chat.config</span> <span class="kn">import</span> <span class="n">getConfig</span>
-
-<span class="n">robot</span> <span class="o">=</span> <span class="n">Robot</span><span class="p">(</span><span class="n">password</span><span class="o">=</span><span class="n">getConfig</span><span class="p">(</span><span class="s2">&quot;neo4j&quot;</span><span class="p">,</span> <span class="s2">&quot;password&quot;</span><span class="p">))</span>
-<span class="n">answer</span> <span class="o">=</span> <span class="n">robot</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">question</span><span class="o">=</span><span class="s2">&quot;您的自定义问题&quot;</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="n">answer</span><span class="p">)</span>
-</pre></div>
 </div>
+<div class="section" id="step-2">
+<h2>Step 2 初始化语义知识库<a class="headerlink" href="#step-2" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
-<li>Step 2-1：或者先启动语义服务器</li>
+<li>2.1 启动语义服务器并保持（详见 chat/tests/test_server.py，可命令行运行 python test_server.py）</li>
 </ul>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">chat</span> <span class="kn">import</span> <span class="n">server</span>
 
@@ -185,19 +183,41 @@
 </pre></div>
 </div>
 <ul class="simple">
-<li>Step 2-2：通过客户端问答</li>
+<li>2.2 导入测试知识库（若直接使用 chat/tests/nlu.db 进入 Step 3）</li>
 </ul>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">json</span>
-<span class="kn">from</span> <span class="nn">chat.client</span> <span class="kn">import</span> <span class="n">match</span>
+<p>（详见 chat/tests/test_graph.py，可命令行运行 python test_graph.py）</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">chat.graph</span> <span class="kn">import</span> <span class="n">Database</span>
 
-<span class="n">result</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">match</span><span class="p">(</span><span class="n">question</span><span class="o">=</span><span class="s2">&quot;您的自定义问题&quot;</span><span class="p">))</span>
+<span class="n">kb</span> <span class="o">=</span> <span class="n">Database</span><span class="p">(</span><span class="n">password</span><span class="o">=</span><span class="s1">&#39;train&#39;</span><span class="p">)</span>
+<span class="n">kb</span><span class="o">.</span><span class="n">reset</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s1">&#39;chat.xls&#39;</span><span class="p">)</span> <span class="c1"># 详见 chat/tests/chat.xls，可自定义问答</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="step-3">
+<h2>Step 3 开始聊天<a class="headerlink" href="#step-3" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>方式1：启动语义客户端</li>
+</ul>
+<p>（详见 chat/tests/test_client.py，可命令行运行 python test_client.py）</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">chat</span> <span class="kn">import</span> <span class="n">client</span>
+
+<span class="n">client</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li>方式2：使用 chat.qa 子模块</li>
+</ul>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">chat.qa</span> <span class="kn">import</span> <span class="n">Robot</span>
+<span class="kn">from</span> <span class="nn">chat.config</span> <span class="kn">import</span> <span class="n">getConfig</span>
+
+<span class="n">robot</span> <span class="o">=</span> <span class="n">Robot</span><span class="p">(</span><span class="n">password</span><span class="o">=</span><span class="n">getConfig</span><span class="p">(</span><span class="s2">&quot;neo4j&quot;</span><span class="p">,</span> <span class="s2">&quot;password&quot;</span><span class="p">))</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">robot</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">question</span><span class="o">=</span><span class="s2">&quot;您的自定义问题&quot;</span><span class="p">)</span>
 <span class="n">answer</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;content&#39;</span><span class="p">]</span>
 <span class="k">print</span><span class="p">(</span><span class="n">answer</span><span class="p">)</span>
 </pre></div>
 </div>
-</div>
 <div class="section" id="config">
-<h2>配置 Config<a class="headerlink" href="#config" title="Permalink to this headline">¶</a></h2>
+<h3>配置 Config<a class="headerlink" href="#config" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">chat.qa</span> <span class="kn">import</span> <span class="n">Robot</span>
 <span class="kn">from</span> <span class="nn">chat.config</span> <span class="kn">import</span> <span class="n">getConfig</span>
 
@@ -208,6 +228,7 @@
 <span class="c1"># result = robot.configure(info=&quot;在已有知识库列表里选择你想要的名称并以空格分隔&quot;)</span>
 <span class="k">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
 </pre></div>
+</div>
 </div>
 </div>
 </div>
