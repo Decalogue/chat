@@ -68,3 +68,6 @@ target/
 Session.vim
 .netrwhist
 *~
+
+# Project based on chat
+atec/

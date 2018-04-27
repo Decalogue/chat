@@ -83,6 +83,10 @@
 
 > 如果您阅读在线中文文档时有什么问题，您可以在 Github 上下载这个项目，然后去 ***/docs/build/html/index.html*** 阅读离线中文文档。
 
+## 如果想了解更多，也欢迎扫二维码加我微信分享交流。
+
+![Rain](https://github.com/Decalogue/XLearn/blob/master/img/QRcode.jpg "一起学习")
+
 `Copyright © 2017 Decalogue. All Rights Reserved.`
 
 关于作者：[Decalogue](https://www.decalogue.cn)

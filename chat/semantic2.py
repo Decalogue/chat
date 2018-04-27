@@ -3,6 +3,8 @@ import os
 import math
 import pickle
 import jieba
+thispath = os.path.split(os.path.realpath(__file__))[0]
+jieba.load_userdict(thispath + "/dict/userdict.txt")
 import numpy as np
 from string import punctuation
 
@@ -15,18 +17,26 @@ tagcount_4 = {}
 
 # 语义标签树 pkl 文件绝对路径
 thispath = os.path.split(os.path.realpath(__file__))[0]
-sourcepath = thispath + './dict/synonym.txt'
-pkl_tagtree = thispath + './dict/tagtree.pkl'
-pkl_tagcount_1 = thispath + './dict/tagcount_1.pkl'
-pkl_tagcount_2 = thispath + './dict/tagcount_2.pkl'
-pkl_tagcount_3 = thispath + './dict/tagcount_3.pkl'
-pkl_tagcount_4 = thispath + './dict/tagcount_4.pkl'
+sourcepath = thispath + '/dict/synonymdict.txt'
+pkl_tagtree = thispath + '/dict/tagtree.pkl'
+pkl_tagcount_1 = thispath + '/dict/tagcount_1.pkl'
+pkl_tagcount_2 = thispath + '/dict/tagcount_2.pkl'
+pkl_tagcount_3 = thispath + '/dict/tagcount_3.pkl'
+pkl_tagcount_4 = thispath + '/dict/tagcount_4.pkl'
 
+def get_stopwords(path):
+    """停用词。
+    """
+    words = [line.strip() for line in open(path, 'r', encoding='utf-8').readlines()]  
+    return words
+
+stopwords = get_stopwords(thispath + '/dict/stopwords.txt')
 # 中英文标点组合
-punctuation_zh = " 、，。°？！：；“”’‘～…【】（）《》｛｝×―－·→℃"
-punctuation_all = set(punctuation) | set(punctuation_zh)
+punctuation_zh = " 、，。°？！：；“”＂’‘～…【】［］（）《》｛｝×―－—·→℃%\t"
+punctuation_all = punctuation + punctuation_zh
+filter_characters = set(punctuation) | set(punctuation_zh) | set(stopwords)
 # 句尾语气词
-tone_words = "的了呢吧吗啊啦呀"
+tone_words = "的呢吧吗啊啦呀么嘛哒哼my"
             
 def process_part(path, func=None):
     """按行读取文件进行自定义处理，直到遇到空行或者到达文件末尾为止。
@@ -279,7 +289,7 @@ def segment(sentence):
     # 句尾语气词过滤
     s = s.rstrip(tone_words)
     # 句中标点符号过滤
-    sv = [word for word in jieba.cut(s) if word not in punctuation_all]
+    sv = [word for word in jieba.cut(s) if word not in filter_characters]
     return sv
     
 def similarity(s1, s2):

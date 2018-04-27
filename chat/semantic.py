@@ -23,11 +23,11 @@ from string import punctuation
 
 # 语义标签树 pkl 文件绝对路径
 thispath = os.path.split(os.path.realpath(__file__))[0]
-pkl_tagtree = thispath + './dict/tagtree.pkl'
-pkl_tagcount_1 = thispath + './dict/tagcount_1.pkl'
-pkl_tagcount_2 = thispath + './dict/tagcount_2.pkl'
-pkl_tagcount_3 = thispath + './dict/tagcount_3.pkl'
-pkl_tagcount_4 = thispath + './dict/tagcount_4.pkl'
+pkl_tagtree = thispath + '/dict/tagtree.pkl'
+pkl_tagcount_1 = thispath + '/dict/tagcount_1.pkl'
+pkl_tagcount_2 = thispath + '/dict/tagcount_2.pkl'
+pkl_tagcount_3 = thispath + '/dict/tagcount_3.pkl'
+pkl_tagcount_4 = thispath + '/dict/tagcount_4.pkl'
 
 def load_dict(path=''):
     """通过 pkl 文件加载原生字典对象
@@ -44,14 +44,22 @@ tagcount_2 = load_dict(path=pkl_tagcount_2)
 tagcount_3 = load_dict(path=pkl_tagcount_3)
 tagcount_4 = load_dict(path=pkl_tagcount_4)
 
+def get_stopwords(path):
+    """停用词。
+    """
+    words = [line.strip() for line in open(path, 'r', encoding='utf-8').readlines()]  
+    return words
+
+stopwords = get_stopwords(thispath + '/dict/stopwords.txt')
 # The 'punctuation_all' is the combination set of Chinese and English punctuation.
-punctuation_zh = " 、，。°？！：；“”’‘～…【】（）《》｛｝×―－·→℃"
-punctuation_all = set(punctuation) | set(punctuation_zh)
+punctuation_zh = " 、，。°？！：；“”＂’‘～…【】［］（）《》｛｝×―－—·→℃%\t"
+punctuation_all = punctuation + punctuation_zh
+filter_characters = set(punctuation_all) | set(stopwords)
 # 句尾语气词 TODO：考虑语气词单独成句的情况
-tone_words = "的了呢吧吗啊啦呀"
+tone_words = "的呢吧吗啊啦呀么嘛哒哼my"
 # 敏感词库 Modified in 2017-5-25
 try:
-    with codecs.open(thispath + "\\dict\\swords.txt", "r", "UTF-8") as file:
+    with codecs.open(thispath + "/dict/swords.txt", "r", "UTF-8") as file:
         sensitive_words = set(file.read().split())
 except:
     sensitive_words = []
@@ -59,8 +67,8 @@ except:
 def generate_swords():
     """生成敏感词词典
     """
-    with codecs.open(thispath + "\\dict\\sensitive_words.txt", "r", "UTF-8") as file:
-        with codecs.open(thispath + "\\dict\\swords.txt", "w", "UTF-8") as newfile:
+    with codecs.open(thispath + "/dict/sensitive_words.txt", "r", "UTF-8") as file:
+        with codecs.open(thispath + "/dict/swords.txt", "w", "UTF-8") as newfile:
             sensitive_words = sorted(list(set(file.read().split())))
             newfile.write("\n".join(sensitive_words))
 
@@ -83,7 +91,7 @@ def segment(sentence):
     # 句尾语气词过滤
     s = s.rstrip(tone_words)
     # 句中标点符号过滤
-    sv = [word for word in jieba.cut(s) if word not in punctuation_all]
+    sv = [word for word in jieba.cut(s) if word not in filter_characters]
     return sv
 
 def synonym_cut(sentence, pattern="wf"):
@@ -103,7 +111,7 @@ def synonym_cut(sentence, pattern="wf"):
     sentence = sentence.rstrip(tone_words)
     synonym_vector = []
     if pattern == "w":
-        synonym_vector = [item for item in jieba.cut(sentence) if item not in punctuation_all]
+        synonym_vector = [item for item in jieba.cut(sentence) if item not in filter_characters]
     elif pattern == "k":
         synonym_vector = analyse.extract_tags(sentence, topK=1)
     elif pattern == "t":
@@ -111,10 +119,10 @@ def synonym_cut(sentence, pattern="wf"):
     elif pattern == "wf":
         result = posseg.cut(sentence)
         # synonym_vector = [(item.word, item.flag) for item in result \
-        # if item.word not in punctuation_all]
+        # if item.word not in filter_characters]
         # Modify in 2017.4.27 
         for item in result:
-            if item.word not in punctuation_all:
+            if item.word not in filter_characters:
                 if len(item.flag) < 4:
                     item.flag = list(posseg.cut(item.word))[0].flag
                 synonym_vector.append((item.word, item.flag))
