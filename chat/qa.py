@@ -63,14 +63,16 @@ class Robot():
     - cmd_repeat: 重复命令集
     - do_not_know: 匹配不到时随机回答
     """
+    # userid="A0001" 为通用身份，可通过 self.init_user 设置自定义身份和挂接知识库
     def __init__(self, password="train", userid="A0001"):
         self.graph = Graph("http://localhost:7474/db/data/", password=password)
         self.selector = NodeSelector(self.graph)
         # self.locations = get_navigation_location()
         self.is_scene = False
-        self.user = self.selector.select("User", userid=userid).first()
-        self.usertopics = self.get_usertopics(userid=userid)
-        self.address = get_location_by_ip(self.user['city'])
+        self.user = None
+        # self.user = self.selector.select("User", userid=userid).first()
+        # self.usertopics = self.get_usertopics(userid=userid)
+        # self.address = get_location_by_ip(self.user['city'])
         self.topic = ""
         self.qa_id = get_current_time()
         self.qmemory = deque(maxlen=10)
@@ -101,20 +103,27 @@ class Robot():
     def __str__(self):
         return "Hello! I'm {robotname} and I'm {robotage} years old.".format(**self.user)
 
+    def init_user(self, userid=None, key=None):
+        self.user = self.selector.select("User").where("_.userid='" + userid + "'", \
+                    "_.key='" + key + "'").first()
+        if self.user:
+            self.usertopics = self.get_usertopics(userid=userid)
+            self.address = get_location_by_ip(self.user['city'])
+
     @time_me()
-    def configure(self, info="", userid="A0001"):
+    def configure(self, info="", userid="A0001", key="A0001"):
         """Configure knowledge base.
         配置知识库。
         """
-        assert userid is not "", "The userid can not be empty!"
-        # 对传入的 userid 参数分析，若不合适则报相应消息 2017-6-7
-        if userid != "A0001":
-            userid = "A0001"
-            print("userid 不是默认值，已经更改为A0001")
+        config = {"databases": []}
+        # userid 不存在或者不正确时不能配置身份（通用身份只有管理员才能配置）
+        if not self.user:
+            self.init_user(userid, key)
+        if not self.user:
+            return config
         match_string = "MATCH (config:Config) RETURN config.name as name"
         subgraphs = [item[0] for item in self.graph.run(match_string)]
         print("所有知识库：", subgraphs)
-        config = {"databases": []}
 
         if info != '':
             selected_names = info.split()
@@ -145,6 +154,7 @@ class Robot():
         """Get available topics list.
         """
         usertopics = []
+        # userid 不存在或者不正确时使用通用身份
         if not userid:
             userid = "A0001"
         # 从知识库获取用户拥有权限的子知识库列表
@@ -413,9 +423,9 @@ class Robot():
         if not question:
             question = self.user['robotname']
         return question
-
+    
     @time_me()
-    def search(self, question="question", tid="", userid="A0001"):
+    def search(self, question="question", tid="", userid="A0001", key="A0001"):
         """Nlu search. 语义搜索。
 
         Args:
@@ -435,13 +445,15 @@ class Robot():
 
         # 语义：场景+全图+用户配置模式（用户根据 userid 动态获取其配置信息）
         # ========================初始化配置信息==========================
-        self.user = self.selector.select("User", userid=userid).first()
-        self.usertopics = self.get_usertopics(userid=userid)
+        if not self.user:
+            self.init_user(userid, key)
+        if not self.user:
+            return dict(question=question, name="", content="身份验证失败", context="",\
+                tid="", ftid="", url="", behavior=0, parameter="", txt="", img="", button="", valid=1)
         do_not_know = dict(
             question=question,
             name="",
             content=self.iformat(random_item(self.do_not_know)),
-            # content="",
             context="",
             tid="",
             ftid="",

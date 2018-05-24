@@ -36,12 +36,6 @@ add_qa(path=getConfig("path", "usbkb"))
 # 初始化日志路径
 logpath = getConfig("path", "log")
 
-# 初始化语义服务器
-# 从 qa 初始化
-robot = Robot(password=getConfig("neo4j", "password"))
-# 从 qa_sql 初始化
-# robot = Robot(path=getConfig("path", "db"), password=None)
-
 
 class MyTCPHandler(socketserver.BaseRequestHandler):
     """The request handler class for nlu server.
@@ -51,6 +45,11 @@ class MyTCPHandler(socketserver.BaseRequestHandler):
     the 'handle' method to implement communication to the client.
     """
     def handle(self):
+        # 初始化语义服务器
+        # 从 qa 初始化
+        robot = Robot(password=getConfig("neo4j", "password"))
+        # 从 qa_sql 初始化
+        # robot = Robot(path=getConfig("path", "db"), password=None)
         while True:
 			# self.request is the TCP socket connected to the client
             self.data = self.request.recv(2048)
@@ -64,13 +63,13 @@ class MyTCPHandler(socketserver.BaseRequestHandler):
             # step 2.Get answer
             if "ask_content" in json_data.keys():
                 answer = robot.search(question=json_data["ask_content"], \
-                userid=json_data["userid"])
+                userid=json_data["userid"], key=json_data["key"])
                 info = json_data["ask_content"]
                 # 其中 result['picurl'] 为 xml 格式
                 result = answer2xml(answer)
             elif "config_content" in json_data.keys():
                 answer = robot.configure(info=json_data["config_content"], \
-                userid=json_data["userid"])
+                userid=json_data["userid"], key=json_data["key"])
                 info = json_data["config_content"]
                 result = answer
             print(answer)

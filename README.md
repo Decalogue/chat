@@ -13,7 +13,10 @@
 
 * Chat 是一个基于自然语言理解与机器学习的语义理解库。
 * Chat 提供丰富的语义分析工具与语义知识图的构建工具，非常适合从0开始迅速搭建自己的聊天机器人，也能够减少工程师在实际开发当中的重复工作。
-* Chat 非常易于修改和扩展，可以方便地个性化定制。如果您有如下需求，欢迎选择 Chat：
+* Chat 非常易于修改和扩展，可以方便地个性化定制。
+* Chat 支持多用户并发及自定义的多轮对话场景。
+
+## 如果您有如下需求，欢迎选择 Chat：
   
   * 想从0开始迅速搭建自己的聊天机器人
   * 想了解自然语言处理与机器学习算法在问答中的应用
@@ -30,7 +33,13 @@
 
 ### Step 1 在终端中启动数据库
 
-> 方式1：直接使用 chat/tests/nlu.db 这个已经初始化的数据库
+> (推荐)方式1：直接使用 chat/tests/nlu.db 这个已经初始化的数据库
+>> 已经包含了3个用户及其知识库配置，具体的用户信息可直接查看数据库 User 或者 chat/tests/test_user.txt
+>> 说明：chat/tests/ 目录下的示例知识库：
+
+    chat.xls 基础问答（命令+闲聊）
+    chat_bank.xls 银行业务（里面有一个详细的自定义多轮对话示例以及两个单节点场景示例）
+    chat_hospital.xls 医院事务（业务问答）
 
 > 方式2：需自定义数据库，将其密码设为'train'
 
@@ -46,20 +55,25 @@
   
     server.start()
     
-> 2.2 导入测试知识库（若直接使用 chat/tests/nlu.db 进入 Step 3）（详见 chat/tests/test_graph.py，可命令行运行 python test_graph.py）
+> 2.2 导入测试知识库（若 Step 1 中使用 chat/tests/nlu.db 则直接进入 Step 3）
+（详见 chat/tests/test_graph.py，可命令行运行 python test_graph.py）
 
     from chat.graph import Database
     
+    # 初始化实例的时候若指定 userid 参数则会被导入到该用户，若不指定则导入到通用用户
     kb = Database(password='train')
-    kb.reset(filename='chat.xls') # 详见 chat/tests/chat.xls，可自定义问答
+    kb.reset(filename='chat.xls')
     
 ### Step 3 开始聊天
 
 > 方式1：启动语义客户端（详见 chat/tests/test_client.py，可命令行运行 python test_client.py）
+>> 可同时独立运行多个客户端，各个客户端的场景对话不会相互影响。
+>> 推荐使用已经提供的 test_client_bank.py 和 test_client_hospital.py 测试
 
     from chat import client
-  
-    client.start()
+    
+    # userid 和 key 可在已有的3个测试用户中选或者自己添加
+    client.start(userid="您的 userid", key="您的 key")
 
 > 方式2：使用 chat.qa 子模块
 
@@ -67,7 +81,7 @@
     from chat.config import getConfig
   
     robot = Robot(password=getConfig("neo4j", "password"))
-    result = robot.search(question="您的自定义问题")
+    result = robot.search(question="您的自定义问题", userid="您的 userid", key="您的 key")
     answer = result['content']
     print(answer)
 
@@ -82,6 +96,19 @@
 > 您可以在 [Read the docs](http://chat-cn.readthedocs.io/zh_CN/latest/) 中阅读官方中文文档。
 
 > 如果您阅读在线中文文档时有什么问题，您可以在 Github 上下载这个项目，然后去 ***/docs/build/html/index.html*** 阅读离线中文文档。
+
+## 非常感谢各位 Github 小伙伴的贡献
+
+### 代码贡献
+
+### 建议贡献
+
+[TimLoveFreedom](https://github.com/TimLoveFreedom) 具体内容：分享支持
+
+[zheyang0715](https://github.com/zheyang0715) 具体内容：chat.semantic.synonym_cut 句尾标点符号过滤
+
+[zhengxijiang](https://github.com/zhengxijiang) 具体内容：chat.server 场景并发中 robot 实例化
+
 
 ## 如果想了解更多，也欢迎扫二维码加我微信分享交流。
 

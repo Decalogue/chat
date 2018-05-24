@@ -9,6 +9,7 @@ from chat.client import match, config, batch_test, start
 class TestMe(TestCase):
     def setUp(self):
         self.userid = "A0001"
+        self.key = "A0001"
 
     def test_match(self):
         # sentences = ['理财产品', '你好', '理财产品取号', '退出', '你好']
@@ -43,7 +44,7 @@ class TestMe(TestCase):
         pass
 
     def test_start(self):
-        start()
+        start(userid=self.userid, key=self.key)
         # pass
 
 if __name__ == '__main__':

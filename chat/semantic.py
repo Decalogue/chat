@@ -270,12 +270,6 @@ def jaccard2(sv1, sv2, threshold=0.8):
     """
     sv_matrix = []
     sv_rows = []
-    n = 0 # n是分支层的节点总数
-    k = 0 # k是两个分支间的距离
-    a = 0.65
-    b = 0.8
-    c = 0.9
-    d = 0.96
     for word1 in sv1:
         for word2 in sv2:
             score = max_sim_tag(word1, word2)
@@ -401,6 +395,32 @@ def similarity2(s1, s2):
     if s1 == s2:
         return 1.0
     return jaccard2(segment(s1), segment(s2))
+
+def build_semantic_matrix(s1, s2):
+    """构建语义相似度矩阵
+    """
+    assert s1 != '', "sentence can not be empty"
+    assert s2 != '', "sentence can not be empty"
+    sv1 = segment(s1)
+    sv2 = segment(s2)
+    if len(sv1) >= len(sv2):
+        long_sv = sv1
+        short_sv = sv2
+    else:
+        long_sv = sv2
+        short_sv = sv1
+    matrix = np.zeros((16, 16, 1))
+    temp = matrix[:, :, 0]
+    # matrix = np.zeros((16, 16))
+    for i, word1 in enumerate(long_sv):
+        if i == 16:
+            break
+        for j, word2 in enumerate(short_sv):
+            if j == 16:
+                break
+            temp[np.array([i]), np.array([j])] = max_sim_tag(word1, word2)
+            # matrix[np.array([i]), np.array([j])] = max_sim_tag(word1, word2)
+    return matrix
 
 def get_location(sentence):
     """Get location in sentence. 获取句子中的地址。

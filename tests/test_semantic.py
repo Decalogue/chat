@@ -2,7 +2,7 @@
 import sys
 sys.path.append("../")
 from unittest import TestCase, main
-from chat.semantic import synonym_cut, similarity, similarity2
+from chat.semantic import synonym_cut, similarity, similarity2, build_semantic_matrix
 from chat.mytools import time_me
 
 class TestMe(TestCase):
@@ -32,7 +32,8 @@ class TestMe(TestCase):
             ("花呗自动还款需要手续费ma", "花呗自动还款还要收手续费吗"),
             ("花呗怎么付款不鸟了", "帮忙看一下我花呗怎么用不了"),
             ("花呗被冻结怎么恢复", "花呗被封了怎么解除"),
-            ("我借呗能不能开通", "如何开启借呗")
+            ("我借呗能不能开通", "如何开启借呗"),
+            ("使用花呗已付款，订单显示没有付款", "花呗扣款了美团订单显示未付款")
         ]
         for s1, s2 in data:      
             sv1 = synonym_cut(s1, 'wf')
@@ -43,6 +44,9 @@ class TestMe(TestCase):
             print("similarity1: ", similarity(sv1, sv2))
             print('similarity2: ', similarity2(s1, s2), '\n')
 
+    def test_build_semantic_matrix(self):
+        matrix = build_semantic_matrix("为什么我的银行卡已经绑定了，花呗要求我还要绑银行卡", "为什么我的银行卡绑定了，花呗还是要求我绑定银行卡")
+        print(matrix, matrix.shape)
 
 if __name__ == '__main__':
     main()

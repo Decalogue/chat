@@ -4,6 +4,7 @@ import math
 import pickle
 import jieba
 thispath = os.path.split(os.path.realpath(__file__))[0]
+jieba.set_dictionary(thispath + "/dict/synonymdict.txt")
 jieba.load_userdict(thispath + "/dict/userdict.txt")
 import numpy as np
 from string import punctuation
@@ -261,12 +262,6 @@ def jaccard(sv1, sv2, threshold=0.8):
     """
     sv_matrix = []
     sv_rows = []
-    n = 0 # n是分支层的节点总数
-    k = 0 # k是两个分支间的距离
-    a = 0.65
-    b = 0.8
-    c = 0.9
-    d = 0.96
     for word1 in sv1:
         for word2 in sv2:
             score = max_sim_tag(word1, word2)
