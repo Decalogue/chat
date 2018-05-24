@@ -35,6 +35,7 @@
 
 > (推荐)方式1：直接使用 chat/tests/nlu.db 这个已经初始化的数据库
 >> 已经包含了3个用户及其知识库配置，具体的用户信息可直接查看数据库 User 或者 chat/tests/test_user.txt
+
 >> 说明：chat/tests/ 目录下的示例知识库：
 
     chat.xls 基础问答（命令+闲聊）
@@ -42,8 +43,7 @@
     chat_hospital.xls 医院事务（业务问答）
 
 > 方式2：需自定义数据库，将其密码设为'train'
-
-> 若要修改密码：可在 chat/conf/self.conf 中修改 [neo4j] 选项 password)
+>> 若要修改密码：可在 chat/conf/self.conf 中修改 [neo4j] 选项 password)
 
     neo4j start
 
@@ -60,14 +60,15 @@
 
     from chat.graph import Database
     
-    # 初始化实例的时候若指定 userid 参数则会被导入到该用户，若不指定则导入到通用用户
+    # 初始化实例的时候若指定 userid 参数则会被导入 userid 对应用户，若不指定则导入通用用户
     kb = Database(password='train')
     kb.reset(filename='chat.xls')
     
 ### Step 3 开始聊天
 
-> 方式1：启动语义客户端（详见 chat/tests/test_client.py，可命令行运行 python test_client.py）
+> （推荐）方式1：启动语义客户端（详见 chat/tests/test_client.py，可命令行运行 python test_client.py）
 >> 可同时独立运行多个客户端，各个客户端的场景对话不会相互影响。
+
 >> 推荐使用已经提供的 test_client_bank.py 和 test_client_hospital.py 测试
 
     from chat import client
