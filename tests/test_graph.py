@@ -14,8 +14,8 @@ class WalkUserData(Walk):
 class TestMe(TestCase):
     def setUp(self):
         self.database = Database(password="train", userid="A0001")
-        self.db2 = Database(password="train", userid="A0002")
-        self.db3 = Database(password="train", userid="A0003")
+        # self.db2 = Database(password="train", userid="A0002")
+        # self.db3 = Database(password="train", userid="A0003")
         
     def test_add_userdata(self):
         """Add userdata from usb.
@@ -30,9 +30,10 @@ class TestMe(TestCase):
 
     def test_reset(self):
         self.database.delete(pattern='n', label='Config') # 删除知识库配置
-        self.database.reset(pattern="n", label='NluCell', filename="chat.xls")
-        self.db2.handle_excel("chat_bank.xls")
-        self.db3.handle_excel("chat_hospital.xls")
+        self.database.reset(pattern="n", label='NluCell', filename="chat_context.xls")
+        # self.database.reset(pattern="n", label='NluCell', filename="chat.xls")
+        # self.db2.handle_excel("chat_bank.xls")
+        # self.db3.handle_excel("chat_hospital.xls")
         pass
  
     def test_reset_ts(self):

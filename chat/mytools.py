@@ -363,19 +363,19 @@ def file_replace(source_file, destination_file):
             destination.write(source.read())
 
 def read_excel(filepath):
-    """Get excel source
+    """Get excel source.
 
     Args:
-        filepath: The full path of excel file. excel文件完整路径。
+        filepath: The full path of excel file. Excel 文件完整路径。
 
     Returns:
-        data: Data of excel. excel数据。
+        data: Data of excel. Excel 数据。
     """
     is_valid = False
     try:
         if os.path.isfile(filepath):
             filename = os.path.basename(filepath)
-            if filename.split('.')[1] == 'xls':
+            if filename.split('.')[1] in ['xls', 'xlsx']:
                 is_valid = True
         data = None
         if is_valid:

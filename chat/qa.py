@@ -74,14 +74,20 @@ class Robot():
         # self.usertopics = self.get_usertopics(userid=userid)
         # self.address = get_location_by_ip(self.user['city'])
         self.topic = ""
+        self.behavior = 0 # 场景类型 Add in 2018-6-7
+        self.last_step_error = False # 在场景内上一个问答是否正常 Add in 2018-6-12
         self.qa_id = get_current_time()
         self.qmemory = deque(maxlen=10)
         self.amemory = deque(maxlen=10)
         self.pmemory = deque(maxlen=10)
+        # TODO：判断意图是否在当前话题领域内
+        self.change_attention = ["换个话题吧", "太无聊了", "没意思", "别说了"]
         self.cmd_end_scene = ["退出业务场景", "退出场景", "退出", "返回", "结束", "发挥"]
         self.cmd_previous_step = ["上一步", "上一部", "上一页", "上一个"]
         self.cmd_next_step = ["下一步", "下一部", "下一页", "下一个"]
-        self.cmd_repeat = ['重复', '再来一个', '再来一遍', '你刚说什么', '再说一遍', '重来']
+        self.cmd_repeat = ["重复", "再来一个", "再来一遍", "你刚说什么", "再说一遍", "重来"]
+        self.yes = ["是", "是的", "对", "对的", "好的", "YES", "yes", "结束了"]
+        self.no = ["没", "没有", "否", "不", "没有结束", "没结束"]
         self.do_not_know = [
             "这个问题太难了，{robotname}还在学习中",
             "这个问题{robotname}不会，要么我去问下",
@@ -273,9 +279,7 @@ class Robot():
         for node in subgraph:
             iquestion = self.iformat(node["name"])
             sv2 = pinyin_cut(iquestion)
-            print("  ", sv2)
             temp_sim = jaccard_pinyin(sv1, sv2)
-            print(temp_sim)
             # 匹配加速，不必选取最高相似度，只要达到阈值就终止匹配
             if temp_sim > athreshold:
                 print("Q: " + iquestion + " Similarity Score: " + str(temp_sim))
@@ -467,6 +471,7 @@ class Robot():
         error_page = dict(
             question=question,
             name="",
+            # content="这个业务办完了吗" # "这个问题结束了吗"
             content=self.user['error_page'],
             context="",
             tid="",
@@ -507,20 +512,35 @@ class Robot():
                 else:
                     return do_not_know
 
-        # 场景——退出
+        # 场景——退出（通用）
         for item in self.cmd_end_scene:
             if item == question: # 完全匹配退出模式
                 result['behavior'] = 0
-                result['name'] = '退出'
+                result['name'] = "退出"
                 result['context'] = self.topic # Modify 2018-3-6 退出时返回的场景标签为当前场景
                 result['content'] = ''
                 self.is_scene = False
                 self.topic = ''
+                self.behavior = 0
                 self.amemory.clear() # 清空场景记忆
                 self.pmemory.clear() # 清空场景上一步记忆
                 return result
+        
+        # 场景——意图跳转（多轮闲聊） Add in 2018-6-7
+        if self.is_scene and self.behavior == 0:
+            for item in self.change_attention:
+                if item == question: # TODO：模糊匹配跳转模式
+                    result['behavior'] = 0
+                    result['name'] = "换个话题"
+                    result['context'] = self.topic
+                    result['content'] = "好的，我们换个话题吧"''
+                    self.is_scene = False
+                    self.topic = ''
+                    self.amemory.clear() # 清空场景记忆
+                    self.pmemory.clear() # 清空场景上一步记忆
+                    return result
 
-        # 场景——上一步：返回父节点(TODO：和下一步模式统一)
+        # 场景——上一步：返回父节点(通用模式)
         if self.is_scene:
             for item in self.cmd_previous_step:
                 if item in question:
@@ -531,6 +551,7 @@ class Robot():
                     elif len(self.pmemory) == 1:
                         return self.pmemory[-1]
                     else:
+                        self.last_step_error = True
                         return error_page
             # 场景——下一步：通过 button 实现
             for item in self.cmd_next_step:
@@ -559,10 +580,35 @@ class Robot():
                                     self.pmemory.append(self.amemory[-1])
                                     self.amemory.append(result)
                                     return result
+                    self.last_step_error = True
                     return error_page
           
         # ==========================场景匹配=========================      
         if self.is_scene: # 在场景中：语义模式+关键句模式
+            # 在场景内没有正确匹配时引导继续办理或者退出 Add in 2018-6-12
+            if self.last_step_error:
+                if question in self.yes:
+                    result['behavior'] = 0
+                    result['name'] = "退出"
+                    result['context'] = self.topic
+                    result['content'] = '好的，我们换个话题吧'
+                    self.is_scene = False
+                    self.topic = ''
+                    self.behavior = 0
+                    self.last_step_error = False
+                    self.amemory.clear() # 清空场景记忆
+                    self.pmemory.clear() # 清空场景上一步记忆
+                    return result
+                elif question in self.no:
+                    result['behavior'] = self.behavior
+                    result['name'] = "继续"
+                    result['context'] = self.topic
+                    if self.behavior == 0:
+                        result['content'] = '好的'
+                    else:
+                        result['content'] = '请按屏幕提示操作继续业务哦'
+                    self.last_step_error = False
+                    return result
             # 场景内所有节点
             match_scene = "MATCH (n:NluCell) WHERE n.topic='" + self.topic + "' RETURN n"
             scene_nodes = self.graph.run(match_scene).data()
@@ -584,10 +630,13 @@ class Robot():
                     print("正确匹配到当前场景的子场景或同层级场景") # Modify：2018-2-26
                     self.pmemory.append(self.amemory[-1])
                     self.amemory.append(result) # 添加到场景记忆
+                    self.last_step_error = False
                     return result
+            # 场景中匹配不到返回引导提示
+            self.last_step_error = True
             return error_page
         else: # 不在场景中：语义模式+关键句模式
-            # 场景内和问题语义标签一致的所有节点
+            # 和问题语义标签一致的所有节点
             tag = get_tag(question, self.user)
             match_graph = "MATCH (n:NluCell) WHERE n.tag='" + tag + \
                 "' and '" + ' '.join(self.usertopics) + "' CONTAINS n.topic RETURN n"
@@ -612,14 +661,31 @@ class Robot():
                     print("不在场景中，匹配到场景根节点")
                     self.is_scene = True # 进入场景
                     self.topic = result["context"]
+                    # 场景类型 Add in 2018-6-7
+                    self.behavior = result["behavior"]
+                    self.last_step_error = False
                     self.amemory.clear() # 进入场景前清空普通记忆
                     self.pmemory.clear()
                     self.amemory.append(result) # 添加到场景记忆
                     self.pmemory.append(result)
                     return result
                 else:
-                    print("不在场景中，匹配到场景子节点")
-                    return do_not_know
+                    if result["behavior"] == 0: # Add in 2018-6-12
+                        # 可以直接进入多轮闲聊子场景
+                        print("不在场景中，匹配到闲聊场景子节点")
+                        self.is_scene = True # 进入场景
+                        self.topic = result["context"]
+                        self.behavior = result["behavior"]
+                        self.last_step_error = False
+                        self.amemory.clear() # 进入场景前清空普通记忆
+                        self.pmemory.clear()
+                        self.amemory.append(result) # 添加到场景记忆
+                        self.pmemory.append(result)
+                        return result
+                    else:
+                        # 不可直接进入业务子场景
+                        print("不在场景中，匹配到业务场景子节点")
+                        return do_not_know
             elif result["context"]: # 匹配到普通节点
                 self.topic = result["context"]
                 self.amemory.append(result) # 添加到普通记忆

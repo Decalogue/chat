@@ -44,12 +44,12 @@ def answer2xml(data):
         timestamp=str(get_timestamp()),
         news='news',
         article_count=str(len(img_urls)),
-        content=data['content'],
+        content=data['content'], # Modify：场景中要说的话也放到 picurl 中(2018-1-8)
         context=data['context'],
         button=data['button'],
         imgs=imgs,
         img_url=img_urls[0] if img_urls else '',
         items=items
     )
-    result['content'] = "" # Modify：场景中要说的话放到 picurl 中。(2018-1-8)
+
     return result

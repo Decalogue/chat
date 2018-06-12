@@ -49,7 +49,9 @@
 
 ### Step 2 初始化语义知识库
 
-> 2.1 启动语义服务器并保持（详见 chat/tests/test_server.py，可命令行运行 python test_server.py）
+> 2.1 启动语义服务器并保持
+（详见 chat/tests/test_server.py，可命令行运行 python test_server.py）
+>> 启动前请将 chat/conf/self.conf 中 [path] 下的 log（问答日志） 和 do_not_know（回答不了的问题日志） 修改为自己的路径
 
     from chat import server
   
