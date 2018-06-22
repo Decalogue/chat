@@ -1,6 +1,18 @@
 CHANGES
 =======
 
+* Modify nlu.db
+* Modify nlu.db
+* Add 场景引导提示
+* Update README
+* 添加详细的场景对话示例，支持多用户并发
+* Modify dict, semantic and README
+* Update README
+* Update README and Docs
+* 添加示例知识库的 Excel 版本 chat.xls 和 Neo4j 版本 nlu.db，更新了文档和 README
+* Update Docs
+* Update README
+* Update Docs
 * 修正同级场景跳转以及完善知识库删除接口
 * 退出场景时返回的场景标签为当前场景标签
 * Modify semantic.jaccard

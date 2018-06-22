@@ -7,7 +7,11 @@
 [![Documentation Status](https://readthedocs.org/projects/chat-cn/badge/?version=latest)](http://chat-cn.readthedocs.io/zh_CN/latest/?badge=latest)
 [![PyPI Version](https://img.shields.io/pypi/v/chat.svg)](https://pypi.python.org/pypi/chat)
 
-![chat](https://github.com/Decalogue/chat/blob/master/docs/img/chat.png "chat")
+<div align=center>
+
+![chat](https://github.com/Decalogue/chat/blob/master/docs/img/logo.png "chat")
+
+</div>
 
 ## 这就是 Chat
 
@@ -117,6 +121,9 @@
 
 [zhengxijiang](https://github.com/zhengxijiang) 具体内容：chat.server 场景并发中 robot 实例化
 
+### 文档贡献
+
+[mirzazulfan](https://github.com/mirzazulfan) 具体内容：设计 chat LOGO
 
 ## 如果想了解更多，也欢迎扫二维码加我微信分享交流。
 
