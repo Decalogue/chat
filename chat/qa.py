@@ -263,7 +263,7 @@ class Robot():
             exec("result['content'] = " + func + "('" + result["content"] + "')")
         return result
 
-    def extract_pinyin(self, question, subgraph, threshold=0.6, athreshold=0.8):
+    def extract_pinyin(self, question, subgraph, threshold=0.8, athreshold=0.9):
         """Extract synonymous QA in NLU database。
         QA匹配模式：从图形数据库选取匹配度最高的问答对。
 
@@ -290,7 +290,7 @@ class Robot():
         if max_score > threshold:
             node = subgraph[ss.index(max_score)]
             iquestion = self.iformat(node["name"])
-            print("Q: " + iquestion + " Similarity Score: " + str(temp_sim))
+            print("Q: " + iquestion + " Similarity Score: " + str(max_score))
             return self.update_result(question, node)
         # ===========================================================
         return self.update_result(question)
@@ -330,7 +330,7 @@ class Robot():
         if max_score > threshold:
             node = subgraph[ss.index(max_score)]
             iquestion = self.iformat(node["name"])
-            print("Q: " + iquestion + " Similarity Score: " + str(temp_sim))
+            print("Q: " + iquestion + " Similarity Score: " + str(max_score))
             return self.update_result(question, node)
         # ===========================================================
         return self.update_result(question)
@@ -365,7 +365,7 @@ class Robot():
         if max_score > threshold:
             node = subgraph[ss.index(max_score)]
             iquestion = self.iformat(node["name"])
-            print("Q: " + iquestion + " Similarity Score: " + str(temp_sim))
+            print("Q: " + iquestion + " Similarity Score: " + str(max_score))
             return self.update_result(question, node)
         return self.update_result(question)
 

@@ -123,7 +123,7 @@
 
 ### 文档贡献
 
-[mirzazulfan](https://github.com/mirzazulfan) 具体内容：设计 chat LOGO
+[Mirza Zulfan](https://github.com/mirzazulfan) 具体内容：设计 chat LOGO
 
 ## 如果想了解更多，也欢迎扫二维码加我微信分享交流。
 

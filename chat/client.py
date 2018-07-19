@@ -14,10 +14,13 @@ Available functions:
 
 import json
 import socket
+from .config import getConfig
 # from .mytools import time_me
 
 mysock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-mysock.connect(("localhost", 7000))
+host = getConfig("nluclient", "host")
+port = getConfig("nluclient", "port")
+mysock.connect((host, port))
 
 def question_pack(info="", userid="A0001", key="A0001"):
     """Package the question as the JSON format specified by the server.
