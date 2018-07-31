@@ -19,7 +19,7 @@ from .config import getConfig
 
 mysock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 host = getConfig("nluclient", "host")
-port = getConfig("nluclient", "port")
+port = int(getConfig("nluclient", "port"))
 mysock.connect((host, port))
 
 def question_pack(info="", userid="A0001", key="A0001"):
