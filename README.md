@@ -127,8 +127,8 @@
 
 ## 如果想了解更多，也欢迎扫二维码加我微信分享交流。
 
-![Rain](https://github.com/Decalogue/XLearn/blob/master/img/QRcode.jpg "一起学习")
+![Rain](https://github.com/Decalogue/chat/docs/QRcode.jpg "一起学习")
 
 `Copyright © 2017 Decalogue. All Rights Reserved.`
 
-关于作者：[Decalogue](https://www.decalogue.cn)
+关于作者：[Decalogue](https://github.com/Decalogue)
