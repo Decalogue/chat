@@ -1,6 +1,6 @@
 pbr==3.1.1
 jieba==0.39
-numpy==1.13.1
+numpy==1.22.0
 py2neo==3.1.2
 requests==2.12.1
 xlrd==1.0.0
