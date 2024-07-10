@@ -125,10 +125,6 @@
 
 [Mirza Zulfan](https://github.com/mirzazulfan) 具体内容：设计 chat LOGO
 
-## 如果想了解更多，也欢迎扫二维码加我微信分享交流。
-
-![Rain](https://github.com/Decalogue/chat/blob/master/docs/QRcode.jpg "一起学习")
-
 `Copyright © 2017 Decalogue. All Rights Reserved.`
 
 关于作者：[Decalogue](https://github.com/Decalogue)
